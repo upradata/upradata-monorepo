@@ -1,0 +1,24 @@
+{
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentSize": 2,
+    "lineWidth": 100,
+    "ignore": [
+      "node_modules",
+      "dist",
+      "lib",
+      "lib-esm",
+      "coverage"
+    ]
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  }
+}

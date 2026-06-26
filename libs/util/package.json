@@ -1,0 +1,90 @@
+{
+    "name": "@upradata/util",
+    "version": "0.0.1",
+    "description": "General utilities library",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        },
+        "./assign": {
+            "types": "./dist/assign.d.ts",
+            "import": "./dist/assign.mjs",
+            "require": "./dist/assign.js"
+        },
+        "./guid": {
+            "types": "./dist/guid.d.ts",
+            "import": "./dist/guid.mjs",
+            "require": "./dist/guid.js"
+        },
+        "./is": {
+            "types": "./dist/is.d.ts",
+            "import": "./dist/is.mjs",
+            "require": "./dist/is.js"
+        },
+        "./promise": {
+            "types": "./dist/promise.d.ts",
+            "import": "./dist/promise.mjs",
+            "require": "./dist/promise.js"
+        },
+        "./object": {
+            "types": "./dist/object/index.d.ts",
+            "import": "./dist/object/index.mjs",
+            "require": "./dist/object/index.js"
+        },
+        "./string": {
+            "types": "./dist/string/index.d.ts",
+            "import": "./dist/string/index.mjs",
+            "require": "./dist/string/index.js"
+        },
+        "./template-string": {
+            "types": "./dist/template-string/index.d.ts",
+            "import": "./dist/template-string/index.mjs",
+            "require": "./dist/template-string/index.js"
+        },
+        "./types": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/types/index.mjs",
+            "require": "./dist/types/index.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "tsup --config ../../configs/tsup/tsup.config.ts",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "lint": "eslint src --ext .ts",
+        "lint:fix": "eslint src --ext .ts --fix",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+    },
+    "keywords": [
+        "util",
+        "utility",
+        "upradata"
+    ],
+    "author": "Upra-Data Contributors",
+    "license": "MIT",
+    "dependencies": {
+        "common-tags": "^1.8.2",
+        "emoji-regex": "^10.6.0",
+        "is-fullwidth-code-point": "^5.1.0",
+        "ts-util-is": "^2.1.0"
+    },
+    "devDependencies": {
+        "@types/common-tags": "^1.8.4",
+        "@types/node": "^26.0.1",
+        "@upradata/tsconfig": "workspace:^"
+    }
+}

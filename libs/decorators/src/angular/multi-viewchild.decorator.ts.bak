@@ -1,0 +1,109 @@
+import { TemplateRef, ViewChild, ElementRef, ViewContainerRef, Provider, Type } from '@angular/core';
+import "reflect-metadata";
+
+
+// original https://medium.com/@a.yurich.zuev/angular-viewchild-how-to-read-multiple-instances-cde38ef19041
+
+// Mais je l'ai modifié
+
+/* export interface Read<T1, T2 = Null, T3 = Null, T4 = Null, T5 = Null> {
+
+}
+ */
+
+export type Read<Component, Directive, Service> = TemplateRef<Component> | ViewContainerRef | ElementRef<Component> | Provider |
+    {
+        component?: Component | boolean;
+        directive?: Directive;
+        service?: Service
+    };
+
+export function MultiViewChild<Component, Directive, Service>(
+    selector: Type<Component> | (() => Component) | string, opts: { read: Read<Component, Directive, Service>[] }) {
+
+    const tokens = opts.read;
+    const childDecorators: (target: any, prop: string) => any = {} as undefined;
+
+    if (tokens.length === 0)
+        childDecorators['component'] = ViewChild(selector);
+    else {
+        //  decs = tokens.map(x => ({ name: firstSmallLetter(x.name), child: ViewChild(selector, { read: x }) });
+
+        for (const token of tokens) {
+
+            if ((token as any).name !== undefined) // token is a constructor like ElementRef, ViewContainerRef ...
+                childDecorators[firstSmallLetter((token as any).name)] = ViewChild(selector, { read: token });
+            else {
+                // { component: ..., directive: ..., service: ...}
+                for (let [k, v] of Object.entries(token)) {
+                    if (v === true) // if component === true, default request
+                        v = undefined;
+
+                    childDecorators[firstSmallLetter(k)] = ViewChild(selector, { read: v });
+                }
+
+            }
+
+        }
+
+        return function (target: any, name: string) {
+
+            for (const [key, decorator] of Object.entries(childDecorators))
+                decorator(target, subPropertyName(name, key));
+
+            const targetObj2 = {};
+
+            for (const key of Object.keys(childDecorators))
+                targetObj2[key] = target[subPropertyName(name, key)];
+
+            Object.defineProperty(target, name, {
+                // tslint:disable-next-line:object-literal-shorthand
+                get: function () {
+                    // return decs.map((x, i) => this[`${name}_${i}`], this);
+                    const targetObj = {};
+
+                    for (const key of Object.keys(childDecorators))
+                        targetObj[key] = this[subPropertyName(name, key)];
+
+
+                    return targetObj;
+                }
+            });
+        };
+    }
+}
+
+function subPropertyName(name: string, key: string) {
+    return `${name}_${key}`;
+}
+
+function firstSmallLetter(word: string) {
+    return word[0].toLowerCase() + word.slice(1);
+}
+
+
+type Null = '________null________';
+
+type MutliView<T> =
+    T extends ElementRef ? { elementRef: T } :
+        T extends ViewContainerRef ? { viewContainerRef: T } :
+            T extends TemplateRef<any> ?{ templateRef: T } :
+                T extends Provider ? { provider: T } :
+                    T extends Null ? {} :
+                    T;
+// { renderElement: T };
+
+
+export type MultiViewChildType<T1, T2 = Null, T3 = Null, T4 = Null, T5 = Null> =
+    MutliView<T1> &
+    MutliView<T2> &
+    MutliView<T3> &
+    MutliView<T4> &
+    MutliView<T5>;
+
+
+/* class A { }
+type Example = MultiViewChildType<ElementRef, Provider, TemplateRef<A>, ViewContainerRef, { component: A }>;
+const a: Example = undefined;
+a.templateRef = undefined;
+a.component = undefined; */

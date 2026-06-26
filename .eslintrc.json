@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": [],
+  "rules": {
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ]
+  }
+}

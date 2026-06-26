@@ -1,0 +1,478 @@
+/* eslint-disable object-shorthand */
+import { ReplaySubject } from 'rxjs';
+import { Key } from '@upradata/util';
+import { Proxy, ProxyObserver } from '../src/proxy';
+// import { ProxyHandler } from '../src/node';
+import { Extra } from '../src/node/extra';
+
+
+interface Normal {
+    a: number;
+    b: {
+        b1: number;
+        b2?: string;
+    };
+    c?: {
+        c1: number;
+    };
+}
+
+const normalTest = ProxyObserver.create<Normal>(undefined, { setOption: { extendable: true, mutable: false } });
+normalTest.$({
+    a: 1,
+    b: { b1: 2, b2: 'Hahaha' },
+    c: { c1: 3 }
+});
+
+console.log(normalTest.$$);
+
+const { b } = normalTest;
+
+normalTest.c.c1 = 11;
+
+b.$({ b1: 20 });
+
+console.log(normalTest.$$);
+
+const normalTest2 = ProxyObserver.create<Normal>(undefined, { setOption: { extendable: true, mutable: false } });
+normalTest2.$({
+    a: undefined,
+    b: undefined
+});
+
+normalTest2.a = 1;
+normalTest2.b = { b1: 2 };
+normalTest2.b.$({ b2: 'haha' });
+
+console.log(normalTest2.$$);
+
+
+
+
+const normalTest3 = ProxyObserver.create<Normal>(undefined, { setOption: { extendable: true, mutable: false } });
+normalTest3.$({
+    a: 1,
+    b: { b1: 2, b2: 'Hahaha' }
+});
+normalTest3.$({
+    c: { c1: 3 }
+});
+
+console.log(normalTest3.$$);
+
+
+const pppp = Proxy.create().$(2);
+console.log(pppp.$$);
+
+const success = ProxyObserver.create({ a: 1 }, { setOption: { extendable: false, mutable: false } });
+
+success.changed$.subscribe(({ prop, value }) => {
+    console.log(`${String(prop)}: ${value}`);
+});
+
+success.$({ b: 2 });
+success.a = 'pas bon' as any;
+
+const ccc = {
+    a: 2,
+    b: {
+        a2: 9,
+        b2: 'vincent'
+    },
+    c: 'thomas'
+};
+
+
+interface PropValue {
+    prop: Key;
+    value: any;
+}
+
+
+const changed$ = new ReplaySubject<PropValue>(1);
+
+changed$.subscribe(e => {
+    console.log('observer', e.prop, e.value);
+});
+
+let first = true;
+
+const p3 = Proxy.create(ccc,
+    {
+        setOption: {
+            extendable: true,
+            mutable: true
+        },
+        handler: {
+            // tslint:disable-next-line:object-literal-shorthand
+            set: function (prop: Key, value: any) {
+                console.log('CACACAA');
+                let v = value;
+
+                if (prop === 'b' && first) {
+                    v = {
+                        b2: 'ROXANE :)',
+                        d: {
+                            d1: 1,
+                            d2: 2
+                        }
+                    };
+                } else {
+                    v = value;
+                }
+
+                console.log('BEFORE', prop, v, '\n');
+                changed$.next({ prop, value: v });
+
+                this[ prop ] = v;
+
+                console.log('AFTER', prop, v, '\n');
+                changed$.next({ prop, value: v });
+            }
+        }
+    });
+
+
+// const p4 = p3 as any as Proxy;
+
+console.log('Proxy');
+// p4.set(ccc); // init
+
+first = false;
+
+
+console.log('p3.a', p3.a);
+console.log('p3.b', p3.b.$$);
+console.log('p3.b.a2', p3.b.a2);
+console.log('p3.b.b2', p3.b.b2);
+console.log('p3.b.d', (p3.b as any).d.$$);
+console.log('p3.c', p3.c.$$);
+
+console.log('\n\n\n\n\n Nouveau');
+
+p3.b = { a2: 17 } as any;
+console.log('p3.b', p3.b.$$);
+
+
+console.log('\n\n\n\n\n Nouveau');
+
+((p3.b) as any).d = { d2: 1234 } as any;
+console.log('p3.b.d', ((p3.b) as any).d);
+
+
+/* const oo: any = {
+    a: 1
+};
+
+let bb = 1;
+bb = 1;
+
+Object.defineProperty(oo, 'c', {
+    get() { return bb; },
+    set: v => bb = v,
+    enumerable: true,
+    // set(newValue) { bValue = newValue; },
+});
+
+oo.b = 4;
+console.log(oo.b);
+ */
+
+
+
+
+
+
+const allConfig = {
+    config: {
+        a0: {
+            b0: {
+                c0: 1,
+                c1: 'thomas'
+            },
+            b1: {
+                c2: 2,
+                c3: 'vincent'
+            }
+        },
+        a1: {
+            b2: {
+                c4: 3,
+                c5: 'roxane'
+            },
+            b3: {
+                c6: 4,
+                c7: 'miska'
+            }
+        }
+    }
+};
+
+
+
+const proxyConfig = Proxy.createPartialExtra(allConfig, {
+    setOption: {
+        extendable: true,
+        mutable: true
+    },
+    handler: {
+        // tslint:disable-next-line:object-literal-shorthand
+        set: function (prop: Key, value: any) {
+            this[ prop ] = value;
+            console.log(`set: ${String(prop)} --> ${value}`);
+            this[ prop ].changed$.next({ prop, value });
+        }
+    },
+    // tslint:disable-next-line:object-literal-shorthand
+    changedUp: function (prop: Key, value: any) {
+        console.log(`changed: ${String(prop)} --> ${value}`);
+        this.changed$.next({ prop, value });
+    },
+    extra: {
+        changed$: Extra.create(() => new ReplaySubject<PropValue>(1)),
+        cc: 2
+    }
+});
+
+
+proxyConfig.changed$.subscribe(({ prop, value }) => {
+    console.log(`changed: ${String(prop)} --> ${value}`);
+});
+
+
+proxyConfig.config.a1.b3.changed$.subscribe(({ prop, value }) => {
+    console.log(`changed: ${String(prop)} --> ${value}`);
+});
+
+
+
+
+proxyConfig.config.a1.b3 = { c6: 2 } as any;
+proxyConfig.config.a0.b0.c0 = 111;
+
+proxyConfig.config.$({ d: 1 });
+(proxyConfig.config as any).d = { d1: 1 };
+
+
+
+const proxyLiteral = Proxy.create(2);
+console.log(proxyLiteral.$$);
+
+
+
+
+
+
+const proxySetOption = Proxy.create({
+    a: 1,
+    b: 'thomas',
+    c: { c1: 1 }
+}, {
+    setOption: {
+        extendable: false,
+        mutable: false
+    }
+});
+
+console.log(proxySetOption.$$);
+
+proxySetOption.a = 2;
+
+(<any>proxySetOption).a = 'string'; // not mutable
+(<any>proxySetOption).a = { a1: 1 }; // not mutable
+
+(<any>proxySetOption).c = 3; // not mutable
+
+
+console.log(proxySetOption.$$);
+
+proxySetOption.a = undefined;
+proxySetOption.c = undefined;
+
+console.log(proxySetOption.$$);
+
+proxySetOption.$({ d: 2 }); // not extendable
+
+console.log(proxySetOption.$$);
+
+interface TestObserver {
+    a: number;
+    b: {
+        b1: string;
+        b2: number;
+    };
+    c: string;
+    d: {
+        d1: number;
+        d2: {
+            d21: string;
+        };
+    };
+}
+
+const proxyObserver = ProxyObserver.create<TestObserver>(undefined, {
+    setOption: {
+        extendable: true,
+        mutable: true
+    },
+});
+
+const toObserve = {
+    a: 1,
+    b: {
+        b1: 'tt',
+        b2: 2
+    },
+    c: 'az',
+    d: {
+        d1: 123,
+        d2: {
+            d21: 'string'
+        }
+    }
+};
+
+proxyObserver.$(toObserve);
+// proxyObserver = toObserve;
+
+proxyObserver.b.changed$.subscribe(({ prop, value }) => {
+    console.log(`${String(prop)} --> ${value}`, value);
+});
+
+proxyObserver.b.changed$.subscribe(({ prop, value }) => {
+    console.log(`${String(prop)} --> ${value}`, value);
+});
+
+proxyObserver.d.changed$.subscribe(({ prop, value }) => {
+    console.log(`${String(prop)} --> ${value}`, value);
+});
+
+proxyObserver.b.b1 = 'ela';
+proxyObserver.d.d2 = { d21: 'caca' };
+
+console.log(proxyObserver.$$);
+
+
+const proxyArray = ProxyObserver.create({ a: [ 1, 2, 3 ] });
+console.log(proxyArray.$$);
+
+
+const cycle = { aiaa: 1 };
+cycle[ 'b' ] = cycle;
+
+const proxyCycle = Proxy.create(cycle);
+
+
+interface CycleBase {
+    a: number;
+    b?: Cycle;
+}
+
+interface Cycle {
+    c: number;
+    d?: CycleBase;
+}
+
+
+
+const cycle2: CycleBase = {
+    a: 1,
+    b: {
+        c: 2,
+        d: undefined
+    }
+};
+
+cycle2.b.d = cycle2;
+
+const proxyCycle2 = Proxy.create(cycle2);
+
+proxyCycle2.b.d.a = 7;
+console.log(proxyCycle2.a.$$);
+
+proxyCycle2.b.d = { a: 17 };
+console.log(proxyCycle2.a.$$);
+
+
+interface From {
+    a: number;
+}
+
+
+const proxyFrom = ProxyObserver.create<From>({ a: 1 });
+const proxyTo = proxyFrom.a.$map({
+    fromTo: (v: number) => `${v}haha`,
+    toFrom: (v: string) => parseInt(v, 10)
+
+});
+
+
+proxyFrom.a.changed$.subscribe(({ /* prop, */ value }) => {
+    console.log(value);
+    1 === 1;
+});
+
+proxyTo.changed$.subscribe(({ prop, value }) => {
+    console.log(value);
+    1 === 1;
+});
+
+
+proxyFrom.a = 7;
+proxyTo.$('1234etvoila');
+
+
+interface From2 {
+    fa: number;
+    fb: string;
+}
+
+
+interface To {
+    ta: boolean;
+    tb: number;
+}
+
+const proxyFrom2 = ProxyObserver.create<From2>();
+
+
+const proxyTo2 = proxyFrom2.$map({
+    fromTo: v => {
+        return {
+            ta: v.fa > 1,
+            tb: v.fb.length
+        };
+    },
+    toFrom: (v: To) => {
+        return {
+            fa: v.ta ? 1 : 2,
+            fb: `length: ${v.tb}`
+        };
+    }
+
+});
+
+
+
+proxyTo2.changed$.subscribe(({ /* prop, */ value }) => {
+    console.log(value);
+    1 === 1;
+});
+
+proxyFrom2.changed$.subscribe(({ /* prop, */ value }) => {
+    console.log(value);
+    1 === 1;
+});
+
+proxyFrom2.$({ fa: 1, fb: 'string' });
+
+proxyFrom2.fa = 7;
+proxyFrom2.$({ fa: 1, fb: 'caca' });
+
+proxyTo2.$({ ta: true });
+proxyTo2.$({
+    ta: false,
+    tb: 12345
+});
+
+1 === 1;

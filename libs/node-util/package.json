@@ -1,0 +1,66 @@
+{
+    "name": "@upradata/node-util",
+    "author": {
+        "name": "El Pupi (Upra-Data)",
+        "email": "elpupi@upradata.com",
+        "url": "https://github.com/upradata/node-util.git"
+    },
+    "license": "MIT",
+    "version": "16.0.12",
+    "description": "Set of typescript util tools working in NodeJs",
+    "sideEffects": false,
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "exports": {
+        ".": {
+            "import": "./lib-esm/index.js",
+            "require": "./lib/index.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "tsup --config ../../configs/tsup/tsup.config.ts",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "lint": "eslint src --ext .ts",
+        "lint:fix": "eslint src --ext .ts --fix",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+    },
+    "keywords": [
+        "upradata",
+        "node",
+        "util",
+        "utility"
+    ],
+    "dependencies": {
+        "@schemastore/package": "^1.0.5",
+        "@upradata/util": "workspace:*",
+        "colors": "^1.4.0",
+        "commander": "^12.1.0",
+        "csvtojson": "^2.0.10",
+        "fs-extra": "^11.2.0",
+        "glob": "^11.0.0",
+        "json5": "^2.2.3",
+        "locate-path": "^7.2.0",
+        "table": "^6.8.2",
+        "tsconfig": "^7.0.0",
+        "tsconfig-paths": "^4.2.0",
+        "vinyl": "^3.0.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
+        "@types/node": "^20.0.0",
+        "@upradata/tsconfig": "workspace:^",
+        "memory-fs": "^0.5.0",
+        "types-tsconfig": "^2.1.1"
+    }
+}

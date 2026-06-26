@@ -1,0 +1,65 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalDependencies": [
+        "tsconfig.json",
+        ".eslintrc.json"
+    ],
+    "tasks": {
+        "typecheck": {
+            "dependsOn": [
+                "^typecheck"
+            ],
+            "outputs": []
+        },
+        "lint": {
+            "dependsOn": [
+                "^lint"
+            ],
+            "outputs": []
+        },
+        "test": {
+            "dependsOn": [
+                "build",
+                "^build"
+            ],
+            "outputs": [
+                "coverage/**"
+            ]
+        },
+        "test:coverage": {
+            "dependsOn": [
+                "build",
+                "^build"
+            ],
+            "outputs": [
+                "coverage/**"
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "dist/**",
+                "*.d.ts"
+            ],
+            "cache": true
+        },
+        "docs": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "docs/**"
+            ],
+            "cache": true
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "clean": {
+            "cache": false
+        }
+    }
+}

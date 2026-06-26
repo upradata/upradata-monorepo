@@ -1,0 +1,32 @@
+{
+  "entryPoints": [
+    "libs/util/src/index.ts",
+    "libs/browser-util/src/index.ts",
+    "libs/node-util/src/index.ts",
+    "libs/decorators/src/index.ts",
+    "libs/dependency-injection/src/index.ts",
+    "libs/proxy/src/index.ts",
+    "libs/rxjs/src/index.ts",
+    "libs/stream/src/index.ts",
+    "libs/object-convert/src/index.ts"
+  ],
+  "out": "docs/api",
+  "includeVersion": true,
+  "disableSources": false,
+  "readme": "./docs/README.md",
+  "theme": "default",
+  "categorizeByGroup": true,
+  "excludeExternals": false,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "stripInternal": true,
+  "sort": [
+    "source-order"
+  ],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "logLevel": "Warn"
+}

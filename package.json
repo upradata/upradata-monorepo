@@ -1,0 +1,44 @@
+{
+    "name": "upra-data-monorepo",
+    "version": "0.0.0",
+    "private": true,
+    "description": "Upra-Data libraries and applications monorepo",
+    "packageManager": "pnpm@9.1.0",
+    "engines": {
+        "node": ">=20.0.0",
+        "pnpm": "^9.0.0"
+    },
+    "scripts": {
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "typecheck": "turbo run typecheck",
+        "test": "turbo run test",
+        "test:coverage": "turbo run test:coverage",
+        "build": "turbo run build",
+        "clean": "turbo run clean && rm -rf node_modules",
+        "dev": "turbo run dev --parallel",
+        "format": "biome format --write .",
+        "format:check": "biome format --check .",
+        "docs": "turbo run docs && tsx scripts/generate-docs-index.ts",
+        "docs:serve": "python3 -m http.server 8000 --directory docs",
+        "changeset": "changeset",
+        "version": "changeset version",
+        "publish": "turbo run build && changeset publish"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.5.1",
+        "@changesets/cli": "^2.31.0",
+        "@commitlint/cli": "^21.1.0",
+        "@commitlint/config-conventional": "^21.1.0",
+        "eslint": "^10.5.0",
+        "husky": "^9.1.7",
+        "tsup": "^8.5.1",
+        "tsx": "^4.22.4",
+        "turbo": "^2.10.0",
+        "typedoc": "^0.28.19",
+        "typedoc-plugin-missing-exports": "^4.1.3",
+        "typedoc-plugin-rename-defaults": "^0.7.3",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.9"
+    }
+}

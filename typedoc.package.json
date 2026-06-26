@@ -1,0 +1,20 @@
+{
+  "entryPoints": [
+    "src/index.ts"
+  ],
+  "out": "docs",
+  "includeVersion": true,
+  "disableSources": false,
+  "readme": "none",
+  "theme": "default",
+  "categorizeByGroup": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "stripInternal": true,
+  "sort": [
+    "source-order"
+  ],
+  "logLevel": "Warn"
+}
