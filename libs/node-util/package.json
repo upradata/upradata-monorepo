@@ -27,7 +27,8 @@
         "access": "public"
     },
     "scripts": {
-        "build": "tsup --config ../../configs/tsup/tsup.config.ts",
+        "build": "tsup --config ../../configs/tsup/tsup-config.node.lib.ts --env.NODE_ENV production",
+        "dev": "tsup --config ../../configs/tsup/tsup-config.node.lib.ts --watch --env.NODE_ENV development",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
         "test:coverage": "vitest run --coverage",
