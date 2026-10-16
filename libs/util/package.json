@@ -1,15 +1,21 @@
 {
     "name": "@upradata/util",
-    "version": "0.0.1",
-    "description": "General utilities library",
-    "type": "module",
+    "author": {
+        "name": "Thomas Milotti",
+        "email": "thomas.milotti@gmail.com",
+        "url": "https://github.com/milottit"
+    },
+    "repository": {
+        "url": "https://github.com/upradata/util"
+    },
+    "license": "MIT",
+    "version": "16.0.3",
+    "description": "Set of typescript util tools working in Web runtime",
+    "sideEffects": false,
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
-    "files": [
-        "dist",
-        "docs"
-    ],
+    "files": [ "dist", "docs" ],
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -21,25 +27,75 @@
             "import": "./dist/assign.mjs",
             "require": "./dist/assign.js"
         },
+        "./boolean-attribute": {
+            "types": "./dist/boolean-attribute.d.ts",
+            "import": "./dist/boolean-attribute.mjs",
+            "require": "./dist/boolean-attribute.js"
+        },
+        "./codified-error": {
+            "types": "./dist/codified-error.d.ts",
+            "import": "./dist/codified-error.mjs",
+            "require": "./dist/codified-error.js"
+        },
+        "./execute-temporary-state": {
+            "types": "./dist/execute-temporary-state.d.ts",
+            "import": "./dist/execute-temporary-state.mjs",
+            "require": "./dist/execute-temporary-state.js"
+        },
+        "./format-string": {
+            "types": "./dist/format-string.d.ts",
+            "import": "./dist/format-string.mjs",
+            "require": "./dist/format-string.js"
+        },
+        "./function": {
+            "types": "./dist/function.d.ts",
+            "import": "./dist/function.mjs",
+            "require": "./dist/function.js"
+        },
         "./guid": {
             "types": "./dist/guid.d.ts",
             "import": "./dist/guid.mjs",
             "require": "./dist/guid.js"
+        },
+        "./ifthen": {
+            "types": "./dist/ifthen.d.ts",
+            "import": "./dist/ifthen.mjs",
+            "require": "./dist/ifthen.js"
         },
         "./is": {
             "types": "./dist/is.d.ts",
             "import": "./dist/is.mjs",
             "require": "./dist/is.js"
         },
-        "./promise": {
-            "types": "./dist/promise.d.ts",
-            "import": "./dist/promise.mjs",
-            "require": "./dist/promise.js"
+        "./mixin": {
+            "types": "./dist/mixin.d.ts",
+            "import": "./dist/mixin.mjs",
+            "require": "./dist/mixin.js"
         },
         "./object": {
             "types": "./dist/object/index.d.ts",
             "import": "./dist/object/index.mjs",
             "require": "./dist/object/index.js"
+        },
+        "./promise": {
+            "types": "./dist/promise.d.ts",
+            "import": "./dist/promise.mjs",
+            "require": "./dist/promise.js"
+        },
+        "./promise-pool": {
+            "types": "./dist/promise-pool.d.ts",
+            "import": "./dist/promise-pool.mjs",
+            "require": "./dist/promise-pool.js"
+        },
+        "./random": {
+            "types": "./dist/random.d.ts",
+            "import": "./dist/random.mjs",
+            "require": "./dist/random.js"
+        },
+        "./regex": {
+            "types": "./dist/regex.d.ts",
+            "import": "./dist/regex.mjs",
+            "require": "./dist/regex.js"
         },
         "./string": {
             "types": "./dist/string/index.d.ts",
@@ -51,10 +107,20 @@
             "import": "./dist/template-string/index.mjs",
             "require": "./dist/template-string/index.js"
         },
+        "./template-string/export": {
+            "types": "./dist/template-string/export.d.ts",
+            "import": "./dist/template-string/export.mjs",
+            "require": "./dist/template-string/export.js"
+        },
         "./types": {
             "types": "./dist/types/index.d.ts",
             "import": "./dist/types/index.mjs",
             "require": "./dist/types/index.js"
+        },
+        "./useful": {
+            "types": "./dist/useful.d.ts",
+            "import": "./dist/useful.mjs",
+            "require": "./dist/useful.js"
         }
     },
     "publishConfig": {
@@ -70,22 +136,15 @@
         "lint:fix": "eslint src --ext .ts --fix",
         "docs": "typedoc src/index.ts --skipErrorChecking || true"
     },
-    "keywords": [
-        "util",
-        "utility",
-        "upradata"
-    ],
-    "author": "Upra-Data Contributors",
-    "license": "MIT",
+    "keywords": [ "util", "utility", "upradata" ],
     "dependencies": {
         "common-tags": "^1.8.2",
-        "emoji-regex": "^10.6.0",
-        "is-fullwidth-code-point": "^5.1.0",
-        "ts-util-is": "^2.1.0"
+        "emoji-regex": "^11.0.0",
+        "is-fullwidth-code-point": "^5.1.0"
     },
     "devDependencies": {
         "@types/common-tags": "^1.8.4",
-        "@types/node": "^26.0.1",
+        "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:^"
     }
 }

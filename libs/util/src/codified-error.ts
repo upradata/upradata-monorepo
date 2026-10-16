@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 export interface CodifiedErrorArgs<ErrorsEnum> {
     code?: ErrorsEnum;
     message?: string;
@@ -7,7 +8,6 @@ export interface CodifiedErrorArgs<ErrorsEnum> {
 }
 
 export type ErrorKeys = keyof Error | keyof CodifiedErrorArgs<any>;
-
 
 export class CodifiedError<ErrorsEnum = string> extends Error {
     code?: ErrorsEnum;
@@ -31,41 +31,42 @@ export class CodifiedError<ErrorsEnum = string> extends Error {
         // restore prototype chain
         const actualProto = new.target.prototype;
 
-        if (Object.setPrototypeOf)
+        if (Object.setPrototypeOf) {
             Object.setPrototypeOf(this, actualProto);
-        else {
-            // eslint-disable-next-line no-proto
+        } else {
+            // biome-ignore lint/suspicious/noProto: backward compatible
             (this as any).__proto__ = actualProto;
         }
 
         // Capture stack trace
         if (!this.stack) {
-            Error.captureStackTrace(this, this.constructor);
+            Error.captureStackTrace?.(this, this.constructor);
         }
 
         Object.assign(this, { name: this.constructor.name } as Partial<CodifiedErrorArgs<ErrorsEnum>>, args);
     }
 
     copy(keyFilter: (k: ErrorKeys) => boolean) {
-
         // Apparently message is not loopable (even if I put the property inside the child class!!!)
-        return [ ...Object.entries(this), [ 'message', this.message ] ]
-            .filter(([ k, v ]) => keyFilter(k as ErrorKeys) && v)
-            .reduce((o, [ k, v ]) => ({ ...o, [ k ]: v }), {});
+        return [...Object.entries(this), ['message', this.message]]
+            .filter(([k, v]) => keyFilter(k as ErrorKeys) && v)
+            .reduce((o, [k, v]) => ({ ...o, [k]: v }), {});
     }
 
     toString(withStack: boolean = false) {
         const message = (e: CodifiedError) => {
             const code = e.code ? `code: ${e.code}` : '';
-            const details = e.details ? `details: ${typeof e.details === 'object' ? JSON.stringify(e.details) : e.details}` : '';
+            const details = e.details
+                ? `details: ${typeof e.details === 'object' ? JSON.stringify(e.details) : e.details}`
+                : '';
             const message = e.message ? `message: ${e.message}` : '';
             const stack = e.stack && withStack ? e.stack : '';
 
-            return [ code, message, details, stack ].filter(s => s !== '').join('\n');
+            return [code, message, details, stack].filter(s => s !== '').join('\n');
         };
 
         const walkErrors = (e: CodifiedError<any>, str: string): string => {
-            const messageReducer = [ str, message(e) ].filter(s => s !== '').join('\n');
+            const messageReducer = [str, message(e)].filter(s => s !== '').join('\n');
             return e.list.reduce((s, err) => walkErrors(err, s), messageReducer);
         };
 

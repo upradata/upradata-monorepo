@@ -1,4 +1,5 @@
 /* eslint-disable space-before-function-paren */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 // export * from 'ts-util-is';
 // export * is not supported by rollup with commonjs :(((
 
@@ -56,7 +57,7 @@ export function isDateValid(value: any): value is Date {
  *
  * @param value Reference to check.
  */
-export function isDefined(value: any): boolean {
+export function isDefined<T>(value: T | undefined): value is T {
     return typeof value !== 'undefined';
 }
 
@@ -77,7 +78,6 @@ export function isError(value: any): value is Error {
  *
  * @param value Reference to check.
  */
-// tslint:disable-next-line:ban-types
 export function isFunction(value: any): value is Function {
     return typeof value === 'function';
 }
