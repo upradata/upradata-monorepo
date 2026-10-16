@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-import { exec, type ExecOptions, execSync as execS, type ExecSyncOptionsWithStringEncoding } from 'node:child_process';
+import { type ExecOptions, type ExecSyncOptionsWithStringEncoding, exec, execSync as execS } from 'node:child_process';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { promisify } from 'node:util';
@@ -7,11 +7,8 @@ import { promisify } from 'node:util';
 import { guidGenerator, type TT$ } from '@upradata/util';
 import fs from 'fs-extra';
 
-
 const nodeEnv = (process.env.NODE_ENV || '').trim().toLowerCase();
-export const isDev = [ 'production', 'prod' ].some(t => t === nodeEnv);
-
-
+export const isDev = ['production', 'prod'].some(t => t === nodeEnv);
 
 export class SyncAsync<T = any> {
     sync: T = undefined as T;
@@ -20,9 +17,11 @@ export class SyncAsync<T = any> {
 
 export type SyncAsyncMode = keyof SyncAsync;
 
-export type SyncAsyncType<M extends SyncAsyncMode, T, U = undefined> = M extends 'sync' ? T : U extends undefined ? Promise<T> : U;
-
-
+export type SyncAsyncType<M extends SyncAsyncMode, T, U = undefined> = M extends 'sync'
+    ? T
+    : U extends undefined
+      ? Promise<T>
+      : U;
 
 const execPromise = promisify(exec);
 
@@ -31,13 +30,13 @@ type LogOutput = {
     stderr?: boolean;
 };
 
-export type ExecAsyncOptions = { encoding?: 'buffer' | BufferEncoding | null; } & ExecOptions & {
-    logOutput?: boolean | LogOutput;
-    emitError?: boolean;
-};
+export type ExecAsyncOptions = { encoding?: 'buffer' | BufferEncoding | null } & ExecOptions & {
+        logOutput?: boolean | LogOutput;
+        emitError?: boolean;
+    };
 
 export const isExecLog = (logOutput: boolean | LogOutput, type: 'stdout' | 'stderr'): boolean => {
-    return typeof logOutput === 'boolean' ? logOutput : logOutput?.[ type ] ?? false;
+    return typeof logOutput === 'boolean' ? logOutput : (logOutput?.[type] ?? false);
 };
 
 export const execAsync = async (command: string, options: ExecAsyncOptions = {}) => {
@@ -46,14 +45,11 @@ export const execAsync = async (command: string, options: ExecAsyncOptions = {})
     try {
         const result = await execPromise(command, options);
 
-        if (isExecLog(logOutput, 'stdout') && result.stdout)
-            console.log(result.stdout);
+        if (isExecLog(logOutput, 'stdout') && result.stdout) console.log(result.stdout);
 
-        if (isExecLog(logOutput, 'stderr') && result.stderr)
-            console.error(result.stderr);
+        if (isExecLog(logOutput, 'stderr') && result.stderr) console.error(result.stderr);
 
-        if (emitError && result.stderr)
-            throw new Error(result.stderr.toString());
+        if (emitError && result.stderr) throw new Error(result.stderr.toString());
 
         return result;
     } catch (e) {
@@ -66,48 +62,61 @@ export const execAsync = async (command: string, options: ExecAsyncOptions = {})
             }
         }
 
-        if (emitError)
-            throw e;
+        if (emitError) throw e;
     }
-
 };
 
-export const execSync = async (command: string, options?: Partial<ExecSyncOptionsWithStringEncoding> & { logOutput?: boolean; }) => {
-    execS(command, { stdio: options?.logOutput ? [ 0, 1, 2 ] : undefined, ...options });
+export const execSync = async (
+    command: string,
+    options?: Partial<ExecSyncOptionsWithStringEncoding> & { logOutput?: boolean },
+) => {
+    execS(command, { stdio: options?.logOutput ? [0, 1, 2] : undefined, ...options });
 };
 
-export const guid = guidGenerator(crypto.randomFillSync.bind(crypto));
+// export const guid = guidGenerator({ rng: array => crypto.randomFillSync(array) });
+export const guuid = () =>
+    guidGenerator({
+        crypto: {
+            getRandomValues: <T extends Uint8Array<ArrayBuffer>>(array: T): T => {
+                const randomArray = new Uint8Array(array.length);
+                crypto.getRandomValues(randomArray);
+                array.set(randomArray);
 
+                return array;
+            },
+        },
+        useCryptoRandomUUIDIfAvailable: true,
+    });
 
 const handleFileExistsError = (e: any) => {
-    if (e?.code === 'ENOENT')
-        return false;
+    if (e?.code === 'ENOENT') return false;
 
     throw e;
 };
 
 export const fileExists = {
-    async: (file: string) => fs.stat(file).then(_s => true).catch(handleFileExistsError),
+    async: (file: string) =>
+        fs
+            .stat(file)
+            .then(_s => true)
+            .catch(handleFileExistsError),
     sync: (file: string) => {
         try {
             return !!fs.statSync(file);
         } catch (e) {
             return handleFileExistsError(e);
         }
-    }
+    },
 };
-
 
 export interface PollOptions {
     duration: number;
     timeStep?: number;
 }
 
-
-export const poll = <S, E>(handler: () => TT$<{ stop: boolean; error?: E; success?: S; }>, options: PollOptions) => {
+export const poll = <S, E>(handler: () => TT$<{ stop: boolean; error?: E; success?: S }>, options: PollOptions) => {
     const { duration, timeStep = 100 } = options;
     let totalWait = 0;
-
 
     // Strangely, we need to wait before the OS writes the file on the disk.
     // We wait a maximum 2s
@@ -128,6 +137,8 @@ export const poll = <S, E>(handler: () => TT$<{ stop: boolean; error?: E; succes
     });
 };
 
-
-export const relativePath = (dir: string) => (...paths: string[]) => path.relative(dir, path.join(...paths));
+export const relativePath =
+    (dir: string) =>
+    (...paths: string[]) =>
+        path.relative(dir, path.join(...paths));
 export const relativeCwd = (...paths: string[]) => relativePath(process.cwd())(...paths);

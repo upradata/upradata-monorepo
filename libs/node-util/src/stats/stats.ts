@@ -2,6 +2,7 @@
 import { type CamelCase, camelize } from '@upradata/util';
 import { styles as s } from '../template-style';
 import { Terminal } from '../terminal';
+import type { Stat, StatCtor, StatData } from './stat';
 import {
     type OutputStats,
     type SortData,
@@ -9,12 +10,10 @@ import {
     type StatCollection,
     type Statistics,
     type StatSorter,
-    statSorters,
     type StatsToStringOptions,
     type StatTableWithName,
+    statSorters,
 } from './types';
-
-import type { Stat, StatCtor, StatData } from './stat';
 
 
 export class Stats<S extends Stat> {

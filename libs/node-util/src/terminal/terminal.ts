@@ -1,7 +1,13 @@
-import { composeLeft, stringWidth, StyleTransformString } from '@upradata/util';
+import { composeLeft, type StyleTransformString, stringWidth } from '@upradata/util';
 import { styles } from '../template-style';
-import { type TableConfig, type TableItem, type TableRow, type TableRows, TableString, type TableStringOption } from './table';
-
+import {
+    type TableConfig,
+    type TableItem,
+    type TableRow,
+    type TableRows,
+    TableString,
+    type TableStringOption,
+} from './table';
 
 export class TitleOptions {
     style: StyleTransformString<string> = styles.none.transform;
@@ -13,20 +19,18 @@ export class TitleOptions {
     alignCenter: boolean = false;
 }
 
-
 export interface TableData {
     data: TableRows;
     headers?: TableRow;
     title?: string;
 }
 
-
 export class Terminal {
     static width = process.stdout.columns || 80;
 
     private tableString: TableString;
 
-    constructor (option?: TableStringOption) {
+    constructor(option?: TableStringOption) {
         this.tableString = new TableString(option);
     }
 
@@ -52,25 +56,36 @@ export class Terminal {
     }
 
     title(title: string, options: Partial<TitleOptions> = {}): string {
-        const { style, bgStyle, isBig, type, transform, alignCenter = true } = Object.assign(new TitleOptions(), options);
+        const {
+            style,
+            bgStyle,
+            isBig,
+            type,
+            transform,
+            alignCenter = true,
+        } = Object.assign(new TitleOptions(), options);
 
         const titleType = isBig ? 'band' : type;
 
-        const message = composeLeft([ transform, alignCenter ? this.alignCenter.bind(this) : (s: string) => s, style ], title);
+        const message = composeLeft(
+            [transform, alignCenter ? this.alignCenter.bind(this) : (s: string) => s, style],
+            title,
+        );
 
-        if (titleType === 'one-line')
-            return message;
+        if (titleType === 'one-line') return message;
 
         const bg = this.colorLine(bgStyle);
 
-        if (titleType === 'band')
-            return `${bg}\n${message}\n${bg}`;
+        if (titleType === 'band') return `${bg}\n${message}\n${bg}`;
 
         if (titleType.includes('strip')) {
             switch (titleType) {
-                case 'two-strips': return `${bg}\n${message}\n${bg}`;
-                case 'top-strip': return `${bg}\n${message}`;
-                case 'bottom-strip': return `${message}\n${bg}`;
+                case 'two-strips':
+                    return `${bg}\n${message}\n${bg}`;
+                case 'top-strip':
+                    return `${bg}\n${message}`;
+                case 'bottom-strip':
+                    return `${message}\n${bg}`;
             }
         }
 
@@ -84,14 +99,16 @@ export class Terminal {
     }
 
     table({ data, headers, title }: TableData, config?: TableConfig): string {
-        const d: TableItem[][] = headers ? [ headers, ...data ] : data;
+        const d: TableItem[][] = headers ? [headers, ...data] : data;
 
         const c = {
-            header: title ? {
-                alignment: 'center',
-                content: title,
-            } : undefined,
-            ...config
+            header: title
+                ? {
+                      alignment: 'center',
+                      content: title,
+                  }
+                : undefined,
+            ...config,
         } as TableConfig;
 
         return this.tableString.get(d, c);
@@ -102,16 +119,13 @@ export class Terminal {
     }
 
     alignCenter(s: string, size: number = this.lineWidth): string {
-
         const trim = s.trim();
         const whitespaceWidth = size - stringWidth(trim); // stringWidth for invisible chars
 
-        if (whitespaceWidth <= 0)
-            return s;
+        if (whitespaceWidth <= 0) return s;
 
         const beginL = Math.floor(whitespaceWidth / 2) - 1; // -1 je ne sais pas pk :)
         const endL = whitespaceWidth - beginL;
-
 
         return ' '.repeat(beginL) + trim + ' '.repeat(endL);
     }
@@ -120,6 +134,5 @@ export class Terminal {
         console.log(this.alignCenter(s, size));
     }
 }
-
 
 export const terminal = new Terminal();

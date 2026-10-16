@@ -1,11 +1,5 @@
 {
-    "extends": "@upradata/tsconfig/lib.json",
-    "include": [
-        "src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "**/*.test.ts"
-    ]
+    "extends": "@upradata/tsconfig/node.json",
+    "include": [ "src/**/*.ts", "**/types/**/*.d.ts" ],
+    "exclude": [ "node_modules", "dist", "**/*.test.ts", "src/@types/**/*.d.ts" ]
 }

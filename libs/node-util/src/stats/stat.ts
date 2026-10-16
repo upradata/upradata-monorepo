@@ -1,5 +1,5 @@
-import { ObjectOf } from '@upradata/util';
-import { TableRow, TableRows } from '../terminal';
+import type { ObjectOf } from '@upradata/util';
+import type { TableRow, TableRows } from '../terminal';
 
 export type StatType = 'global' | 'detailed';
 
@@ -16,6 +16,5 @@ export interface Stat {
     processed: string[]; // not cached for instance
     all: string[]; // all (before cache for instance) */
 }
-
 
 export type StatCtor<S extends Stat> = new (name: string) => S;

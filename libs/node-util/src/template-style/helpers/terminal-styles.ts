@@ -1,6 +1,5 @@
 import { styles as s } from '../styles-factory';
 
-
 export const none = s.none.$;
 export const reset = s.reset.$;
 export const bold = s.bold.$;
@@ -38,8 +37,6 @@ export const blueBG = bgBlue;
 export const magentaBG = bgMagenta;
 export const cyanBG = bgCyan;
 export const whiteBG = bgWhite;
-
-
 
 export const highlightMagenta = s.white.bgMagenta.$;
 export const highlightYellow = s.white.bgYellow.$;

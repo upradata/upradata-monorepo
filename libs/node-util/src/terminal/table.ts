@@ -1,30 +1,28 @@
 import {
+    AssignOptions,
     arrayN,
     assignDefaultOption,
-    AssignOptions,
     assignRecursive,
     isDefined,
     type PartialRecursive,
     stringWidth,
 } from '@upradata/util';
-import { type Alignment, table, type TableUserConfig } from 'table';
+import { type Alignment, type TableUserConfig, table } from 'table';
 import * as alignString from 'table/dist/src/alignString.js';
 import * as calculateCellWidths from 'table/dist/src/calculateMaximumColumnWidths';
 import { makeTableConfig } from 'table/dist/src/makeTableConfig';
 
-
 type RemoveReadOnly<T> = {
-    -readonly [ K in keyof T ]: T[ K ]
+    -readonly [K in keyof T]: T[K];
 };
 
 export type TableItem = string | number;
 export type TableRow = TableItem[];
 export type TableRows = TableRow[];
 
+export type TableColumnConfig = TableUserConfig['columns'];
 
-export type TableColumnConfig = TableUserConfig[ 'columns' ];
-
-export type TableConfig = TableUserConfig & { singleLine?: boolean; };
+export type TableConfig = TableUserConfig & { singleLine?: boolean };
 
 export interface MaxRowWidth {
     width: number;
@@ -36,19 +34,15 @@ export interface ColumnsMaxWidth {
     row: MaxRowWidth;
 }
 
-
 export interface TableStringOption {
     maxWidth?: Partial<ColumnsMaxWidth>;
     tableConfig?: PartialRecursive<TableConfig>;
 }
 
-
-
 const oldAlignString = alignString.alignString;
 const mutableAlignString = alignString as RemoveReadOnly<typeof alignString>;
 mutableAlignString.alignString = (subject: string, containerWidth: number, alignment: Alignment) => {
-    if (alignment === 'center')
-        return alignCenter(subject, containerWidth - stringWidth(subject));
+    if (alignment === 'center') return alignCenter(subject, containerWidth - stringWidth(subject));
 
     return oldAlignString(subject, containerWidth, alignment);
 };
@@ -59,13 +53,11 @@ const alignCenter = (subject: string, whiteSpaces: number) => {
 
     halfWidth = whiteSpaces / 2;
 
-    if (whiteSpaces % 2 === 0)
-        return ' '.repeat(halfWidth) + subject + ' '.repeat(halfWidth);
+    if (whiteSpaces % 2 === 0) return ' '.repeat(halfWidth) + subject + ' '.repeat(halfWidth);
 
     halfWidth = Math.floor(halfWidth);
     return ' '.repeat(halfWidth) + subject + ' '.repeat(halfWidth + 1);
 };
-
 
 // I use makeConfig in this class and I use it with string|number while it is intending to use it with string only
 // I just convert value to value + ''
@@ -81,24 +73,27 @@ mutableCalculateCellWidths.calculateMaximumCellWidth = cell => {
     });
 }; */
 
-
-
 export class TableString {
     userConfig: TableConfig;
     maxWidth: Partial<ColumnsMaxWidth>;
 
+    constructor(option: TableStringOption = {}) {
+        this.userConfig = assignDefaultOption<TableConfig>(
+            {
+                columnDefault: { truncate: 200 },
+            },
+            option.tableConfig || {},
+        );
 
-    constructor (option: TableStringOption = {}) {
-
-        this.userConfig = assignDefaultOption<TableConfig>({
-            columnDefault: { truncate: 200 }
-        }, option.tableConfig || {});
-
-        this.maxWidth = assignRecursive({
-            row: {
-                width: process.stdout.columns || 80
-            }
-        }, option.maxWidth, new AssignOptions({ accept: (k, v) => isDefined(v) }));
+        this.maxWidth = assignRecursive(
+            {
+                row: {
+                    width: process.stdout.columns || 80,
+                },
+            },
+            option.maxWidth,
+            new AssignOptions({ accept: (k, v) => isDefined(v) }),
+        );
     }
 
     get(data: TableRows, options?: TableConfig) {
@@ -107,25 +102,19 @@ export class TableString {
         const opts = assignRecursive({}, this.userConfig, options);
         const builtConfig = makeTableConfig(data, opts) as TableConfig;
 
-
-        const config = assignRecursive(
-            { columns: this.getColumnsWidth(data, builtConfig) },
-            opts
-        ) as TableConfig;
+        const config = assignRecursive({ columns: this.getColumnsWidth(data, builtConfig) }, opts) as TableConfig;
 
         return table(data, config);
     }
 
     getCellsRowWidth(row: TableRow) {
-        return row.map(cell =>
-            Math.max(...(`${cell}`).split('\n').map(line => stringWidth(line)))
-        );
+        return row.map(cell => Math.max(...`${cell}`.split('\n').map(line => stringWidth(line))));
     }
 
     getColumnsWidth(table: TableRows, builtConfig: TableConfig): TableColumnConfig {
         const { cell: maxCellWidth, row: rowWidth } = this.maxWidth;
 
-        const firstRow = table[ 0 ];
+        const firstRow = table[0];
 
         if (!firstRow) {
             throw new Error('Dataset must have at least one row.');
@@ -136,20 +125,16 @@ export class TableString {
         for (const row of table) {
             const cellsRowWidth = this.getCellsRowWidth(row);
 
-            for (const [ index, cellWidth ] of Object.entries(cellsRowWidth)) {
+            for (const [index, cellWidth] of Object.entries(cellsRowWidth)) {
                 const i = index as unknown as number;
 
-                if (cellWidth > columnsWidth[ i ])
-                    columnsWidth[ i ] = cellWidth;
+                if (cellWidth > columnsWidth[i]) columnsWidth[i] = cellWidth;
             }
-
         }
 
-        if (maxCellWidth)
-            return columnsWidth.map(w => ({ width: Math.min(w, maxCellWidth) }));
+        if (maxCellWidth) return columnsWidth.map(w => ({ width: Math.min(w, maxCellWidth) }));
 
-        if (rowWidth)
-            this.resizeColumnsWidth(columnsWidth, builtConfig);
+        if (rowWidth) this.resizeColumnsWidth(columnsWidth, builtConfig);
 
         return columnsWidth.map(w => ({ width: w }));
     }
@@ -163,7 +148,6 @@ export class TableString {
         const { width, indexToShrink } = this.maxWidth.row || {};
 
         if (width && indexToShrink) {
-
             const nbCol = columnsWidth.length;
             // const { paddingLeft, paddingRight } = this.config.columns[ 0 ];
 
@@ -185,18 +169,19 @@ export class TableString {
                     index = columnsWidth.indexOf(this.maxValue(columnsWidth));
                 }
 
-                const shrinkWidth = columnsWidth[ index ] - (totalWidth - lineWidth);
+                const shrinkWidth = columnsWidth[index] - (totalWidth - lineWidth);
 
-                if (shrinkWidth < 4) { // 4 is min width => todo: make an option
+                if (shrinkWidth < 4) {
+                    // 4 is min width => todo: make an option
                     // so we will shrink the next bigger cell
-                    const maxShrinkWidth = columnsWidth[ index ] - 4;
+                    const maxShrinkWidth = columnsWidth[index] - 4;
 
-                    columnsWidth[ index ] = maxShrinkWidth;
+                    columnsWidth[index] = maxShrinkWidth;
                     return this.resizeColumnsWidth(columnsWidth, builtConfig);
                     // tslint:disable-next-line: no-else-after-return
                 }
 
-                columnsWidth[ index ] = shrinkWidth;
+                columnsWidth[index] = shrinkWidth;
             }
 
             return columnsWidth;
@@ -205,9 +190,6 @@ export class TableString {
         return columnsWidth;
     }
 }
-
-
-
 
 /* const tableBorder = {
     topBody: `─`,

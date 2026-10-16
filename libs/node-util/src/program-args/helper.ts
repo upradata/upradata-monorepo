@@ -1,8 +1,8 @@
-import { Argument, Command, Help } from 'commander';
-import { PartialRecursive, assignRecursive } from '@upradata/util';
-import { StyleTransformString, styles as s } from '../template-style';
-import { CliOption } from './cli.option';
+import { assignRecursive, type PartialRecursive, type StyleTransformString } from '@upradata/util';
+import { type Argument, type Command, Help } from 'commander';
+import { styles as s } from '../template-style';
 
+import type { CliOption } from './cli.option';
 
 export type CliHelperStyles = {
     commandUsage: StyleTransformString<string>;
@@ -12,8 +12,6 @@ export type CliHelperStyles = {
     subCommand: StyleTransformString<string>;
 };
 
-
-
 export class CliHelperOptions {
     helpWidth: number = 80;
     sortSubcommands: boolean = false;
@@ -21,9 +19,9 @@ export class CliHelperOptions {
     styles: CliHelperStyles = {
         arguments: str => s.magenta.bold.$$(str),
         options: str => s.blue.italic.bold.$$(str),
-        subCommand: str => str.replace(/(.*?)([[<].*)/, s.green.bold.$`ᐅ $1` + '$2'),
-        commandUsage: str => str.replace(/(.*?)([[<].*)/, s.green.bold.$`$1` + '$2'),
-        commandDescription: str => `Description: ` + s.cyan.bold.$$(str)
+        subCommand: str => str.replace(/(.*?)([[<].*)/, `${s.green.bold.$`ᐅ $1`}$2`),
+        commandUsage: str => str.replace(/(.*?)([[<].*)/, `${s.green.bold.$`$1`}$2`),
+        commandDescription: str => `Description: ${s.cyan.bold.$$(str)}`,
     };
 
     constructor(options?: CliHelperOpts) {
@@ -31,11 +29,10 @@ export class CliHelperOptions {
     }
 }
 
-
 export type CliHelperOpts = PartialRecursive<CliHelperOptions>;
 
 export class CliHelper extends Help {
-    styles: CliHelperStyles;
+    styles!: CliHelperStyles;
 
     constructor(options?: CliHelperOpts) {
         super();
@@ -66,6 +63,6 @@ export class CliHelper extends Help {
         const output = super.formatHelp(command, helper);
 
         // eslint-disable-next-line prefer-template
-        return output.replaceAll(/^(\S*?):(.*)/gm, s.underline.$`$1` + ':$2');
+        return output.replaceAll(/^(\S*?):(.*)/gm, `${s.underline.$`$1`}:$2`);
     }
 }

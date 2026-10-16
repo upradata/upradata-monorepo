@@ -1,10 +1,8 @@
-import type { TsConfig } from './tsconfig.json';
-
 import { dirname, isAbsolute, join } from 'node:path';
-
 import { map } from '@upradata/util';
 import { register } from 'tsconfig-paths';
 import { getTsConfigJson, type TsConfigJson } from './tsconfig';
+import type { TsConfig } from './tsconfig.json';
 
 
 export class RegisterOptions {

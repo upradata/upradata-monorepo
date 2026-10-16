@@ -1,23 +1,21 @@
-/* eslint-disable no-dupe-class-members */
-import { EventEmitter } from 'events';
-import { Command, CommanderError, OptionValueSource, Option as CommanderOption } from 'commander';
-import { FunctionN, TT, TT$ } from '@upradata/util';
-import { CliOption, CliOptionInit } from './cli.option';
-import { CliHelper, CliHelperOpts } from './helper';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+
+import type { EventEmitter } from 'node:events';
+import type { FunctionN, PlainObj, TT, TT$ } from '@upradata/util';
+import { Command, type CommanderError, /* Option as CommanderOption,*/ type OptionValueSource } from 'commander';
+import { CliOption, type CliOptionInit } from './cli.option';
+import { CliHelper, type CliHelperOpts } from './helper';
+import type { CommanderParser } from './parsers';
 import { camelcase } from './util';
-import { CommanderParser } from './parsers';
 
-
-export { InvalidArgumentError as CliInvalidArgumentError } from 'commander';
-export { Argument as CliArgument } from 'commander';
-
+export { Argument as CliArgument, InvalidArgumentError as CliInvalidArgumentError } from 'commander';
 
 declare module 'commander' {
     interface Command extends EventEmitter {
         _allowUnknownOption: boolean;
         _allowExcessArguments: boolean;
         /** @type {Argument[]} */
-        _args: Argument[]; // deprecated : use registeredArguments
+        _args: import('commander').Argument[]; // deprecated : use registeredArguments
         _scriptPath: string;
         _name: string;
         _optionValues: Record<string, any>;
@@ -26,7 +24,7 @@ declare module 'commander' {
         _actionHandler: (processedArgs: any[]) => any;
         _executableHandler: boolean;
         _executableFile: string; // custom name for executable
-        _defaultCommandName: string;
+        _defaultCommandName: string | null;
         _exitCallback: (error: CommanderError) => void;
         _aliases: string[];
         _combineFlagAndOptionalValue: boolean;
@@ -45,13 +43,12 @@ declare module 'commander' {
     }
 }
 
-
 export class CliCommand extends Command {
-    private _helperOptions: CliHelperOpts;
+    private _helperOptions: CliHelperOpts = {};
     private _actionHandlers: FunctionN<any[], TT$<void>>[] = [];
     private optionNames = new Set<string>();
 
-
+    // biome-ignore lint/complexity/noUselessConstructor: <explanation>
     constructor(name?: string) {
         super(name);
     }
@@ -92,20 +89,19 @@ export class CliCommand extends Command {
     /** @deprecated since v7, instead use choices or a custom function */
     option(flags: string, description: string, regexp: RegExp, defaultValue?: string | boolean): this;
     option(...args: any[]) {
-
         const createCliOption = () => {
-            if (typeof args[ 0 ] === 'string') {
+            if (typeof args[0] === 'string') {
                 const options: CliOptionInit<any> = {
-                    flags: args[ 0 ],
-                    description: args[ 1 ],
-                    defaultValue: typeof args[ 2 ] === 'function' ? args[ 3 ] : args[ 2 ],
-                    parser: typeof args[ 2 ] === 'function' ? args[ 2 ] : undefined
+                    flags: args[0],
+                    description: args[1],
+                    defaultValue: typeof args[2] === 'function' ? args[3] : args[2],
+                    parser: typeof args[2] === 'function' ? args[2] : undefined,
                 };
 
                 return new CliOption(options);
             }
 
-            const { aliases = [], ...rest } = args[ 0 ] as CliOptionInit<any>;
+            const { aliases = [], ...rest } = args[0] as CliOptionInit<any>;
 
             const newOption = new CliOption(rest);
             newOption.addAliases(...aliases);
@@ -113,14 +109,12 @@ export class CliCommand extends Command {
             return newOption;
         };
 
-
         this.addOption(createCliOption());
 
         return this;
     }
 
     addOption(option: CliOption) {
-
         // const optionOldValue = this.getOptionValue(option.attributeName());
 
         // register the option
@@ -142,8 +136,9 @@ export class CliCommand extends Command {
             if (option.negate || option.optional || option.required || typeof defaultValue === 'boolean') {
                 // when --no-foo we make sure default is true, unless a --foo option is already defined
                 if (option.negate && !option.negateNoDefault) {
-                    const positiveLongFlag = option.long.replace(/^--no-/, '--');
-                    defaultValue = this._findOption(positiveLongFlag) ? this.getOptionValue(name) : true;
+                    const positiveLongFlag = option.long?.replace(/^--no-/, '--');
+                    defaultValue =
+                        positiveLongFlag && this._findOption(positiveLongFlag) ? this.getOptionValue(name) : true;
                 }
 
                 // preassign only if we have a default
@@ -158,7 +153,12 @@ export class CliCommand extends Command {
         const defaultValue = getDefaultOption();
 
         // handler for cli and env supplied values
-        const handleOptionValue = (o: CliOption, cliRawValue: string, invalidValueMessage: string, valueSource: OptionValueSource) => {
+        const handleOptionValue = (
+            o: CliOption,
+            cliRawValue: string,
+            invalidValueMessage: string,
+            valueSource: OptionValueSource,
+        ) => {
             const name = o.attributeName();
 
             // Note: using closure to access lots of lexical scoped variables.
@@ -181,8 +181,7 @@ export class CliCommand extends Command {
                     }
                 }
 
-                if (cliRawValue !== null && o.variadic)
-                    return o._concatValue(cliRawValue, oldValue);
+                if (cliRawValue !== null && o.variadic) return o._concatValue(cliRawValue, oldValue);
 
                 return cliRawValue;
             };
@@ -206,30 +205,34 @@ export class CliCommand extends Command {
         const { aliases } = option;
 
         const onNewValue = (source: OptionValueSource, invalidValueMessage: (value: string) => string) => {
-
-            return function (value: string) {
+            return (value: string) => {
                 handleOptionValue(option, value, invalidValueMessage(value), source);
 
-                for (const a of [ ...aliases ].filter(a => a.type === 'target'))
+                for (const a of [...aliases].filter(a => a.type === 'target'))
                     handleOptionValue(a.option, a.transform(value), invalidValueMessage(value), source);
             };
         };
 
-
-        this.on(`option:${option.name()}`, onNewValue('cli', v => `error: option '${option.flags}' argument '${v}' is invalid.`));
+        this.on(
+            `option:${option.name()}`,
+            onNewValue('cli', v => `error: option '${option.flags}' argument '${v}' is invalid.`),
+        );
 
         if (option.envVar)
-            this.on(`option:${option.name()}`, onNewValue('env', v => `error: option '${option.flags}' value '${v}' from env '${option.envVar}' is invalid.`));
-
+            this.on(
+                `option:${option.name()}`,
+                onNewValue(
+                    'env',
+                    v => `error: option '${option.flags}' value '${v}' from env '${option.envVar}' is invalid.`,
+                ),
+            );
 
         for (const alias of aliases) {
-            if (!this.optionNames.has(alias.option.name()))
-                this.addOption(alias.option);
+            if (!this.optionNames.has(alias.option.name())) this.addOption(alias.option);
         }
 
         return this;
     }
-
 
     // Store option value and where the value came from.
     setOptionValueWithSource(key: string, value: unknown, source: OptionValueSource) {
@@ -239,43 +242,39 @@ export class CliCommand extends Command {
         // before, this was done in Commander.js: command.js => Command.prototype.setOptionValue (but it changed in 9.4.1)
         const setOptionValue = (key: string, value: unknown) => {
             if (this._storeOptionsAsProperties) {
-                this[ key ] = value;
+                Object.assign(this, { [key]: value });
+                // this[ key ] = value;
             } else {
-                this._optionValues[ key ] = value;
+                this._optionValues[key] = value;
             }
         };
-
 
         const option = this.getOptions().find(o => o.attributeName() === key);
 
         if (option?.isObject) {
             const parts = option.name().split('.');
-            const [ objectname, ...keys ] = parts;
+            const [objectname, ...keys] = parts;
 
             const objectName = camelcase(objectname);
-            const obj: {} = this.getOptionValue(objectName) || {};
+            const obj: PlainObj = this.getOptionValue(objectName) || {};
 
             keys.reduce((o, key, i) => {
-                const v = i === keys.length - 1 ? value : o[ key ] || {};
-                o[ camelcase(key) ] = v;
+                const v = i === keys.length - 1 ? value : o[key] || {};
+                o[camelcase(key)] = v;
 
                 return v;
             }, obj);
 
-
             setOptionValue(objectName, obj);
-            this._optionValueSources[ objectName ] = source;
+            this._optionValueSources[objectName] = source;
         }
-
 
         setOptionValue(key, value);
 
-        if (option)
-            option.isValueFromDefault = source === 'default';
+        if (option) option.isValueFromDefault = source === 'default';
 
         return this;
     }
-
 
     action(fn: FunctionN<any[], TT$<void>>): this {
         this._actionHandlers.push(fn);
@@ -285,14 +284,12 @@ export class CliCommand extends Command {
                 const results = this._actionHandlers.map(handler => handler.apply(this, args));
                 const hasSomePromise = results.some(r => r instanceof Promise);
 
-                if (hasSomePromise)
-                    return Promise.all(results).then(() => { });
+                if (hasSomePromise) return Promise.all(results).then(() => {});
             });
         }
 
         return this;
     }
-
 
     createHelp() {
         return Object.assign(new CliHelper(this.helperOptions()), this.configureHelp());

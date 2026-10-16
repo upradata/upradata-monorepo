@@ -1,8 +1,10 @@
-import { Option } from 'commander';
-import { NonFunctionProperties, ifthen, isDefinedProp } from '@upradata/util';
-import { CommanderParser, parsers } from './parsers';
-import { camelcase } from './util';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** biome-ignore-all lint/suspicious/noThenProperty: <explanation> */
 
+import { ifthen, isDefinedProp, type NonFunctionProperties } from '@upradata/util';
+import { Option } from 'commander';
+import { type CommanderParser, parsers } from './parsers';
+import { camelcase } from './util';
 
 declare module 'commander' {
     interface Option {
@@ -14,7 +16,6 @@ declare module 'commander' {
     }
 }
 
-
 export type CliOptionInit<T> = NonFunctionProperties<Partial<Option>> & {
     flags: string;
     description?: string;
@@ -23,47 +24,46 @@ export type CliOptionInit<T> = NonFunctionProperties<Partial<Option>> & {
     envVar?: string;
     parser?: CommanderParser<T>;
     hidden?: boolean;
-    choices?: string[] | { values: string[]; parser: CommanderParser<T>; };
+    choices?: string[] | { values: string[]; parser: CommanderParser<T> };
     aliases?: Alias[];
     noNegate?: boolean;
     negateNoDefault?: boolean;
 };
 
-export const isSimpleChoices = (v: string[] | { values: string[]; parser: CommanderParser<any>; }): v is string[] => Array.isArray(v);
-
+export const isSimpleChoices = (v: string[] | { values: string[]; parser: CommanderParser<any> }): v is string[] =>
+    Array.isArray(v);
 
 export type AliasType = 'source' | 'target';
 export type AliasMode = 'multi-way' | 'two-way' | AliasType;
 
 export type AliasTransform = ((value: string) => string) | CommanderParser<never, string>;
 export type AliasTransforms = {
-    [ AliasTo: string ]: AliasTransform;
+    [AliasTo: string]: AliasTransform;
 };
 
-
-type AliasDetail = {
-    mode?: Exclude<AliasMode, 'multi-way'>;
-    transform?: AliasTransform;
-} | {
-    mode: 'multi-way';
-    transform?: AliasTransform | AliasTransforms;
-};
+type AliasDetail =
+    | {
+          mode?: Exclude<AliasMode, 'multi-way'>;
+          transform?: AliasTransform;
+      }
+    | {
+          mode: 'multi-way';
+          transform?: AliasTransform | AliasTransforms;
+      };
 
 export type AliasInit = CliOptionInit<any> & AliasDetail;
 
-export type AliasCliOption = { option: CliOption; } & AliasDetail;
+export type AliasCliOption = { option: CliOption } & AliasDetail;
 
 export type Alias = AliasInit | AliasCliOption;
 
 const isAliasCliOption = (v: Alias): v is AliasCliOption => !!(v as AliasCliOption)?.option;
 
-
 export class CliOption extends Option {
-    private cliAliases: Set<{ option: CliOption; type: AliasType; transform: AliasTransform; }> = new Set();
+    private cliAliases: Set<{ option: CliOption; type: AliasType; transform: AliasTransform }> = new Set();
     public isObject = false;
     public isValueFromDefault = false;
-    public parser: CommanderParser<any> = undefined; // parseArg synonym
-
+    public parser?: CommanderParser<any> = undefined; // parseArg synonym
 
     constructor(flags: string, description?: string);
     constructor(options: CliOptionInit<any>);
@@ -74,7 +74,7 @@ export class CliOption extends Option {
                 return { flags, description, rest };
             }
 
-            return { flags: arg1, description: arg2, rest: {} };
+            return { flags: arg1 as string, description: arg2, rest: {} };
         };
 
         const { flags, description, rest } = getArgs();
@@ -82,12 +82,10 @@ export class CliOption extends Option {
 
         const { noNegate = false, ...options } = rest;
 
-        const getChoices = (): { choices?: string[]; parser?: CommanderParser<any>; } => {
-            if (!rest.choices)
-                return {};
+        const getChoices = (): { choices?: string[]; parser?: CommanderParser<any> } => {
+            if (!rest.choices) return {};
 
-            if (isSimpleChoices(rest.choices))
-                return { choices: rest.choices };
+            if (isSimpleChoices(rest.choices)) return { choices: rest.choices };
 
             return { choices: rest.choices.values, parser: parsers.choices(rest.choices.values, rest.choices.parser) };
         };
@@ -99,7 +97,8 @@ export class CliOption extends Option {
             negateNoDefault: false,
             ...options,
             argChoices: rest.argChoices || choices,
-            parser: rest.parser || parser, parseArg: rest.parser || parser
+            parser: rest.parser || parser,
+            parseArg: rest.parser || parser,
         });
 
         this.isObject = this.name().split('.').length > 1;
@@ -115,31 +114,23 @@ export class CliOption extends Option {
     }
 
     addAlias(alias: Alias) {
-
-        const add = (d: Omit<AliasCliOption, 'transform'> & { transform: AliasTransform; }) => {
+        const add = (d: Omit<AliasCliOption, 'transform'> & { transform: AliasTransform }) => {
             const { option, mode, transform = (v: string) => v } = d;
 
-            const addAlias = (d: { alias: AliasType; this: AliasType; }) => {
+            const addAlias = (d: { alias: AliasType; this: AliasType }) => {
                 option.cliAliases.add({ option: this, type: d.this, transform: transform.bind(this) });
                 this.cliAliases.add({ option, type: d.alias, transform: transform.bind(option) });
             };
 
+            if (mode === 'source' || mode === 'two-way') addAlias({ alias: 'source', this: 'target' });
 
-            if (mode === 'source' || mode === 'two-way')
-                addAlias({ alias: 'source', this: 'target' });
-
-            if (mode === 'target' || mode === 'two-way')
-                addAlias({ alias: 'target', this: 'source' });
-
+            if (mode === 'target' || mode === 'two-way') addAlias({ alias: 'target', this: 'source' });
         };
-
 
         const mode = alias.mode || 'source';
 
         const getAliasOption = () => {
-
-            if (isAliasCliOption(alias))
-                return alias.option;
+            if (isAliasCliOption(alias)) return alias.option;
 
             const { mode, transform, ...options } = alias;
 
@@ -152,14 +143,19 @@ export class CliOption extends Option {
             const aliasOption = new CliOption({
                 defaultValueDescription: this.defaultValueDescription,
                 envVar: this.envVar,
-                                hidden: this.hidden,
+                hidden: this.hidden,
                 argChoices: this.argChoices,
                 negate: this.negate,
                 ...options,
                 parser,
                 description: this.description,
                 // defautValue can be undefined to unset it from this (source)
-                defaultValue: mode === 'source' ? undefined : isDefinedProp(options, 'defaultValue') ? options.defaultValue : this.defaultValue,
+                defaultValue:
+                    mode === 'source'
+                        ? undefined
+                        : isDefinedProp(options, 'defaultValue')
+                          ? options.defaultValue
+                          : this.defaultValue,
                 // defaultValueDescription: mode === 'source' ? undefined : this.defaultValueDescription,
                 // envVar: mode === 'source' ? undefined : this.envVar,
             });
@@ -179,14 +175,16 @@ export class CliOption extends Option {
 
         const aliasOption = getAliasOption();
 
-        if (mode !== 'multi-way')
-            add({ option: aliasOption, mode, transform: alias.transform as AliasTransform });
+        if (mode !== 'multi-way') add({ option: aliasOption, mode, transform: alias.transform as AliasTransform });
         else {
             for (const a of this.cliAliases) {
+                const aliasTransform = alias.transform as AliasTransform | AliasTransforms;
+
                 const transform = ifthen({
                     if: typeof alias.transform === 'function',
-                    then: alias.transform as AliasTransform,
-                    else: (alias.transform[ a.option.name() ] || alias.transform[ a.option.attributeName() ]) as AliasTransform
+                    then: aliasTransform as AliasTransform,
+                    else: ((aliasTransform as AliasTransforms)[a.option.name()] ||
+                        (aliasTransform as AliasTransforms)[a.option.attributeName()]) as AliasTransform,
                 });
 
                 a.option.addAlias({ option: aliasOption, mode: 'two-way', transform });
@@ -197,7 +195,9 @@ export class CliOption extends Option {
     }
 
     addAliases(...aliases: Alias[]) {
-        aliases.forEach(alias => this.addAlias(alias));
+        aliases.forEach(alias => {
+            this.addAlias(alias);
+        });
         return this;
     }
 
@@ -214,24 +214,21 @@ export class CliOption extends Option {
     }
 }
 
-
-
 // from node_modules/.pnpm/commander@9.3.0/node_modules/commander/lib/option.js
 // new commander version uses package.json exports field and commander/lib/options.js is not exported
 // So it is better to rewrite it here instead of doing some hacks!
 export const splitOptionFlags = (flags: string) => {
-    let shortFlag: string;
-    let longFlag: string;
+    let shortFlag: string = '';
+    let longFlag: string | undefined;
 
     // Use original very loose parsing to maintain backwards compatibility for now,
     // which allowed for example unintended `-sw, --short-word` [sic].
 
     const flagParts = flags.split(/[ |,]+/);
 
-    if (flagParts.length > 1 && !/^[[<]/.test(flagParts[ 1 ]))
-        shortFlag = flagParts.shift();
+    if (flagParts.length > 1 && !/^[[<]/.test(flagParts[1])) shortFlag = flagParts.shift() as string;
 
-    longFlag = flagParts.shift();
+    longFlag = flagParts.shift() as string;
 
     // Add support for lone short flag without significantly changing parsing!
     if (!shortFlag && /^-[^-]$/.test(longFlag)) {

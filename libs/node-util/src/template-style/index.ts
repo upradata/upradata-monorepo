@@ -1,2 +1,2 @@
-export * from './styles-factory';
 export * from './helpers';
+export * from './styles-factory';

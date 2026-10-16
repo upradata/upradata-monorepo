@@ -10,17 +10,95 @@
     "description": "Set of typescript util tools working in NodeJs",
     "sideEffects": false,
     "type": "module",
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
-    "files": [
-        "dist",
-        "docs"
-    ],
+    "files": [ "dist", "docs" ],
     "exports": {
         ".": {
-            "import": "./lib-esm/index.js",
-            "require": "./lib/index.js"
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./cache": {
+            "types": "./dist/cache/index.d.ts",
+            "import": "./dist/cache/index.js",
+            "require": "./dist/cache/index.cjs"
+        },
+        "./csv": {
+            "types": "./dist/csv/index.d.ts",
+            "import": "./dist/csv/index.js",
+            "require": "./dist/csv/index.cjs"
+        },
+        "./files": {
+            "types": "./dist/files.d.ts",
+            "import": "./dist/files.js",
+            "require": "./dist/files.cjs"
+        },
+        "./find-up": {
+            "types": "./dist/find-up/index.d.ts",
+            "import": "./dist/find-up/index.js",
+            "require": "./dist/find-up/index.cjs"
+        },
+        "./fs": {
+            "types": "./dist/fs.d.ts",
+            "import": "./dist/fs.js",
+            "require": "./dist/fs.cjs"
+        },
+        "./json": {
+            "types": "./dist/json/index.d.ts",
+            "import": "./dist/json/index.js",
+            "require": "./dist/json/index.cjs"
+        },
+        "./log-nice": {
+            "types": "./dist/log-nice.d.ts",
+            "import": "./dist/log-nice.js",
+            "require": "./dist/log-nice.cjs"
+        },
+        "./path-normalize": {
+            "types": "./dist/path-normalize.d.ts",
+            "import": "./dist/path-normalize.js",
+            "require": "./dist/path-normalize.cjs"
+        },
+        "./program-args": {
+            "types": "./dist/program-args/index.d.ts",
+            "import": "./dist/program-args/index.js",
+            "require": "./dist/program-args/index.cjs"
+        },
+        "./require": {
+            "types": "./dist/require.d.ts",
+            "import": "./dist/require.js",
+            "require": "./dist/require.cjs"
+        },
+        "./stats": {
+            "types": "./dist/stats/index.d.ts",
+            "import": "./dist/stats/index.js",
+            "require": "./dist/stats/index.cjs"
+        },
+        "./template-style": {
+            "types": "./dist/template-style/index.d.ts",
+            "import": "./dist/template-style/index.js",
+            "require": "./dist/template-style/index.cjs"
+        },
+        "./terminal": {
+            "types": "./dist/terminal/index.d.ts",
+            "import": "./dist/terminal/index.js",
+            "require": "./dist/terminal/index.cjs"
+        },
+        "./tmpfile": {
+            "types": "./dist/tmpfile.d.ts",
+            "import": "./dist/tmpfile.js",
+            "require": "./dist/tmpfile.cjs"
+        },
+        "./ts": {
+            "types": "./dist/ts/index.d.ts",
+            "import": "./dist/ts/index.js",
+            "require": "./dist/ts/index.cjs"
+        },
+        "./useful": {
+            "types": "./dist/useful.d.ts",
+            "import": "./dist/useful.js",
+            "require": "./dist/useful.cjs"
         }
     },
     "publishConfig": {
@@ -36,20 +114,15 @@
         "lint:fix": "eslint src --ext .ts --fix",
         "docs": "typedoc src/index.ts --skipErrorChecking || true"
     },
-    "keywords": [
-        "upradata",
-        "node",
-        "util",
-        "utility"
-    ],
+    "keywords": [ "upradata", "node", "util", "utility" ],
     "dependencies": {
         "@schemastore/package": "^1.0.5",
         "@upradata/util": "workspace:*",
         "colors": "^1.4.0",
         "commander": "^12.1.0",
         "csvtojson": "^2.0.10",
-        "fs-extra": "^11.2.0",
-        "glob": "^11.0.0",
+        "fs-extra": "^11.4.1",
+        "glob": "^13.0.6",
         "json5": "^2.2.3",
         "locate-path": "^7.2.0",
         "table": "^6.8.2",
@@ -59,7 +132,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
-        "@types/node": "^20.0.0",
+        "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:^",
         "memory-fs": "^0.5.0",
         "types-tsconfig": "^2.1.1"

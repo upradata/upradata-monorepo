@@ -2,10 +2,8 @@
 import path from 'node:path';
 
 import { ensureArray, isString, type TT$ } from '@upradata/util';
-import { findFirstPath, FindFirstPathOptions, type FindFirstPathOpts } from './find-first-path';
-
 import type { SyncAsyncMode, SyncAsyncType } from '../useful';
-
+import { FindFirstPathOptions, type FindFirstPathOpts, findFirstPath } from './find-first-path';
 
 export const findUpStop = Symbol('findUpStop');
 const notMatched = Symbol('notMatcher');
@@ -13,90 +11,83 @@ const notMatched = Symbol('notMatcher');
 export type Stop = typeof findUpStop;
 type NotMatched = typeof notMatched;
 
-export type FindupOpts = Omit<FindFirstPathOpts, 'directory'> & { from?: string; };
+export type FindupOpts = Omit<FindFirstPathOpts, 'directory'> & { from?: string };
 
-export type Matcher<M extends SyncAsyncMode = SyncAsyncMode> = (directory: string) => SyncAsyncType<M, string | Stop, TT$<string | Stop>>;
+export type Matcher<M extends SyncAsyncMode = SyncAsyncMode> = (
+    directory: string,
+) => SyncAsyncType<M, string | Stop, TT$<string | Stop>>;
 export type Name = string | string[];
 
-
-
-const findFromMatcher = <M extends SyncAsyncMode>(matcher: Matcher<M>, directory: string): SyncAsyncType<M, string | NotMatched | Stop> => {
+const findFromMatcher = <M extends SyncAsyncMode>(
+    matcher: Matcher<M>,
+    directory: string,
+): SyncAsyncType<M, string | NotMatched | Stop> => {
     const foundPath = matcher(directory);
-    const found = (p: string) => isString(p) && p !== '' ? p : notMatched;
+    const found = (p: string) => (isString(p) && p !== '' ? p : notMatched);
 
-    if (foundPath === findUpStop)
-        return findUpStop as any;
+    if (foundPath === findUpStop) return findUpStop as any;
 
-    if (foundPath instanceof Promise)
-        return foundPath.then(found as any) as any;
+    if (foundPath instanceof Promise) return foundPath.then(found as any) as any;
 
     return found(foundPath) as any;
-
 };
-
-
 
 export type FindFirstArgs<M extends SyncAsyncMode> = {
     options: FindFirstPathOpts;
     namesOrMatcher: string[] | Matcher<M>;
 };
 
+const findFirst =
+    <Mode extends SyncAsyncMode>(mode: Mode) =>
+    (args: FindFirstArgs<Mode>): SyncAsyncType<Mode, string | NotMatched | Stop> => {
+        const { namesOrMatcher } = args;
+        const options = new FindFirstPathOptions(args.options);
 
-const findFirst = <Mode extends SyncAsyncMode>(mode: Mode) => (args: FindFirstArgs<Mode>): SyncAsyncType<Mode, string | NotMatched | Stop> => {
-    const {  namesOrMatcher } = args;
-    const options = new FindFirstPathOptions(args.options);
+        if (typeof namesOrMatcher !== 'function') {
+            const paths = ensureArray(namesOrMatcher);
 
-    if (typeof namesOrMatcher !== 'function') {
+            if (mode === 'sync') return findFirstPath.sync(paths as string[], options) as any;
 
-        const paths = ensureArray(namesOrMatcher);
+            return Promise.resolve(paths).then(p => findFirstPath(p as string[], options)) as any;
+        }
 
-        if (mode === 'sync')
-            return findFirstPath.sync(paths as string[], options) as any;
-
-        return Promise.resolve(paths).then(p => findFirstPath(p as string[], options)) as any;
-    }
-
-    return findFromMatcher(namesOrMatcher, options.directory) as any;
-};
-
-
-
-const _findUp = <Mode extends SyncAsyncMode>(mode: Mode) => (nameOrMatcher: Name | Matcher<Mode>, options: FindupOpts = {}): SyncAsyncType<Mode, string> => {
-
-    // return lookup(filesOrMatcher as any, options) as SyncAsyncType<Mode, string>;
-
-    const startDirectory = path.resolve(options.from || '');
-
-    const { root } = path.parse(startDirectory);
-    const namesOrMatcher = typeof nameOrMatcher === 'function' ? nameOrMatcher : ensureArray(nameOrMatcher);
-
-    const findPath = (options: FindFirstPathOpts) => {
-        return findFirst(mode)({ namesOrMatcher, options });
+        return findFromMatcher(namesOrMatcher, options.directory) as any;
     };
 
-    const run = (directory: string): SyncAsyncType<Mode, string> => {
-        const next = (foundPath: string | NotMatched | Stop) => {
-            if (foundPath === findUpStop)
-                return;
+const _findUp =
+    <Mode extends SyncAsyncMode>(mode: Mode) =>
+    (nameOrMatcher: Name | Matcher<Mode>, options: FindupOpts = {}): SyncAsyncType<Mode, string> => {
+        // return lookup(filesOrMatcher as any, options) as SyncAsyncType<Mode, string>;
 
-            if (isString(foundPath))
-                return path.resolve(directory, foundPath);
+        const startDirectory = path.resolve(options.from || '');
 
-            if (directory === root)
-                return;
+        const { root } = path.parse(startDirectory);
+        const namesOrMatcher = typeof nameOrMatcher === 'function' ? nameOrMatcher : ensureArray(nameOrMatcher);
 
-            return run(path.dirname(directory));
+        const findPath = (options: FindFirstPathOpts) => {
+            return findFirst(mode)({ namesOrMatcher, options });
         };
 
-        const foundPath = findPath({ ...options, directory });
+        const run = (directory: string): SyncAsyncType<Mode, string> => {
+            const next = (foundPath: string | NotMatched | Stop) => {
+                if (foundPath === findUpStop) return;
 
-        return (mode === 'sync' ? next(foundPath as string) : (foundPath as Promise<string>).then(next)) as SyncAsyncType<Mode, string>;
+                if (isString(foundPath)) return path.resolve(directory, foundPath);
+
+                if (directory === root) return;
+
+                return run(path.dirname(directory));
+            };
+
+            const foundPath = findPath({ ...options, directory });
+
+            return (
+                mode === 'sync' ? next(foundPath as string) : (foundPath as Promise<string>).then(next)
+            ) as SyncAsyncType<Mode, string>;
+        };
+
+        return run(startDirectory);
     };
-
-
-    return run(startDirectory);
-};
-
 
 export type FindUp = {
     (nameOrMatcher: Name | Matcher<'async'>, options?: FindupOpts): Promise<string>;
@@ -105,6 +96,5 @@ export type FindUp = {
 
 export const findUp = _findUp('async') as FindUp;
 export const findUpSync = _findUp('sync');
-
 
 findUp.sync = findUpSync;

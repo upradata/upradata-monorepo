@@ -1,10 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
-
-import fs from 'fs-extra';
-
 import type { TT$ } from '@upradata/util';
-
+import fs from 'fs-extra';
 
 export interface ForEachFilesOptions {
     recursive?: boolean;
@@ -18,24 +15,30 @@ export interface ForEachFilesOptions {
 export type ForEachFilesInCallback = (filepath: string, dirent: fs.Dirent, content?: string) => TT$<void>;
 
 export async function forEachFiles(directory: string, callback: ForEachFilesInCallback): Promise<void>;
-export async function forEachFiles(directory: string, options: ForEachFilesOptions, callback: ForEachFilesInCallback): Promise<void>;
-export async function forEachFiles(directory: string, optionsOrCallback: ForEachFilesOptions | ForEachFilesInCallback, callback?: ForEachFilesInCallback): Promise<void> {
-    const cb = callback || optionsOrCallback as ForEachFilesInCallback;
-    const opts: ForEachFilesOptions = callback ? optionsOrCallback as any : {};
+export async function forEachFiles(
+    directory: string,
+    options: ForEachFilesOptions,
+    callback: ForEachFilesInCallback,
+): Promise<void>;
+export async function forEachFiles(
+    directory: string,
+    optionsOrCallback: ForEachFilesOptions | ForEachFilesInCallback,
+    callback?: ForEachFilesInCallback,
+): Promise<void> {
+    const cb = callback || (optionsOrCallback as ForEachFilesInCallback);
+    const opts: ForEachFilesOptions = callback ? (optionsOrCallback as any) : {};
 
     const {
         recursive = false,
-        before = () => { },
+        before = () => {},
         withContent = false,
         filterFiles = _file => true,
         filterFolders = _dir => true,
-        maxDepth = Infinity
+        maxDepth = Infinity,
     } = opts;
 
     const forEach = async (directory: string, depth: number): Promise<void> => {
-
-        if (depth === 0)
-            await before();
+        if (depth === 0) await before();
 
         const fromDir = (file: string) => path.join(directory, file);
         const dirents = await fs.readdir(directory, { withFileTypes: true });
@@ -43,17 +46,22 @@ export async function forEachFiles(directory: string, optionsOrCallback: ForEach
         const directories = dirents.filter(d => d.isDirectory() && filterFolders(d.name, directory)).map(d => d.name);
 
         await Promise.allSettled([
-            ...files.map(async dirent => cb(fromDir(dirent.name), dirent, withContent ? await fs.readFile(fromDir(dirent.name), 'utf8') : undefined)),
-            ...(recursive && depth < maxDepth ? directories.map(dir => forEach(fromDir(dir), depth + 1)) : [])
+            ...files.map(async dirent =>
+                cb(
+                    fromDir(dirent.name),
+                    dirent,
+                    withContent ? await fs.readFile(fromDir(dirent.name), 'utf8') : undefined,
+                ),
+            ),
+            ...(recursive && depth < maxDepth ? directories.map(dir => forEach(fromDir(dir), depth + 1)) : []),
         ]);
     };
 
     return forEach(directory, 0);
 }
 
-
-export const getFiles = async (directory: string, options: ForEachFilesOptions,) => {
-    const files = [] as { filepath: string; dirent: fs.Dirent; content?: string; }[];
+export const getFiles = async (directory: string, options: ForEachFilesOptions) => {
+    const files = [] as { filepath: string; dirent: fs.Dirent; content?: string }[];
 
     await forEachFiles(directory, options, (filepath, dirent, content) => {
         files.push({ filepath, dirent, content });

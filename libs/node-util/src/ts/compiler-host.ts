@@ -1,31 +1,30 @@
 import path from 'node:path';
 import ts from 'typescript';
 
-
-export const createCompilerHost = (options: ts.CompilerOptions, extraOptions: { nodeModules?: string[]; } = {}): ts.CompilerHost => {
-
+export const createCompilerHost = (
+    options: ts.CompilerOptions,
+    extraOptions: { nodeModules?: string[] } = {},
+): ts.CompilerHost => {
     const nodeModules = new Set(
         (extraOptions.nodeModules || [])
-            .map(p => p.split('node_modules')[ 0 ])
+            .map(p => p.split('node_modules')[0])
             .map(p => path.join(p, 'node_modules'))
-            .flatMap(p => [ p, path.join('@types') ])
+            .flatMap(p => [p, path.join('@types')]),
     );
 
     return {
         getSourceFile,
-        getDefaultLibFileName: () => "lib.d.ts",
+        getDefaultLibFileName: () => 'lib.d.ts',
         writeFile: (fileName, content) => ts.sys.writeFile(fileName, content),
         getCurrentDirectory: () => ts.sys.getCurrentDirectory(),
         getDirectories: path => ts.sys.getDirectories(path),
-        getCanonicalFileName: fileName => ts.sys.useCaseSensitiveFileNames ? fileName : fileName.toLowerCase(),
+        getCanonicalFileName: fileName => (ts.sys.useCaseSensitiveFileNames ? fileName : fileName.toLowerCase()),
         getNewLine: () => ts.sys.newLine,
         useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
         fileExists,
         readFile,
-        resolveModuleNames
+        resolveModuleNames,
     };
-
-
 
     function fileExists(fileName: string): boolean {
         return ts.sys.fileExists(fileName);
@@ -41,7 +40,6 @@ export const createCompilerHost = (options: ts.CompilerOptions, extraOptions: { 
     }
 
     function resolveModuleNames(moduleNames: string[], containingFile: string): ts.ResolvedModule[] {
-
         const resolvedModules: ts.ResolvedModule[] = [];
 
         for (const moduleName of moduleNames) {

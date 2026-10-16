@@ -4,7 +4,7 @@ import { promisify } from 'node:util';
 
 import { stripIndents, type TT$ } from '@upradata/util';
 import fs from 'fs-extra';
-import { guid, type SyncAsync } from './useful';
+import { guuid, type SyncAsync } from './useful';
 
 
 const existsFile = promisify(fs.exists);
@@ -26,7 +26,7 @@ const getFile = (mode: keyof SyncAsync, option: TmpFileOption = {}): TT$<string>
             return get(i + 1);
         };
 
-        const id = guid().slice(0, 6);
+        const id = guuid().slice(0, 6);
 
         const name = path.join(tmpDirRoot, `${prefix}${id}`);
         return mode === 'sync' ? tmpFile(name, fs.existsSync(name)) : existsFile(name).then(exist => tmpFile(name, exist));

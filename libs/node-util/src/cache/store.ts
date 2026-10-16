@@ -1,29 +1,30 @@
-import crypto from 'crypto';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import crypto from 'node:crypto';
+import path from 'node:path';
+import { ensureArray, isDefined, isUndefined, type PartialRecursive } from '@upradata/util';
 import fs from 'fs-extra';
-import path from 'path';
-import { chain, ensureArray, isDefined, isUndefined, PartialRecursive } from '@upradata/util';
 import { findUpDir } from '../find-up';
 import { warn } from './common';
-import { FileIteration, FilePrint, isFilePrint, StoreCollection } from './store-collection';
-
+import { type FileIteration, type FilePrint, isFilePrint, StoreCollection } from './store-collection';
 
 const ENCODING = 'utf8';
 
 export function md5(filePath: string, size: number = 16) {
     const isDirectory = fs.statSync(filePath).isDirectory();
 
-    return crypto.createHash('md5').update(
-        isDirectory ?
-            fs.readdirSync(filePath).join() :
-            fs.readFileSync(filePath, { encoding: ENCODING }),
-        ENCODING
-    ).digest('hex').slice(0, size);
+    return crypto
+        .createHash('md5')
+        .update(
+            isDirectory ? fs.readdirSync(filePath).join() : fs.readFileSync(filePath, { encoding: ENCODING }),
+            ENCODING,
+        )
+        .digest('hex')
+        .slice(0, size);
 }
 
 export function mtime(filePath: string) {
     return fs.statSync(filePath).mtime.getTime();
 }
-
 
 export interface Stringable {
     toString(): string;
@@ -32,7 +33,6 @@ export interface Stringable {
 export type Criteria = (path: string) => Stringable;
 export type IsSameComparator = (path: string, criteria: Stringable) => boolean;
 export type Extra = (path: string) => any;
-
 
 export class CacheChangeOptions {
     onlyExistingFiles?: boolean = false;
@@ -47,26 +47,25 @@ export class CacheChangeOptions {
 export type StoreOpts = PartialRecursive<StoreOptions>;
 
 export class StoreOptions extends CacheChangeOptions {
-    path: string;
+    path!: string;
     criteria: Criteria | 'mtime' | 'md5' = 'mtime';
-    isSameComparator: IsSameComparator;
+    isSameComparator!: IsSameComparator;
     extra?: Extra;
 
     constructor(options: StoreOpts) {
         super(options);
         Object.assign(this, options);
 
-        if (isUndefined(this.path)) {
+        if (isUndefined(options.path)) {
             const root = findUpDir.sync('package.json');
             this.path = path.join(root || process.cwd(), '_cache.json');
         }
     }
 }
 
-
 export class Store {
     storeCollection: StoreCollection;
-    criteriaFunc: Criteria;
+    criteriaFunc!: Criteria;
     public options: StoreOptions;
 
     constructor(options: StoreOpts = {}) {
@@ -83,25 +82,22 @@ export class Store {
         }
 
         for (const file of this.filePrintIterator()) {
-            if (!fs.existsSync(file.filepath))
-                this.deleteFile(file.filepath, file.collectionName);
+            if (!fs.existsSync(file.filepath)) this.deleteFile(file.filepath, file.collectionName);
         }
 
-        if (criteria === 'mtime')
-            this.criteriaFunc = path => mtime(path);
-        else if (criteria === 'md5')
-            this.criteriaFunc = path => md5(path);
-        else
-            this.criteriaFunc = criteria;
+        if (criteria === 'mtime') this.criteriaFunc = path => mtime(path);
+        else if (criteria === 'md5') this.criteriaFunc = path => md5(path);
+        else this.criteriaFunc = criteria;
 
         if (isUndefined(isSameComparator))
-            this.options.isSameComparator = (path, criteria) => this.criteriaFunc(path).toString() === criteria.toString();
+            this.options.isSameComparator = (path, criteria) =>
+                this.criteriaFunc(path).toString() === criteria.toString();
     }
 
     public getCollection(...collectionName: string[]) {
         try {
             return this.storeCollection.getCollection(...collectionName);
-        } catch (e) {
+        } catch {
             return undefined;
         }
     }
@@ -118,29 +114,29 @@ export class Store {
         return this.storeCollection.fileExists(file, ...collectionName);
     }
 
-    public files(collectionName: string[], options: { recursive?: boolean; } = {}): FileIteration[] {
-        if (collectionName.length === 0)
-            return [ ...this.filePrintIterator() ];
+    public files(collectionName: string[], options: { recursive?: boolean } = {}): FileIteration[] {
+        if (collectionName.length === 0) return [...this.filePrintIterator()];
 
         const { recursive } = Object.assign({}, this.options, options);
 
-        if (recursive)
-            return [ ...this.filePrintIterator(...collectionName) ];
+        if (recursive) return [...this.filePrintIterator(...collectionName)];
 
         const storeCollection = this.getCollection(...collectionName);
 
-        return isUndefined(storeCollection) ? [] : Object.entries(storeCollection.collection)
-            .filter(([ key, value ]) => isFilePrint(value))
-            .map(([ key, value ]) => {
-                const fileprint = value as FilePrint;
+        return isUndefined(storeCollection)
+            ? []
+            : Object.entries(storeCollection.collection)
+                  .filter(([_key, value]) => isFilePrint(value))
+                  .map(([key, value]) => {
+                      const fileprint = value as FilePrint;
 
-                return {
-                    filepath: key,
-                    fileprint,
-                    collectionName: this.storeCollection.mergeCollectNames(...collectionName),
-                    collection: storeCollection
-                };
-            });
+                      return {
+                          filepath: key,
+                          fileprint,
+                          collectionName: this.storeCollection.mergeCollectNames(...collectionName),
+                          collection: storeCollection,
+                      };
+                  });
     }
 
     public fileNames(...collectionName: string[]) {
@@ -148,17 +144,13 @@ export class Store {
     }
 
     public addFile(file: string, ...collectionName: string[]) {
-
         const print: FilePrint = {
             mtime: mtime(file),
         };
 
-        if (this.options.criteria !== 'mtime')
-            print.criteria = this.criteriaFunc(file).toString();
+        if (this.options.criteria !== 'mtime') print.criteria = this.criteriaFunc(file).toString();
 
-        if (isDefined(this.options.extra))
-            print.extra = this.options.extra(file);
-
+        if (isDefined(this.options.extra)) print.extra = this.options.extra(file);
 
         this.storeCollection.addFilePrint(file, print, ...collectionName);
 
@@ -166,7 +158,7 @@ export class Store {
     }
 
     public filePrint(file: string, collectionName: string | string[]) {
-        const fileprint = chain(() => this.getCollection(...ensureArray(collectionName)).collection[ file ]);
+        const fileprint = this.getCollection(...ensureArray(collectionName))?.collection[file];
 
         return isFilePrint(fileprint) ? fileprint : undefined;
     }
@@ -174,52 +166,60 @@ export class Store {
     public fileHasChanged(filepath: string, collectionName: string[] = [], options?: CacheChangeOptions) {
         const opts = Object.assign({}, this.options, options);
 
-        const collections = opts.recursive ?
-            chain(() => [ ...this.getCollection(...collectionName).collectionIterator() ].map(c => [ c.name ] /* collectionName.concat(c.name) */), [ collectionName ]) :
-            [ collectionName ];
+        const getCollections = () => {
+            if (!opts.recursive) return [collectionName];
 
-        for (const collName of collections) {
+            const collection = this.getCollection(...collectionName);
+
+            if (isUndefined(collection)) return [collectionName];
+
+            return [...collection.collectionIterator()].map(c => [c.name] /* collectionName.concat(c.name) */);
+        };
+
+        for (const collName of getCollections()) {
             const files = this.files(collName);
 
-            if (files.length === 0)
-                continue; // return true;
+            if (files.length === 0) continue; // return true;
 
             const file = files.find(f => f.filepath === filepath);
-            if (!file)
-                continue;
+            if (!file) continue;
 
             // if file has been deleted
-            if (!fs.existsSync(filepath))
-                return true;
+            if (!fs.existsSync(filepath)) return true;
 
             const criteria: keyof FilePrint = this.options.criteria === 'mtime' ? 'mtime' : 'criteria';
-            return !this.options.isSameComparator(filepath, file.fileprint[ criteria ]);
+
+            if (isUndefined(file.fileprint[criteria])) {
+                throw new Error(
+                    `FilePrint for "${filepath}" in collection "${collName.join('.')}" does not have criteria "${criteria}"`,
+                );
+            }
+
+            return !this.options.isSameComparator(filepath, file.fileprint[criteria]);
         }
 
+        // biome-ignore lint/complexity/noUselessTernary: for clarity
         return opts.onlyExistingFiles ? false : true;
     }
 
     public deleteFile(file: string, ...collectionName: string[]) {
-        const collection = chain(() => this.storeCollection.getCollection(...collectionName).collection);
+        const collection = this.storeCollection.getCollection(...collectionName)?.collection;
 
-        if (isDefined(collection))
-            delete collection[ file ];
-        else
-            warn(`[deleteFile] No such file in collection: ${file}`);
+        if (isDefined(collection)) delete collection[file];
+        else warn(`[deleteFile] No such file in collection: ${file}`);
     }
 
     public collectionNames() {
-        return [ ...this.collectionIterator() ].map(c => c.name);
+        return [...this.collectionIterator()].map(c => c.name);
     }
 
     public deleteCollection(...collectionName: string[]) {
         const collectionNameSplit = this.storeCollection.mergeCollectNames(...collectionName).split('.');
 
         const storeCollection = this.storeCollection.getCollection(...collectionNameSplit.slice(0, -1));
-        const name = collectionNameSplit[ collectionNameSplit.length - 1 ];
+        const name = collectionNameSplit[collectionNameSplit.length - 1];
 
-        if (isDefined(storeCollection.collection[ name ]))
-            delete storeCollection.collection[ name ];
+        if (isDefined(storeCollection?.collection[name])) delete storeCollection.collection[name];
 
         return this;
     }
@@ -233,19 +233,15 @@ export class Store {
         return this;
     }
 
-
-    public * filePrintIterator(...collectionName: string[]) {
+    public *filePrintIterator(...collectionName: string[]) {
         const collection = this.storeCollection.getCollection(...collectionName);
 
-        if (isDefined(collection))
-            yield* collection.filePrintIterator();
+        if (isDefined(collection)) yield* collection.filePrintIterator();
     }
 
-    public * collectionIterator(...collectionName: string[]) {
+    public *collectionIterator(...collectionName: string[]) {
         const collection = this.storeCollection.getCollection(...collectionName);
 
-        if (isDefined(collection))
-            yield* collection.collectionIterator();
-
+        if (isDefined(collection)) yield* collection.collectionIterator();
     }
 }

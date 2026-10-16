@@ -1,7 +1,6 @@
-import glob from 'glob';
-import path from 'path';
+import path from 'node:path';
+import { glob } from 'glob';
 import { Cache } from '../cache';
-
 
 const cache = new Cache({ path: './cache-dir/cache.json' });
 

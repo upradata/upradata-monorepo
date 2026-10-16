@@ -1,6 +1,6 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import { isDefined, isUndefined, type ObjectOf } from '@upradata/util';
 import fs from 'fs-extra';
-import { isDefined, isUndefined, ObjectOf } from '@upradata/util';
-
 
 export interface FilePrint {
     mtime: number;
@@ -8,24 +8,36 @@ export interface FilePrint {
     extra?: any;
 }
 
-
 export function isFilePrint(v: any): v is FilePrint {
     return isDefined(v) && isDefined(v.mtime) && typeof v.mtime === 'number';
 }
 
-export type WalkActionBefore = (args: { node: StoreCollection | FilePrint, name: string, isLast: boolean; }) => any;
-export type WalkActionAfter<R> = (args: { parentCollection: StoreCollection; node: StoreCollection | FilePrint, name: string, isLast: boolean; }) => R;
-
+export type WalkActionBefore = (args: { node: StoreCollection | FilePrint; name: string; isLast: boolean }) => any;
+export type WalkActionAfter<R> = (args: {
+    parentCollection: StoreCollection;
+    node: StoreCollection | FilePrint;
+    name: string;
+    isLast: boolean;
+}) => R;
 
 export type CollectionObject = ObjectOf<CollectionObject | FilePrint>;
 
-export type FileIteration = { filepath: string; collectionName: string; collection: StoreCollection; fileprint: FilePrint; };
+export type FileIteration = {
+    filepath: string;
+    collectionName: string;
+    collection: StoreCollection;
+    fileprint: FilePrint;
+};
 
 export class StoreCollection {
     collection: ObjectOf<StoreCollection | FilePrint> = {};
     collectionName: string;
 
-    constructor(public path: string, public name: string = '', fromCollectionName: string = '') {
+    constructor(
+        public path: string,
+        public name: string = '',
+        fromCollectionName: string = '',
+    ) {
         this.collectionName = this.mergeNames(fromCollectionName, name);
     }
 
@@ -35,11 +47,13 @@ export class StoreCollection {
         const loadCollection = (storeCollection: StoreCollection, content: CollectionObject) => {
             const collection = storeCollection.collection;
 
-            for (const [ key, value ] of Object.entries(content)) {
-                if (isFilePrint(value))
-                    collection[ key ] = value;
+            for (const [key, value] of Object.entries(content)) {
+                if (isFilePrint(value)) collection[key] = value;
                 else
-                    collection[ key ] = loadCollection(new StoreCollection(this.path, key, storeCollection.collectionName), value);
+                    collection[key] = loadCollection(
+                        new StoreCollection(this.path, key, storeCollection.collectionName),
+                        value,
+                    );
             }
 
             return storeCollection;
@@ -51,11 +65,9 @@ export class StoreCollection {
     toObject() {
         const collection: CollectionObject = {};
 
-        for (const [ key, node ] of Object.entries(this.collection)) {
-            if (isFilePrint(node))
-                collection[ key ] = node;
-            else
-                collection[ key ] = node.toObject();
+        for (const [key, node] of Object.entries(this.collection)) {
+            if (isFilePrint(node)) collection[key] = node;
+            else collection[key] = node.toObject();
         }
 
         return collection;
@@ -73,7 +85,7 @@ export class StoreCollection {
     }
 
     get collectionNames() {
-        return Object.keys(this.collection).filter(nodeName => !isFilePrint(this.collection[ nodeName ]));
+        return Object.keys(this.collection).filter(nodeName => !isFilePrint(this.collection[nodeName]));
     }
 
     private mergeNames(from: string, key: string) {
@@ -83,19 +95,20 @@ export class StoreCollection {
     fileExists(file: string, ...collectionName: string[]) {
         try {
             if (collectionName.length > 0) {
-                const collection = this.getCollection(...collectionName).collection;
-                return isFilePrint(collection[ file ]);
+                const collection = this.getCollection(...collectionName)?.collection;
+                if (!collection) return false;
+
+                return isFilePrint(collection[file]);
             }
 
-            return [ ...this.filePrintIterator() ].find(f => f.filepath === file);
-        } catch (e) {
+            return [...this.filePrintIterator()].find(f => f.filepath === file);
+        } catch {
             return false;
         }
     }
 
-    getCollection(...collectionNames: string[]): StoreCollection {
-        if (collectionNames.length === 0)
-            return this;
+    getCollection(...collectionNames: string[]): StoreCollection | undefined {
+        if (collectionNames.length === 0) return this;
 
         return this.walkTree({
             nodePath: collectionNames,
@@ -106,66 +119,76 @@ export class StoreCollection {
             actionAfter: ({ node, name, isLast }) => {
                 if (isLast) {
                     if (node && !(node instanceof StoreCollection))
-                        throw new Error(`The collection "${name}" is not a collection in the cache store in ${this.path}`);
+                        throw new Error(
+                            `The collection "${name}" is not a collection in the cache store in ${this.path}`,
+                        );
 
                     return node as StoreCollection;
                 }
-            }
+            },
         });
     }
 
-    createCollectionIfNotExist(...collectionNames: string[]) {
+    createCollectionIfNotExist(...collectionNames: string[]): StoreCollection {
         return this.walkTree({
             nodePath: collectionNames,
             actionBefore: ({ node, name }) => {
-                if (node instanceof StoreCollection && isUndefined(node.collection[ name ]))
-                    node.collection[ name ] = new StoreCollection(this.path, name, node.collectionName);
+                if (node instanceof StoreCollection && isUndefined(node.collection[name]))
+                    node.collection[name] = new StoreCollection(this.path, name, node.collectionName);
                 else if (isFilePrint(node))
                     throw new Error(`"${name}" is not a collection in the cache store in ${this.path}`);
             },
-            actionAfter: ({ node }) => node as StoreCollection
-        });
+            actionAfter: ({ node }) => node as StoreCollection,
+        }) as StoreCollection;
     }
 
     addFilePrint(filename: string, filePrint: FilePrint, ...collectionNames: string[]) {
         const storeCollection = this.createCollectionIfNotExist(...collectionNames);
-        storeCollection.collection[ filename ] = filePrint;
+        storeCollection.collection[filename] = filePrint;
     }
 
-
-    walkTree<R>(args: { nodePath: string[]; actionBefore?: WalkActionBefore; actionAfter?: WalkActionAfter<R>; }) {
+    walkTree<R>(args: {
+        nodePath: string[];
+        actionBefore?: WalkActionBefore;
+        actionAfter?: WalkActionAfter<R>;
+    }): R | undefined {
+        //
         const { actionBefore, actionAfter } = args;
-        let lastAction: R = undefined;
+
+        // biome-ignore lint/complexity/noUselessUndefinedInitialization: needed for the return type of the function
+        let lastAction: R | undefined = undefined;
 
         const isPathMode = args.nodePath && args.nodePath.length > 0;
-        const getNodePath = (nodePath: string[]) => isPathMode ? [ ...nodePath ] : undefined;
+        const getNodePath = (nodePath: string[]) => (isPathMode ? [...nodePath] : []);
 
         // nodePath can be ['a.b','c','d.e.f'] that means [a,b,c,d,e,f]
         const mergedNodePath = isPathMode ? this.mergeCollectNames(...args.nodePath).split('.') : [];
 
         const walk = (storeCollection: StoreCollection, nodePath: string[]) => {
-            const nodeNames = isPathMode ? (nodePath.length === 0 ? [] : [ nodePath.shift() ]) : Object.keys(storeCollection.collection);
+            const nodeNames = isPathMode
+                ? nodePath.length === 0
+                    ? []
+                    : [nodePath.shift() as string]
+                : Object.keys(storeCollection.collection);
 
             for (const name of nodeNames) {
                 const isLast = isPathMode && nodePath.length === 0;
 
-                if (actionBefore)
-                    actionBefore({ node: storeCollection, name, isLast });
+                if (actionBefore) actionBefore({ node: storeCollection, name, isLast });
 
                 // actionBefore can modify storeCollection so we get the value here and not before
-                const node = storeCollection.collection[ name ];
+                const node = storeCollection.collection[name];
 
                 if (isUndefined(node))
-                    throw new Error(`node "${name}" does not exist in the StoreCollection (path: "${this.path}", currentCollection: "${this.collectionName}")`);
+                    throw new Error(
+                        `node "${name}" does not exist in the StoreCollection (path: "${this.path}", currentCollection: "${this.collectionName}")`,
+                    );
 
-                if (!isFilePrint(node))
-                    walk(node, getNodePath(nodePath));
-
+                if (!isFilePrint(node)) walk(node, getNodePath(nodePath));
 
                 if (actionAfter) {
                     const action = actionAfter({ parentCollection: storeCollection, node, name, isLast });
-                    if (isLast)
-                        lastAction = action;
+                    if (isLast) lastAction = action;
                 }
             }
         };
@@ -174,20 +197,16 @@ export class StoreCollection {
         return lastAction;
     }
 
-
-    * filePrintIterator(): IterableIterator<FileIteration> {
-
-        for (const [ key, node ] of Object.entries(this.collection)) {
+    *filePrintIterator(): IterableIterator<FileIteration> {
+        for (const [key, node] of Object.entries(this.collection)) {
             if (isFilePrint(node))
                 yield { filepath: key, fileprint: node, collectionName: this.collectionName, collection: this };
-            else
-                yield* node.filePrintIterator();
+            else yield* node.filePrintIterator();
         }
     }
 
-    * collectionIterator(): IterableIterator<{ fromName: string; name: string; collection: StoreCollection; }> {
-
-        for (const [ key, node ] of Object.entries(this.collection)) {
+    *collectionIterator(): IterableIterator<{ fromName: string; name: string; collection: StoreCollection }> {
+        for (const [_key, node] of Object.entries(this.collection)) {
             if (!isFilePrint(node)) {
                 yield { fromName: this.collectionName, name: node.collectionName, collection: node };
                 yield* node.collectionIterator();

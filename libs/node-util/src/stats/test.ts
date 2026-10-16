@@ -1,10 +1,9 @@
 import { StatFiles } from './stat.files';
 import { Stats } from './stats';
 
-
 const stats = new Stats('Stats Test', StatFiles);
 
-const all = [ 'a.txt', 'b.txt', 'c.txt', 'd.txt' ];
+const all = ['a.txt', 'b.txt', 'c.txt', 'd.txt'];
 
 const stat1 = stats.create('A-collection1', 'A-sub-collection1-1');
 
@@ -27,15 +26,13 @@ stat3.addToBeProcessed(...all);
 stat3.succeed(...all.slice(0, 1));
 stat3.fail(...all.slice(1).map(file => ({ file, reason: `J'en sais rien` })));
 
-
 stats.log();
 stats.log('B-collection2', 'A-sub-collection');
-
 
 stats.log([], {
     sort: {
         collections: colls => colls.sort((c1, c2) => c1.collectionName.localeCompare(c2.collectionName) * -1),
         stats: 'anti-alpha-numeric',
-        globalRows: 'anti-alpha-numeric'
-    }
+        globalRows: 'anti-alpha-numeric',
+    },
 });
