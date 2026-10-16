@@ -1,24 +1,43 @@
 {
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentSize": 2,
-    "lineWidth": 100,
-    "ignore": [
-      "node_modules",
-      "dist",
-      "lib",
-      "lib-esm",
-      "coverage"
-    ]
-  },
-  "organizeImports": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true
+    "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+    "files": {
+        "includes": [ "**", "!.next", "!node_modules", "!next-env.d.ts", "!public" ]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120,
+        "expand": "auto"
+    },
+    "json": {
+        "formatter": {
+            "bracketSpacing": true,
+            "delimiterSpacing": true
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "bracketSpacing": true,
+            "delimiterSpacing": false,
+            "quoteStyle": "single",
+            "arrowParentheses": "asNeeded",
+            "semicolons": "always",
+            "trailingNewline": true
+        }
+    },
+    "css": {
+        "formatter": {
+            "delimiterSpacing": false
+        }
+    },
+    "html": {
+        "formatter": {}
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "preset": "recommended"
+        }
     }
-  }
 }
