@@ -3,7 +3,5 @@ import { neutralLibConfig } from './tsup-config.neutral.lib';
 
 export default createConfig(neutralLibConfig, ({ previousConfig }) => ({
     ...previousConfig,
-    platform: 'node',
-    bundle: false,
-    splitting: false,
+    platform: 'node'
 }));

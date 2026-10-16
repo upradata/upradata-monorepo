@@ -18,7 +18,7 @@ export const createConfig = (...getConfigs: GetConfig[]): ReturnType<typeof defi
         const baseConfig = {
             entry: ['src/index.ts'],
             outDir: 'dist',
-            format: isProduction?'esm' : ['esm', 'cjs'],
+            format: isProduction ? ['esm', 'cjs'] : 'esm',
             bundle: false,
             splitting: isProduction,
             dts: {
@@ -35,6 +35,7 @@ export const createConfig = (...getConfigs: GetConfig[]): ReturnType<typeof defi
                 __DEV__: String(!isProduction),
                 'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
             },
+            ...cliOptions,
         } satisfies Options;
 
         const config = getConfigs.reduce((prevConfig, getConfig) => {

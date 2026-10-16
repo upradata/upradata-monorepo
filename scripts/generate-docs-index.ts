@@ -5,7 +5,7 @@
  */
 
 import { writeFileSync, mkdirSync, readdirSync } from 'fs';
-import { join } from 'path';
+import { join } from 'node:path';
 
 const docsDir = './docs';
 const libsDir = './libs';
@@ -147,4 +147,4 @@ const indexHTML = generateIndexHTML(packages);
 writeFileSync(join(docsDir, 'index.html'), indexHTML);
 console.log('✅ Documentation index generated at docs/index.html');
 console.log(`📦 Found ${packages.length} packages`);
-packages.forEach(p => console.log(`   - @upradata/${p.name}`));
+packages.forEach(p => { console.log(`   - @upradata/${p.name}`); });
