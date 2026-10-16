@@ -5,10 +5,12 @@ A comprehensive monorepo containing libraries, applications, and tools built wit
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 20.x or higher (use `.nvmrc` with nvm)
 - pnpm 9.x or higher
 
 ### Install
+
 ```bash
 pnpm install
 ```
@@ -47,12 +49,14 @@ Monorepo(new)/
 ## Packages
 
 ### Configuration Packages
+
 - `@upradata/tsconfig` - TypeScript configurations
 - `@upradata/eslint-config` - ESLint configurations
 - `@upradata/biome-config` - Biome formatting config
 - `@upradata/vitest-config` - Vitest testing config
 
 ### Libraries
+
 - `@upradata/util` - General utilities
 - `@upradata/browser-util` - Browser-specific utilities
 - `@upradata/node-util` - Node.js utilities
@@ -64,12 +68,14 @@ Monorepo(new)/
 - `@upradata/object-convert` - Object conversion utilities
 
 ### Applications
+
 - `@upradata/express` - Express middleware
 - `@upradata/email` - Email utilities
 - `@upradata/stencil` - Stencil components
 - `@upradata/puppeteer` - Puppeteer utilities
 
 ### Tools
+
 - `@upradata/gulp` - Gulp plugins
 - `@upradata/webpack` - Webpack plugins
 - `@upradata/commands` - CLI commands

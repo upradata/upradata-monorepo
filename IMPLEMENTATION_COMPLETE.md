@@ -1,11 +1,13 @@
 # ✅ TypeDoc Documentation System - COMPLETE
 
 ## Overview
+
 Automatic API documentation generation for the Upra-Data monorepo using **TypeDoc** with **GitHub Pages** deployment.
 
 ## What's Implemented
 
 ### 1. **TypeDoc Configuration** ✅
+
 - **`typedoc.root.json`** — Root-level aggregation of all 9 library entry points
   - Outputs to `docs/api/`
   - Includes version information and source maps
@@ -15,6 +17,7 @@ Automatic API documentation generation for the Upra-Data monorepo using **TypeDo
   - Included in npm package files array for distribution
 
 ### 2. **Build Pipeline Integration** ✅
+
 - **`turbo.json`** — Added `docs` task
   - Depends on `^build` (all packages built first)
   - Caches output in `docs/**`
@@ -22,9 +25,10 @@ Automatic API documentation generation for the Upra-Data monorepo using **TypeDo
 
 - **`package.json`** — Added scripts
   - `pnpm docs` — Generates all documentation
-  - `pnpm docs:serve` — Local server on http://localhost:8000
+  - `pnpm docs:serve` — Local server on <http://localhost:8000>
 
 ### 3. **Documentation Portal** ✅
+
 - **`scripts/generate-docs-index.ts`** — Auto-discovers packages
   - Discovers all libs, apps, and tools directories
   - Generates styled HTML landing page
@@ -32,6 +36,7 @@ Automatic API documentation generation for the Upra-Data monorepo using **TypeDo
   - Runs automatically after TypeDoc generation
 
 ### 4. **GitHub Pages Deployment** ✅
+
 - **`.github/workflows/deploy-docs.yml`** — Automatic deployment
   - Triggers on `main` push
   - Builds all packages → generates TypeDoc → creates portal
@@ -39,6 +44,7 @@ Automatic API documentation generation for the Upra-Data monorepo using **TypeDo
   - URL: `https://github-username.github.io/monorepo/`
 
 ### 5. **Documentation Guides** ✅
+
 - **`docs/DOCUMENTATION.md`** — Comprehensive guide
   - How to generate docs locally
   - Writing JSDoc comments
@@ -52,6 +58,7 @@ Automatic API documentation generation for the Upra-Data monorepo using **TypeDo
   - Feature overview
 
 ### 6. **Library Configuration** ✅
+
 - **`libs/util/package.json`** — First library configured
   - `"docs"` script references shared config
   - `"docs"` included in files array for publishing
@@ -59,6 +66,7 @@ Automatic API documentation generation for the Upra-Data monorepo using **TypeDo
 ## How to Use
 
 ### Generate Documentation Locally
+
 ```bash
 cd /home/milottit/Libraries/Upra-Data/Monorepo\(new\)
 pnpm install  # Install TypeDoc dependencies
@@ -67,6 +75,7 @@ pnpm docs:serve  # View at http://localhost:8000
 ```
 
 ### Document Your Code
+
 ```typescript
 /**
  * Process data with given options.
@@ -86,6 +95,7 @@ export function processData(data: any[], options?: any): any[] {
 ```
 
 ### Cross-Reference Between Packages
+
 ```typescript
 /**
  * Similar to {@link @upradata/util!assign}
@@ -115,7 +125,8 @@ Next push to `main` will automatically build and deploy documentation.
 
 ## Files Created/Modified
 
-### Created:
+### Created
+
 - `docs/DOCUMENTATION.md` — 192 lines, comprehensive guide
 - `docs/README.md` — 85 lines, portal content
 - `scripts/generate-docs-index.ts` — 151 lines, portal generator
@@ -123,7 +134,8 @@ Next push to `main` will automatically build and deploy documentation.
 - `typedoc.root.json` — Root TypeDoc config
 - `typedoc.package.json` — Per-package template
 
-### Modified:
+### Modified
+
 - `package.json` — Added TypeDoc deps & docs scripts
 - `turbo.json` — Added docs task pipeline
 - `libs/util/package.json` — Added docs script

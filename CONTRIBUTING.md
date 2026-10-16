@@ -12,6 +12,7 @@
     ```
 
 2. **Verify setup:**
+
     ```bash
     pnpm build
     pnpm test

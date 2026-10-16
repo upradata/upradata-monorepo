@@ -11,7 +11,9 @@ The Upra-Data monorepo contains TypeScript libraries, applications, and tools fo
 ## 🗂️ Packages
 
 ### Libraries
+
 Core utilities and functionality:
+
 - **@upradata/util** — General utilities (objects, strings, promises)
 - **@upradata/browser-util** — Browser-specific utilities
 - **@upradata/node-util** — Node.js utilities
@@ -23,14 +25,18 @@ Core utilities and functionality:
 - **@upradata/object-convert** — Object conversion
 
 ### Applications
+
 Ready-to-use applications:
+
 - **@upradata/express** — Express middleware
 - **@upradata/email** — Email utilities
 - **@upradata/stencil** — Stencil components
 - **@upradata/puppeteer** — Puppeteer utilities
 
 ### Tools
+
 Build and CLI tools:
+
 - **@upradata/gulp** — Gulp plugins
 - **@upradata/webpack** — Webpack plugins
 - **@upradata/commands** — CLI commands
@@ -52,6 +58,7 @@ import { assign } from '@upradata/util';
 ## 📖 Full Documentation
 
 See [DOCUMENTATION.md](./DOCUMENTATION.md) for comprehensive guide on:
+
 - Writing documentation
 - Cross-referencing packages
 - Deployment process

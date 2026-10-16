@@ -28,6 +28,7 @@ pnpm docs
 ```
 
 This runs:
+
 1. `turbo run docs` — Builds TypeDoc for each package
 2. `tsx scripts/generate-docs-index.ts` — Creates the documentation portal index
 
@@ -53,6 +54,7 @@ Then open `http://localhost:8000` and navigate to the `docs` folder.
 ### Root Configuration
 
 **`typedoc.root.json`** — Root-level TypeDoc config:
+
 - Aggregates all library entry points
 - Generates main API reference
 - Includes version info
@@ -60,6 +62,7 @@ Then open `http://localhost:8000` and navigate to the `docs` folder.
 ### Per-Package Configuration
 
 **`typedoc.package.json`** — Template for each package:
+
 - Entry point: `src/index.ts`
 - Output: `docs/` (included in published package)
 - Excludes: externals, private, internal members
