@@ -1,14 +1,11 @@
 declare module 'fork-stream' {
-import stream from 'stream';
-
-
-    export type ForkStreamOptions = (stream.ReadableOptions | stream.WritableOptions) & {
+    export type ForkStreamOptions = any & {
         classifier: (data: any, done: (err: Error, isTrue: boolean) => any) => void;
     };
 
     export default class ForkStream {
-        public a: stream.Readable;
-        public b: stream.Readable;
+        public a: NodeJS.ReadableStream;
+        public b: NodeJS.ReadableStream;
 
         constructor(options: ForkStreamOptions);
     }

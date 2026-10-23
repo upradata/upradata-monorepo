@@ -1,8 +1,5 @@
 
 declare module 'gulp-exec' {
-import stream from 'stream';
-
-
     export interface ExecOptions {
         env?: NodeJS.ProcessEnv;
         pipeStdout?: boolean;
@@ -16,8 +13,8 @@ import stream from 'stream';
     }
 
     export interface GulpExec {
-        (command: string, options: ExecOptions): stream.Transform;
-        reporter: (options: ExecReporter) => stream.Transform;
+        (command: string, options: ExecOptions): NodeJS.ReadWriteStream;
+        reporter: (options: ExecReporter) => NodeJS.ReadWriteStream;
     }
 
     const gulpExec: GulpExec;

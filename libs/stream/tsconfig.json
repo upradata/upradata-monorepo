@@ -1,12 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@upradata/tsconfig/node.json",
   "compilerOptions": {
-    "outDir": "./lib",
-    "rootDir": "./src",
+    "types": ["node"],
     "strict": false,
     "noImplicitAny": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "strictFunctionTypes": false,
+    "noImplicitThis": false
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "lib", "lib-esm", "**/*.test.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "src/@types/webpack.d.ts"]
 }

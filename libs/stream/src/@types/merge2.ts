@@ -1,8 +1,4 @@
 declare module 'merge2' {
-
-import { PassThrough } from 'stream';
-
-
     export default function merge(a: Streams, options?: Options): Merge2Stream;
     export default function merge(a: Streams, b: Streams, options?: Options): Merge2Stream;
     export default function merge(a: Streams, b: Streams, c: Streams, options?: Options): Merge2Stream;
@@ -19,7 +15,7 @@ import { PassThrough } from 'stream';
         objectMode?: boolean;
     }
 
-    export interface Merge2Stream extends PassThrough {
+    export interface Merge2Stream extends NodeJS.ReadWriteStream {
         /**
          * @summary    Add more streams to an existing merged stream
          *
