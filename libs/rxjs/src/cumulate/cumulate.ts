@@ -1,10 +1,3 @@
-import { operate } from 'rxjs/src/internal/util/lift';
-import { noop } from 'rxjs/src/internal/util/noop';
-import { OperatorSubscriber } from 'rxjs/src/internal/operators/OperatorSubscriber';
-/*
-import { Observable } from 'rxjs/src/internal/Observable';
-import { OperatorFunction } from 'rxjs/src/internal/types';
- */
 import { Observable, OperatorFunction } from 'rxjs';
 
 
@@ -126,39 +119,28 @@ export const cumulate = <T, C extends CumulatorType<T>, O extends CumulateOpts<T
     let kumulator = newCumulator();
 
 
-    return operate((source, subscriber) => {
+    return ((source: Observable<T>) => new Observable(subscriber => {
+        const sourceSubscription = source.subscribe({
+            next: value => kumulator.add(value),
+            error: error => subscriber.error(error),
+            complete: () => {
+                subscriber.next(getResult(kumulator) as any);
+                subscriber.complete();
+            }
+        });
 
-        // Subscribe to our source.
-        source.subscribe(
-            new OperatorSubscriber<T>(
-                subscriber,
-                value => kumulator.add(value),
-                () => {
-                    subscriber.next(getResult(kumulator));
-                    subscriber.complete();
-                }
-            )
-        );
-
-        // Subscribe to the closing notifier.
-        closingNotifier.subscribe(
-            new OperatorSubscriber(
-                subscriber,
-                () => {
-                    // emits the kumulator
-                    const result = getResult(kumulator);
-                    subscriber.next(result);
-
-                    // starts a new kumulator
-                    kumulator.clear();
-                },
-                noop
-            )
-        );
+        const notifierSubscription = closingNotifier.subscribe({
+            next: () => {
+                subscriber.next(getResult(kumulator) as any);
+                kumulator.clear();
+            },
+            error: error => subscriber.error(error)
+        });
 
         return () => {
-            // Ensure buffered values are released on teardown.
+            sourceSubscription.unsubscribe();
+            notifierSubscription.unsubscribe();
             kumulator = null;
         };
-    }) as any as CumulateReturn<T, C, O>;
+    })) as CumulateReturn<T, C, O>;
 };

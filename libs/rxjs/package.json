@@ -1,41 +1,36 @@
 {
   "name": "@upradata/rxjs",
-  "version": "0.0.1",
-  "description": "Library",
+  "version": "16.0.0",
+  "description": "RxJS utilities for Upra-Data",
   "type": "module",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./lib-esm/index.js",
-      "require": "./lib/index.js"
-    }
-  },
-  "imports": {
-    "#rxjs-src": {
-      "import": "rxjs/dist/esm/index.js",
-      "require": "rxjs/dist/cjs/index.js"
-    },
-    "#rxjs-src/*": {
-      "import": "rxjs/dist/esm/*.js",
-      "require": "rxjs/dist/cjs/*.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "lib",
-    "lib-esm",
+    "dist",
     "docs"
   ],
   "scripts": {
-    "build": "rm -rf lib lib-esm && tsup src/index.ts src/**/*.ts --format cjs --outDir lib --clean && tsup src/index.ts src/**/*.ts --format esm --outDir lib-esm --clean",
+    "build": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --env.NODE_ENV production",
+    "dev": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --watch --env.NODE_ENV development",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "eslint src --ext .ts",
+    "test:coverage": "vitest run --coverage",
+    "lint": "biome lint src",
+    "lint:fix": "biome lint --write src",
     "docs": "typedoc src/index.ts --skipErrorChecking || true"
-  },
+},
   "keywords": [
     "upradata"
   ],
@@ -43,9 +38,10 @@
   "license": "MIT",
   "dependencies": {
     "@upradata/util": "workspace:*",
-    "rxjs": "7.5.3"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0"
+    "@types/node": "^26.6.5",
+    "@upradata/tsconfig": "workspace:^"
   }
 }
