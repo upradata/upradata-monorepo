@@ -1,8 +1,8 @@
 # Upra-Data Monorepo — Implementation Index
 
 **Handoff Date:** 2026-06-25  
-**Status:** Foundation Complete — Ready for Source Migration  
-**Progress:** ~50% (Phases 1-3 template + 6,8 complete)
+**Status:** Library source migration complete — tooling follow-up remains
+**Progress:** Library migration complete; test-runner and ESLint compatibility remain
 
 ---
 
@@ -76,11 +76,12 @@ Monorepo(new)/
 - Biome formatting config
 - Vitest test config
 
-### Phase 3: Source Migration Template
+### Phase 3: Source Migration
 
-- Created `@upradata/util` package template
-- Defined subpath export pattern
-- Ready for source code copying
+- Migrated all eight current libraries under `libs/`
+- Standardized shared TSup/TypeScript configs, package exports, declarations, and `dist/` output
+- Preserved browser, Node, decorator, and ambient type requirements
+- Replaced RxJS private-internal imports with public APIs
 
 ### Phase 6: Code Quality & DX (100%)
 
@@ -96,39 +97,29 @@ Monorepo(new)/
 
 ---
 
-## 🔄 Next Phase: Source Code Migration
+## 🔄 Next Phase: Validation and Tooling Compatibility
 
 ### Immediate Actions
 
 ```bash
 cd /home/milottit/Libraries/Upra-Data/Monorepo\(new\)
 
-# 1. Copy util source
-cp -r ../util/src/* libs/util/src/
-
-# 2. Install
+# 1. Install
 pnpm install
 
-# 3. Build (should succeed once source is copied)
+# 2. Build
 pnpm build
 
-# 4. Test
+# 3. Test
 pnpm test
 ```
 
-### Additional Libraries to Migrate
+### Remaining Validation Work
 
-Use the **MIGRATION_GUIDE.md** template for each of these:
-
-- browser-util
-- node-util
-- decorators
-- dependency-injection
-- proxy
-- rxjs
-- stream
-- object-convert
-- (+ apps and tools)
+- Resolve Vitest/Rolldown parsing for legacy parameter decorators.
+- Replace deprecated Vitest `done()` callbacks in proxy tests.
+- Complete the ESLint flat-config migration.
+- Migrate future applications and tools as they are added to the workspace.
 
 ---
 

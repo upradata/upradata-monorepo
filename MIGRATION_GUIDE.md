@@ -40,8 +40,8 @@ Use the template below, adjusting exports for your library's public API:
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix"
+    "lint": "biome lint src",
+    "lint:fix": "biome lint --write src",
   }
 }
 ```

@@ -2,10 +2,15 @@
 
 ## What Was Accomplished
 
-### Core Libraries Migrated & Building ✅
-- **@upradata/util** — All 47 source files migrated, builds successfully
-- **@upradata/browser-util** — Migrated and building
-- **@upradata/decorators** — Migrated with reflect-metadata dependency, building successfully
+### Libraries Migrated & Building ✅
+- **@upradata/util** — Migrated to the neutral shared TSup/TypeScript configuration
+- **@upradata/node-util** — Migrated to the Node shared TSup/TypeScript configuration
+- **@upradata/browser-util** — Migrated to the web shared TSup/TypeScript configuration
+- **@upradata/decorators** — Migrated with legacy decorator compiler support and runtime reflect-metadata
+- **@upradata/dependency-injection** — Migrated to the neutral shared configuration
+- **@upradata/proxy** — Migrated to the Node shared configuration
+- **@upradata/rxjs** — Migrated and private RxJS internal imports replaced with public APIs
+- **@upradata/stream** — Migrated to the Node shared configuration with ambient stream shims preserved
 
 ### Documentation System ✅
 - TypeDoc configuration working for all packages
@@ -15,18 +20,15 @@
 
 ### Build System ✅
 - Turborepo tasks configured correctly (tasks → pipeline in Turbo 2.0)
-- Dual-format builds: CJS (lib/) and ESM (lib-esm/)
-- Output size: util ~560KB (combined), decorators ~100KB
+- Dual-format builds with declarations and sourcemaps in `dist/`
 - Incremental builds with Turbo caching
 
 ## What Remains
 
-### Additional Libraries (Optional for Phase 3)
-- node-util, proxy, rxjs, stream, dependency-injection - Need external dependencies configured
-- These were scaffolded but require:
-  - Additional npm package declarations in package.json
-  - Resolution of import paths
-  - TypeScript strict mode adjustments
+### Validation Notes
+- All eight library packages pass targeted typecheck and build validation.
+- Packages without test files pass with Vitest's `passWithNoTests` behavior.
+- Existing decorator tests are incompatible with the current Vitest/Rolldown parser, proxy tests use Vitest's removed `done()` callback, and ESLint requires the repository's pending flat-config migration.
 
 ## Setup Details
 
@@ -48,8 +50,7 @@ pnpm docs:serve       # View at http://localhost:8000
 ```
 libs/
 ├── util/
-│   ├── lib/          # CJS output
-│   ├── lib-esm/      # ESM output
+│   ├── dist/         # CJS, ESM, declarations, and sourcemaps
 │   ├── docs/         # TypeDoc HTML
 │   └── src/          # TypeScript source
 ├── browser-util/
@@ -64,7 +65,7 @@ docs/
 
 ## Phase 3 Results
 
-✅ **3 core libraries** successfully migrated and building  
+✅ **8 libraries** successfully migrated and building
 ✅ **TypeDoc** generating documentation automatically  
 ✅ **Documentation portal** discovering packages and linking docs  
 ✅ **Build system** configured and caching with Turbo  
@@ -77,11 +78,11 @@ docs/
 
 ## Next Steps (Post-Phase 3)
 
-1. **Complete library migrations** — Add missing dependencies to remaining 7 libraries
-2. **GitHub Pages deployment** — Configure repository settings and deploy
-3. **Test framework** — Set up Vitest and migrate tests
+1. **Resolve existing test-runner compatibility failures** — Update decorator/proxy tests or align the Vitest configuration
+2. **Complete ESLint flat-config migration** — Restore workspace lint validation
+3. **GitHub Pages deployment** — Configure repository settings and deploy
 4. **CI/CD** — Verify GitHub Actions workflows trigger correctly
 
 ---
 
-**Status**: Phase 3 Complete - Ready for Phase 4 (Advanced Configuration)
+**Status**: Library source migration complete; remaining work is test-runner and lint-tooling compatibility.

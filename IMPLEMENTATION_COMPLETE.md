@@ -149,6 +149,8 @@ Next push to `main` will automatically build and deploy documentation.
 ✅ **Free Hosting** — GitHub Pages included with GitHub  
 ✅ **CI/CD Ready** — Deploy on every main push  
 
-## Status: Phase 3.5 (Documentation) ✅ COMPLETE
+## Status: Documentation and library source migration ✅ COMPLETE
 
-Ready to proceed with Phase 3.6 (Copy source code and verify builds).
+All eight current libraries are copied into the workspace and pass targeted
+typecheck/build validation. Remaining follow-up is limited to existing
+Vitest/Rolldown and ESLint flat-config compatibility.
