@@ -1,7 +1,8 @@
-import { RequiredProperty } from './required-property';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import type { Condition, FunctionType } from './definition';
 import { RequiredParameter } from './required-parameter';
+import { RequiredProperty } from './required-property';
 import { Validate as ValidateDecorator } from './validate';
-import { Condition, FunctionType } from './definition';
 
 /*
  *
@@ -9,24 +10,22 @@ import { Condition, FunctionType } from './definition';
  * Require & RequireIf decorator
  */
 
-export function Required(target: any, propertyKey: string | symbol, parameterIndex: number, condition: Condition = undefined) {
+export function Required(
+    target: any,
+    propertyKey: string | symbol | undefined,
+    parameterIndex: number,
+    condition: Condition = undefined,
+) {
     if (parameterIndex === undefined) {
         RequiredProperty.register(condition, target, propertyKey);
-    }
-    else
-        RequiredParameter.register(condition, target, propertyKey, parameterIndex);
+    } else RequiredParameter.register(condition, target, propertyKey, parameterIndex);
 }
 
-
 export function RequiredIf(condition: Condition) {
-
     return (target: any, propertyKey: string | symbol, parameterIndex?: number) => {
         Required(target, propertyKey, parameterIndex, condition);
     };
 }
-
-
-
 
 /*
  *
@@ -39,10 +38,7 @@ export function ValidateProperties(target: any) {
 }
 
 export function Validate(target: any, propertyName?: string, descriptor?: TypedPropertyDescriptor<FunctionType>) {
-
-    if (propertyName === undefined)
-        return ValidateDecorator.validateClass(target);
-
+    if (propertyName === undefined) return ValidateDecorator.validateClass(target);
 
     ValidateDecorator.validateMethod(target, propertyName, descriptor);
 }

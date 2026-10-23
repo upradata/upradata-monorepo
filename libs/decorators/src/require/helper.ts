@@ -1,5 +1,6 @@
-import { ClassType } from './definition';
+import type { ClassType } from './definition';
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export function methodArgs(method: Function | ClassType) {
     let args: string;
 
@@ -13,11 +14,14 @@ export function methodArgs(method: Function | ClassType) {
     }
 
     // Split the arguments string into an array comma delimited.
-    return args.split(',').map(function (arg) {
-        // Ensure no inline comments are parsed and trim the whitespace.
-        return arg.replace(/\/\*.*\*\//, '').trim();
-    }).filter(function (arg) {
-        // Ensure no undefined values are added.
-        return arg;
-    });
+    return args
+        .split(',')
+        .map(arg => {
+            // Ensure no inline comments are parsed and trim the whitespace.
+            return arg.replace(/\/\*.*\*\//, '').trim();
+        })
+        .filter(arg => {
+            // Ensure no undefined values are added.
+            return arg;
+        });
 }

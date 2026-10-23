@@ -1,43 +1,73 @@
 {
-  "name": "@upradata/decorators",
-  "version": "0.0.1",
-  "description": "Library",
-  "type": "module",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
-  "exports": {
-    ".": {
-      "import": "./lib-esm/index.js",
-      "require": "./lib/index.js"
+    "name": "@upradata/decorators",
+    "version": "0.0.1",
+    "description": "Library",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./angular": {
+            "types": "./dist/angular/index.d.ts",
+            "import": "./dist/angular/index.js",
+            "require": "./dist/angular/index.cjs"
+        },
+        "./inherit-builtin": {
+            "types": "./dist/inherit-builtin/index.d.ts",
+            "import": "./dist/inherit-builtin/index.js",
+            "require": "./dist/inherit-builtin/index.cjs"
+        },
+        "./require": {
+            "types": "./dist/require/index.d.ts",
+            "import": "./dist/require/index.js",
+            "require": "./dist/require/index.cjs"
+        },
+        "./save-property": {
+            "types": "./dist/save-property/index.d.ts",
+            "import": "./dist/save-property/index.js",
+            "require": "./dist/save-property/index.cjs"
+        },
+        "./mixin": {
+            "types": "./dist/mixin/index.d.ts",
+            "import": "./dist/mixin/index.js",
+            "require": "./dist/mixin/index.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "scripts": {
+        "build": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --env.NODE_ENV production",
+        "dev": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --watch --env.NODE_ENV development",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "lint": "biome lint src",
+        "lint:fix": "biome lint --write src",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+    },
+    "keywords": [
+        "upradata"
+    ],
+    "author": "Upra-Data Contributors",
+    "license": "MIT",
+    "dependencies": {
+        "@angular/core": "^12.2.3",
+        "@upradata/util": "workspace:*",
+        "fixed-width-string": "^2.0.0",
+        "reflect-metadata": "^0.2.1"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:^"
     }
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "lib",
-    "lib-esm",
-    "docs"
-  ],
-  "scripts": {
-    "build": "rm -rf lib lib-esm && tsup src/index.ts src/**/*.ts --format cjs --outDir lib --clean && tsup src/index.ts src/**/*.ts --format esm --outDir lib-esm --clean",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "lint": "eslint src --ext .ts",
-    "docs": "typedoc src/index.ts --skipErrorChecking || true"
-  },
-  "keywords": [
-    "upradata"
-  ],
-  "author": "Upra-Data Contributors",
-  "license": "MIT",
-  "dependencies": {
-    "@angular/core": "^12.2.3",
-    "@upradata/util": "workspace:*",
-    "fixed-width-string": "^2.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "reflect-metadata": "^0.2.1"
-  }
 }

@@ -1,16 +1,27 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { Required, RequiredIf, Validate, ValidateProperties } from '../required';
-
 
 @ValidateProperties
 @Validate
 class Greeter {
-    greeting: string;
-    @RequiredIf(function () { return this.p2 === undefined; }) p1: string;
-    @RequiredIf(function () { return this.p1 === undefined; }) p2: boolean;
-    @RequiredIf(function () { return this.p1 === 'caca' && this.p2 === true; }) p3: number;
+    greeting?: string;
 
+    @RequiredIf(function (this: any) {
+        return this.p2 === undefined;
+    })
+    p1?: string;
 
-    constructor(dummy: number, @Required message?: string, p2?: boolean) {
+    @RequiredIf(function (this: any) {
+        return this.p1 === undefined;
+    })
+    p2?: boolean;
+
+    @RequiredIf(function (this: any) {
+        return this.p1 === 'caca' && this.p2 === true;
+    })
+    p3?: number;
+
+    constructor(_dummy: number, @Required message?: string, p2?: boolean) {
         this.greeting = message;
         this.p2 = p2;
         /* this.p2 = true;
@@ -20,8 +31,8 @@ class Greeter {
     }
 
     @Validate
-    greet(dummy: number, @Required name?: string) {
-        return 'Hello ' + name + ', ' + this.greeting;
+    greet(_dummy: number, @Required name?: string) {
+        return `Hello ${name}, ${this.greeting}`;
     }
 }
 
@@ -31,7 +42,6 @@ try {
 } catch (e) {
     console.log(e.message);
 }
-
 
 g = new Greeter(1, 'caca', true);
 console.log(g.greet(1, 'thomas'));

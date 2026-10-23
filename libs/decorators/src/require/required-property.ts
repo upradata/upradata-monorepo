@@ -1,6 +1,7 @@
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import 'reflect-metadata';
-import { PropCond, requiredSymbolKey, Condition } from './definition';
-
+import { type Condition, type PropCond, requiredSymbolKey } from './definition';
 
 export class RequiredProperty {
     public static register(condition: Condition, prototype: any, propertyKey: string | symbol) {
@@ -10,25 +11,20 @@ export class RequiredProperty {
         Reflect.defineMetadata(requiredSymbolKey, existingRequiredIf, prototype);
     }
 
-
-
-
     public static check(prototype: any, thisObj: any) {
         const requiredProps: PropCond[] = Reflect.getOwnMetadata(requiredSymbolKey, prototype);
 
         if (requiredProps) {
-
             for (const prop of requiredProps) {
                 if (prop.condition.call(thisObj)) {
-                    if (thisObj[ prop.name ] === undefined) {
+                    if (thisObj[prop.name] === undefined) {
                         throw new Error(
-                            `The property ${String(prop.name)} of class ${prototype.constructor.name} doesn't fullfill
-                             the required condition: \n${prop.condition}`);
-
+                            `The property ${String(prop.name)} of class ${prototype.constructor.name} doesn't fullfill` +
+                                `the required condition: \n${prop.condition}`,
+                        );
                     }
                 }
             }
         }
     }
-
 }

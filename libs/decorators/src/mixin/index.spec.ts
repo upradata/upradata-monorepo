@@ -1,54 +1,81 @@
-import { Mixin, Mixin1, Mixin2, type Mix } from './mixin';
+import { type Mix, Mixin, Mixin1, Mixin2 } from './mixin';
 
-
-@Mixin({ mix: [ { b: 2 }, class C { get c() { return 'c'; } } ] })
+@Mixin({
+    mix: [
+        { b: 2 },
+        class C {
+            get c() {
+                return 'c';
+            }
+        },
+    ],
+})
 export class A {
     a: string = 'a';
 }
 
-
-@Mixin1({ mix: [ class C { get c() { return 'c'; } } ] })
+@Mixin1({
+    mix: [
+        class C {
+            get c() {
+                return 'c';
+            }
+        },
+    ],
+})
 export class A21 {
     a: string = 'a21';
     a21: string = 'A21';
 }
 
-
 @Mixin2({
-    mix: [ { b: 2 }, class C {
-        get e() { return 'e'; }
-        d() { console.log('heho'); return 'd'; }
-    } ]
+    mix: [
+        { b: 2 },
+        class C {
+            get e() {
+                return 'e';
+            }
+            d() {
+                console.log('heho');
+                return 'd';
+            }
+        },
+    ],
 })
 export class A22 {
     a: string = 'a22';
 }
 
-
-
-@Mixin2({ mix: [ A21, A22 ] })
+@Mixin2({ mix: [A21, A22] })
 export class A23 {
     a: string = 'a23';
 }
 
-
-@Mixin2({ mix: [ A21, A22 ], override: 'merge' })
+@Mixin2({ mix: [A21, A22], override: 'merge' })
 export class A24 {
     a: string = 'a2';
     b: number = 22;
-    get c() { return 'c2'; }
-    d() { return 'd2'; }
+    get c() {
+        return 'c2';
+    }
+    d() {
+        return 'd2';
+    }
 }
 
-@Mixin2({ mix: [ A21, A22 ], override: 'none' })
+@Mixin2({ mix: [A21, A22], override: 'none' })
 export class A25 {
     a: string = 'a2';
     b: number = 22;
-    get c() { return 'c2'; }
-    d() { return 'd2'; }
+    get c() {
+        return 'c2';
+    }
+    d() {
+        return 'd2';
+    }
 }
 
-const a = new A23() as Mix<A23, { b: number; e: string; }, { c: string; d(): string; }>;
+const a = new A23() as Mix<A23, { b: number; e: string }, { c: string; d(): string }>;
 console.log(a.a);
 console.log(a.b);
 console.log(a.c);
@@ -73,9 +100,8 @@ console.log(a3.c);
 console.log(a3.e);
 console.log(a3.d());
 
-
 export class A26 {
-    @Mixin2({ mix: [ A21, A22 ], override: 'merge' }) __;
+    @Mixin2({ mix: [A21, A22], override: 'merge' }) __;
 
     constructor() {
         1 === 1;
@@ -83,8 +109,12 @@ export class A26 {
 
     a: string = 'a26';
     b: number = 26;
-    get c() { return 'c2'; }
-    d() { return 'd2'; }
+    get c() {
+        return 'c2';
+    }
+    d() {
+        return 'd2';
+    }
 }
 
 console.log('\n', 'A26', '\n');
@@ -97,4 +127,4 @@ console.log(a4.e);
 console.log(a4.d());
 console.log('a4', a4);
 
-1 === 1;
+// 1 === 1;
