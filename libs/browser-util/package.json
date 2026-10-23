@@ -1,41 +1,65 @@
 {
-  "name": "@upradata/browser-util",
-  "version": "0.0.1",
-  "description": "Library",
-  "type": "module",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
-  "exports": {
-    ".": {
-      "import": "./lib-esm/index.js",
-      "require": "./lib/index.js"
-    }
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "lib",
-    "lib-esm",
-    "docs"
-  ],
-  "scripts": {
-    "build": "rm -rf lib lib-esm && tsup src/index.ts src/**/*.ts --format cjs --outDir lib --clean && tsup src/index.ts src/**/*.ts --format esm --outDir lib-esm --clean",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "lint": "eslint src --ext .ts",
-    "docs": "typedoc src/index.ts --skipErrorChecking || true"
-  },
-  "keywords": [
-    "upradata"
-  ],
-  "author": "Upra-Data Contributors",
-  "license": "MIT",
-  "dependencies": {
-    "@upradata/util": "workspace:*",
-    "rxjs": "^7.5.3"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0"
-  }
+    "name": "@upradata/browser-util",
+    "version": "0.0.1",
+    "description": "Library",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./create-event-in-raf": {
+            "types": "./dist/create-event-in-raf.d.ts",
+            "import": "./dist/create-event-in-raf.js",
+            "require": "./dist/create-event-in-raf.cjs"
+        },
+        "./custom-events": {
+            "types": "./dist/custom-events.d.ts",
+            "import": "./dist/custom-events.js",
+            "require": "./dist/custom-events.cjs"
+        },
+        "./services": {
+            "types": "./dist/services/index.d.ts",
+            "import": "./dist/services/index.js",
+            "require": "./dist/services/index.cjs"
+        },
+        "./useful": {
+            "types": "./dist/useful.d.ts",
+            "import": "./dist/useful.js",
+            "require": "./dist/useful.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "scripts": {
+        "build": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --env.NODE_ENV production",
+        "dev": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --watch --env.NODE_ENV development",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "lint": "biome lint src",
+        "lint:fix": "biome lint --write src",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+    },
+    "keywords": [
+        "upradata"
+    ],
+    "author": "Upra-Data Contributors",
+    "license": "MIT",
+    "dependencies": {
+        "@upradata/util": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:^"
+    },
+    "types": "./dist/index.d.ts"
 }

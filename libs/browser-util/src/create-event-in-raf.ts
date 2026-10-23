@@ -1,4 +1,5 @@
-import { isUndefined, isDefined } from '@upradata/util';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import { isDefined, isUndefined } from '@upradata/util';
 import { guid } from './useful';
 
 /* import { rafFeature } from '@features-detection/features/js/requestAnimationFrame';
@@ -8,12 +9,12 @@ rafFeature.isSupported({ usePolyfill: true });
  */
 
 export class SourceEventOption {
-    eventName: string;
-    options: boolean | AddEventListenerOptions;
+    eventName!: string;
+    options!: boolean | AddEventListenerOptions;
 }
 
 export class DestinationEventOption {
-    eventName: string;
+    eventName!: string;
     getDetail?: (event: Event, ...any: any[]) => any;
     debug?: string = '';
 }
@@ -24,30 +25,34 @@ export class EventWrapperParam {
     destination = new DestinationEventOption();
 }
 
-
 export type RemoveListener = () => void;
 export type EventSourceName = string;
 
-
 export type NewEventName = string;
 export type EventName = string;
-export interface CacheParameter { elementTarget: EventTarget; eventName: string; }
-export interface CacheParameterWithEventNameOption { elementTarget: EventTarget; eventName?: string; }
+export interface CacheParameter {
+    elementTarget: EventTarget;
+    eventName: string;
+}
+export interface CacheParameterWithEventNameOption {
+    elementTarget: EventTarget;
+    eventName?: string;
+}
 
 export class ElementTargetCache<T> {
     // every EventTarget = HTMLElement really often, can have few EventName attached = 'scroll', 'resize', ...
     // And every EventName can save a data of type T
     cache = new Map<EventTarget, Map<EventName, T>>();
 
-    constructor() { }
+    // biome-ignore lint/complexity/noUselessConstructor: for clarity
+    constructor() {}
 
     getFirstOrSecondMapping(param: CacheParameterWithEventNameOption) {
         const { elementTarget, eventName } = param;
 
         const mapEventNameToData = this.cache.get(elementTarget);
 
-        if (isUndefined(mapEventNameToData) || isUndefined(eventName))
-            return mapEventNameToData;
+        if (isUndefined(mapEventNameToData) || isUndefined(eventName)) return mapEventNameToData;
 
         return mapEventNameToData.get(eventName);
     }
@@ -58,11 +63,9 @@ export class ElementTargetCache<T> {
 
     getEventTargetMapping(elementTarget: EventTarget): Map<EventName, T> {
         return this.getFirstOrSecondMapping({ elementTarget }) as Map<EventName, T>;
-
     }
 
-
-    set(param: CacheParameter & { data: T; }) {
+    set(param: CacheParameter & { data: T }) {
         const { elementTarget, eventName, data } = param;
         let mapEventNameToData = this.cache.get(elementTarget);
 
@@ -77,15 +80,15 @@ export class ElementTargetCache<T> {
     delete(param: CacheParameterWithEventNameOption) {
         const { elementTarget, eventName } = param;
 
-        if (isUndefined(eventName))
-            this.cache.delete(elementTarget);
-        else
-            this.cache.get(elementTarget).delete(eventName);
+        if (isUndefined(eventName)) this.cache.delete(elementTarget);
+        else (this.cache.get(elementTarget) as Map<EventName, T>).delete(eventName);
     }
 
     forEach(action: (data: T) => void) {
         this.cache.forEach(newEventToRemover => {
-            newEventToRemover.forEach(data => action(data));
+            newEventToRemover.forEach(data => {
+                action(data);
+            });
         });
     }
 }
@@ -106,36 +109,36 @@ export class EventWrapperInRaf {
     // RemoveListener : Map<EventSourceName, RemoveListener> = new Map();
     static _instance: EventWrapperInRaf;
 
-    constructor() { }
+    constructor() {}
 
     static get instance(): EventWrapperInRaf {
-
-        if (isUndefined(EventWrapperInRaf._instance))
-            EventWrapperInRaf._instance = new EventWrapperInRaf();
+        if (isUndefined(EventWrapperInRaf._instance)) EventWrapperInRaf._instance = new EventWrapperInRaf();
 
         return EventWrapperInRaf._instance;
     }
 
     create(wrapperParameters: EventWrapperParam) {
-        const param = Object.assign(new EventWrapperParam(), wrapperParameters);
+        const param = Object.assign(new EventWrapperParam(), wrapperParameters) as Required<EventWrapperParam>;
+
         const { elementTarget, source } = param;
 
-        if (this.destinationEventNameExists(wrapperParameters))
+        if (this.destinationEventNameExists(param))
             throw new Error(`${param.destination.eventName} already exists. It cannot be created twice.`);
 
-        let handlerFactory: (eventParam: EventWrapperParam) => EventListenerOrEventListenerObject;
+        let handlerFactory: (eventParam: Required<EventWrapperParam>) => EventListenerOrEventListenerObject;
 
-        if (window.requestAnimationFrame === undefined)
+        if (window.requestAnimationFrame === undefined) {
             handlerFactory = this.createHandlerFallback.bind(this);
-        else
+        } else {
             handlerFactory = this.createRafHandler.bind(this);
+        }
 
         const { eventName: sourceEventName, options } = source;
         const handler = handlerFactory(param);
         elementTarget.addEventListener(sourceEventName, handler, options);
 
         const remover = () => elementTarget.removeEventListener(sourceEventName, handler, options);
-        this.setRemover(wrapperParameters, remover);
+        this.setRemover(param, remover);
         /*  this.removerStore.set({
              elementTarget,
              eventName: sourceEventName,
@@ -145,26 +148,36 @@ export class EventWrapperInRaf {
          }); */
     }
 
-    setRemover(wrapperParameters: EventWrapperParam, remover: RemoveListener) {
+    setRemover(wrapperParameters: Required<EventWrapperParam>, remover: RemoveListener) {
         const { elementTarget, source, destination } = wrapperParameters;
 
-        console.assert(isUndefined(this.targetMapToNewEventMapToSourceEvent.get({ elementTarget, eventName: destination.eventName })), `${destination.eventName} already exists`);
+        console.assert(
+            isUndefined(
+                this.targetMapToNewEventMapToSourceEvent.get({ elementTarget, eventName: destination.eventName }),
+            ),
+            `${destination.eventName} already exists`,
+        );
 
         let newEventsMap = this.removerStore.get({ elementTarget, eventName: source.eventName });
 
         if (isUndefined(newEventsMap)) {
             newEventsMap = new Map();
             this.removerStore.set({
-                elementTarget, eventName: source.eventName, data: newEventsMap
+                elementTarget,
+                eventName: source.eventName,
+                data: newEventsMap,
             });
         }
 
         newEventsMap.set(destination.eventName, remover);
-        this.targetMapToNewEventMapToSourceEvent.set({ elementTarget, eventName: destination.eventName, data: source.eventName });
-
+        this.targetMapToNewEventMapToSourceEvent.set({
+            elementTarget,
+            eventName: destination.eventName,
+            data: source.eventName,
+        });
     }
 
-    destinationEventNameExists(wrapperParameters: EventWrapperParam) {
+    destinationEventNameExists(wrapperParameters: Required<EventWrapperParam>) {
         /* const { elementTarget, source, destination } = eventParam;
 
         const newEventsMap = this.removerStore.get({ elementTarget, eventName: source.eventName });
@@ -174,20 +187,26 @@ export class EventWrapperInRaf {
         const remover = newEventsMap.get(destination.eventName);
         return isDefined(remover); */
         const { elementTarget, destination } = wrapperParameters;
-        const sourceEventName = this.targetMapToNewEventMapToSourceEvent.get({ elementTarget, eventName: destination.eventName });
+        const sourceEventName = this.targetMapToNewEventMapToSourceEvent.get({
+            elementTarget,
+            eventName: destination.eventName,
+        });
 
         return isDefined(sourceEventName);
     }
 
     removeEventListener(elementTarget: EventTarget, newEventName: string) {
-        const sourceEventName = this.targetMapToNewEventMapToSourceEvent.get({ elementTarget, eventName: newEventName });
+        const sourceEventName = this.targetMapToNewEventMapToSourceEvent.get({
+            elementTarget,
+            eventName: newEventName,
+        });
 
         const newEventsMap = this.removerStore.get({ elementTarget, eventName: sourceEventName });
 
         if (isDefined(newEventsMap)) {
             // cannot be undefined because it exists in targetMapToNewEventMapToSourceEvent
             const removeListner = newEventsMap.get(newEventName);
-            removeListner();
+            removeListner?.();
             this.removerStore.delete({ elementTarget, eventName: sourceEventName });
             this.targetMapToNewEventMapToSourceEvent.delete({ elementTarget, eventName: newEventName });
         }
@@ -195,20 +214,26 @@ export class EventWrapperInRaf {
 
     removeAllEventListeners() {
         this.removerStore.forEach(newEventsMap => {
-            newEventsMap.forEach(remover => remover());
+            newEventsMap.forEach(remover => {
+                remover();
+            });
         });
         this.removerStore.cache.clear();
         this.targetMapToNewEventMapToSourceEvent.cache.clear();
     }
 
-
-    private createRafHandler(wrapperParameters: EventWrapperParam) {
-        const { elementTarget, destination: { eventName: newEventName } } = wrapperParameters;
+    private createRafHandler(wrapperParameters: Required<EventWrapperParam>) {
+        const {
+            elementTarget,
+            destination: { eventName: newEventName },
+        } = wrapperParameters;
 
         let running = false;
 
         const handler = (event: Event) => {
-            if (running) { return; }
+            if (running) {
+                return;
+            }
 
             running = true;
             requestAnimationFrame(() => {
@@ -223,7 +248,7 @@ export class EventWrapperInRaf {
         return handler;
     }
 
-    private createHandlerFallback(wrapperParameters: EventWrapperParam) {
+    private createHandlerFallback(wrapperParameters: Required<EventWrapperParam>) {
         return (event: Event) => {
             const newEventName = wrapperParameters.destination.eventName;
 
@@ -232,14 +257,11 @@ export class EventWrapperInRaf {
         };
     }
 
-
     private getDetail(event: Event, wrapperParameters: EventWrapperParam) {
         const { debug, getDetail } = wrapperParameters.destination;
 
         const detail = getDetail ? getDetail(event) : {}; // last event is captured
-        if (debug !== '')
-            detail[ 'debug-' + EventWrapperInRaf.uniqueId ] = debug;
-
+        if (debug !== '') detail[`debug-${EventWrapperInRaf.uniqueId}`] = debug;
 
         return detail;
     }
