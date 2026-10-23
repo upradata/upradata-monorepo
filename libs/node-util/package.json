@@ -110,8 +110,8 @@
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
         "test:coverage": "vitest run --coverage",
-        "lint": "eslint src --ext .ts",
-        "lint:fix": "eslint src --ext .ts --fix",
+        "lint": "biome lint src",
+        "lint:fix": "biome lint --write src",
         "docs": "typedoc src/index.ts --skipErrorChecking || true"
     },
     "keywords": [ "upradata", "node", "util", "utility" ],

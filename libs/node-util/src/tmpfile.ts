@@ -4,8 +4,7 @@ import { promisify } from 'node:util';
 
 import { stripIndents, type TT$ } from '@upradata/util';
 import fs from 'fs-extra';
-import { guuid, type SyncAsync } from './useful';
-
+import { guid, type SyncAsync } from './useful';
 
 const existsFile = promisify(fs.exists);
 
@@ -13,10 +12,8 @@ const getFile = (mode: keyof SyncAsync, option: TmpFileOption = {}): TT$<string>
     const { tmpDirRoot = os.tmpdir(), prefix = '' } = option;
 
     const get = (i: number = 0): TT$<string> => {
-
         const tmpFile = (name: string, exist: boolean) => {
-            if (!exist)
-                return name;
+            if (!exist) return name;
 
             if (i > 10) {
                 throw new Error(stripIndents`Could not create a temporary file in ${tmpDirRoot}:
@@ -26,15 +23,16 @@ const getFile = (mode: keyof SyncAsync, option: TmpFileOption = {}): TT$<string>
             return get(i + 1);
         };
 
-        const id = guuid().slice(0, 6);
+        const id = guid().slice(0, 6);
 
         const name = path.join(tmpDirRoot, `${prefix}${id}`);
-        return mode === 'sync' ? tmpFile(name, fs.existsSync(name)) : existsFile(name).then(exist => tmpFile(name, exist));
+        return mode === 'sync'
+            ? tmpFile(name, fs.existsSync(name))
+            : existsFile(name).then(exist => tmpFile(name, exist));
     };
 
     return get();
 };
-
 
 export interface TmpFileOption {
     tmpDirRoot?: string;
@@ -43,9 +41,8 @@ export interface TmpFileOption {
 
 export const tmpFileName = {
     sync: (option?: TmpFileOption) => getFile('sync', option) as string,
-    async: (option?: TmpFileOption) => getFile('async', option) as Promise<string>
+    async: (option?: TmpFileOption) => getFile('async', option) as Promise<string>,
 };
-
 
 export const createTmpDir = {
     sync: (option?: TmpFileOption) => {
@@ -59,5 +56,5 @@ export const createTmpDir = {
         await fs.ensureDir(dirname);
 
         return dirname;
-    }
+    },
 };

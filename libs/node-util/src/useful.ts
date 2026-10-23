@@ -74,7 +74,7 @@ export const execSync = async (
 };
 
 // export const guid = guidGenerator({ rng: array => crypto.randomFillSync(array) });
-export const guuid = () =>
+export const guid = () =>
     guidGenerator({
         crypto: {
             getRandomValues: <T extends Uint8Array<ArrayBuffer>>(array: T): T => {
