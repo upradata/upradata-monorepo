@@ -1,22 +1,21 @@
-
+import { describe, expect, it } from 'vitest';
 import { AppInjector, DiInjector } from '../src';
 
-
-
-
 describe('AppInjector', () => {
-
     it('should init', () => {
-        class MyService { foo = 'Hello World'; }
+        class MyService {
+            foo = 'Hello World';
+        }
 
         AppInjector.init();
 
         expect(AppInjector.root.get(MyService).foo).toBe('Hello World');
     });
 
-
     it('should use provider injector', () => {
-        class MyService { foo = 'Hello World'; }
+        class MyService {
+            foo = 'Hello World';
+        }
 
         const app = new DiInjector();
         AppInjector.init({ injector: app });

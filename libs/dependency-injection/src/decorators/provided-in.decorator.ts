@@ -1,8 +1,9 @@
-import { Injector } from '../injector';
-import { ClassToken, DI_PROVIDED_IN, } from '../token';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import type { Injector } from '../injector';
+import { type ClassToken, DI_PROVIDED_IN } from '../token';
 
-export type ProvidedInConfig = { injector: Injector; };
+export type ProvidedInConfig = { injector: Injector };
 
 export const ProvidedIn = (serviceConfig: ProvidedInConfig) => (klass: ClassToken<any>) => {
-    klass[ DI_PROVIDED_IN ] = serviceConfig.injector;
+    klass[DI_PROVIDED_IN] = serviceConfig.injector;
 };

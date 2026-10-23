@@ -1,12 +1,11 @@
-import { ProviderToken, ClassProviderToken } from './token';
-
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import type { ClassProviderToken, ProviderToken } from './token';
 
 export interface ClassProvider<T> {
     provide: ProviderToken<T>;
     useClass: ClassProviderToken<T>;
     provideInRoot?: boolean;
 }
-
 
 export interface FactoryProvider<T> {
     provide: ProviderToken<T>;
@@ -15,13 +14,11 @@ export interface FactoryProvider<T> {
     provideInRoot?: boolean;
 }
 
-
 export interface ValueProvider<T> {
     provide: ProviderToken<T>;
     useValue: T;
     provideInRoot?: boolean;
 }
-
 
 export type Provider<T> = ValueProvider<T> | ClassProvider<T> | FactoryProvider<T>;
 

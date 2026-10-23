@@ -1,25 +1,17 @@
-
-import { Injector, InjectorOptions } from './injector';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import { Injector, type InjectorOptions } from './injector';
+import { type FactoryProvider, isClassProvider, isFactoryProvider, isValueProvider, type Provider } from './provider';
 import {
-    FactoryProvider,
-    isClassProvider,
-    isFactoryProvider,
-    isValueProvider,
-    Provider
-} from './provider';
-import {
-    ClassProviderToken,
-    ClassToken,
+    type ClassProviderToken,
+    type ClassToken,
     DI_CREATE_INSTANCE,
     DI_DEPS,
     DI_PROVIDED_IN,
     DI_PROVIDED_IN_ROOT,
-    IdToken,
+    type IdToken,
     isClassToken,
-    ProviderToken
+    type ProviderToken,
 } from './token';
-
-
 
 /**
  * Create an instance of a Dependency injector.
@@ -29,16 +21,19 @@ import {
  * @param parent a parent instance of Injector
  */
 export class DiInjector extends Injector {
-    private classProviderMap: WeakMap<ClassToken<any>, any>;
-    private idProviderMap: Map<IdToken<any>, any>;
+    private classProviderMap!: WeakMap<ClassToken<any>, any>;
+    private idProviderMap!: Map<IdToken<any>, any>;
 
     constructor(opts?: InjectorOptions, parent?: Injector) {
         super(opts, parent);
 
         this.init();
 
-        if (this.opts.bootstrap)
-            this.opts.bootstrap.forEach(provider => this.get(provider));
+        if (this.opts.bootstrap !== undefined) {
+            this.opts.bootstrap.forEach(provider => {
+                this.get(provider);
+            });
+        }
     }
 
     private init() {
@@ -53,17 +48,16 @@ export class DiInjector extends Injector {
     resetAll() {
         const loopParent = (current: Injector): void => {
             current.reset();
-            return current.parent ? loopParent(current.parent) : undefined;
+            if (current.parent) loopParent(current.parent);
         };
 
         loopParent(this);
     }
 
     root(): Injector {
-        const root = (current: Injector): Injector => current.parent ? root(current.parent) : current;
+        const root = (current: Injector): Injector => (current.parent ? root(current.parent) : current);
         return root(this);
     }
-
 
     /**
      * recursively check if a singleton instance is available for a provider
@@ -72,25 +66,23 @@ export class DiInjector extends Injector {
         return !!this.whoHas(token);
     }
 
-    whoHas(token: ProviderToken<any>): Injector {
+    whoHas(token: ProviderToken<any>): Injector | undefined {
         const hasToken = this.classProviderMap.has(token) || this.idProviderMap.has(token);
 
-        return hasToken ? this : this.parent?.whoHas(token) ?? null;
+        return hasToken ? this : (this.parent?.whoHas(token) ?? undefined);
     }
 
     getNewValue<T>(token: ProviderToken<T>): T {
         const provider = this.getProviderFromOptions(token);
 
         // if an override is available for this Injector use that
-        if (provider)
-            return this.createFromOverride(provider);
+        if (provider) return this.createFromOverride(provider);
 
-        if (isClassToken(token))
-            return this.createInstance(token as ClassProviderToken<any>);
+        if (isClassToken(token)) return this.createInstance(token as ClassProviderToken<any>);
 
-        return null;
+        //return null;
+        throw new Error(`The token "${token}" is not a class and does not have any provider defined`);
     }
-
 
     private set<T>(token: ProviderToken<T>, value: any): void {
         if (isClassToken(token)) {
@@ -117,56 +109,47 @@ export class DiInjector extends Injector {
             return value;
         }
 
-        return null;
-        // throw new Error(`The token "${token}" is not a class and does not have any provider defined`);
+        // return null;
+        throw new Error(`The token "${token}" is not a class and does not have any provider defined`);
     }
-
 
     /**
      * fetches a singleton instance of a provider
      */
     get<T>(token: ProviderToken<T>): T {
-
-        if (isClassToken(token) && token[ DI_PROVIDED_IN ] && token[ DI_PROVIDED_IN ] !== this) {
-            return token[ DI_PROVIDED_IN ].getStrict(token);
+        if (isClassToken(token) && token[DI_PROVIDED_IN] && token[DI_PROVIDED_IN] !== this) {
+            return token[DI_PROVIDED_IN].getStrict(token);
         }
 
-        if (isClassToken(token) && (token[ DI_PROVIDED_IN_ROOT ] || token.providedInRoot) && this.parent) {
+        if (isClassToken(token) && (token[DI_PROVIDED_IN_ROOT] || token.providedInRoot) && this.parent) {
             return this.root().getStrict(token);
         }
 
-
-        if (this.getProviderFromOptions(token))
-            return this.getStrict(token);
+        if (this.getProviderFromOptions(token)) return this.getStrict(token);
 
         const injector = this.whoHas(token);
 
-        if (injector)
-            return injector.getStrict(token);
+        if (injector) return injector.getStrict(token);
 
         return this.getStrict(token);
     }
 
-
     createInstance<T>(P: ClassProviderToken<T>): T {
-        P[ DI_CREATE_INSTANCE ] = true;
+        P[DI_CREATE_INSTANCE] = true;
 
-        const instance = P[ DI_DEPS ] ? new P(...P[ DI_DEPS ].map(dep => this.get(dep))) : new P();
+        const instance = P[DI_DEPS] ? new P(...P[DI_DEPS].map(dep => this.get(dep))) : new P();
 
-        delete P[ DI_CREATE_INSTANCE ];
+        delete P[DI_CREATE_INSTANCE];
 
         return instance;
     }
 
     private createFromOverride<T>(provider: Provider<T>): T {
-        if (isValueProvider(provider))
-            return provider.useValue;
+        if (isValueProvider(provider)) return provider.useValue;
 
-        if (isClassProvider(provider))
-            return this.createInstance(provider.useClass);
+        if (isClassProvider(provider)) return this.createInstance(provider.useClass);
 
-        if (isFactoryProvider(provider))
-            return this.createFromFactory(provider);
+        if (isFactoryProvider(provider)) return this.createFromFactory(provider);
 
         throw new Error(`Provider type must be a value, class or factory.`);
     }

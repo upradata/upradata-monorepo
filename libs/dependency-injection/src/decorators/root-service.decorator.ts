@@ -1,5 +1,6 @@
-import { ClassToken, DI_PROVIDED_IN_ROOT } from '../token';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import { type ClassToken, DI_PROVIDED_IN_ROOT } from '../token';
 
 export const RootService = () => (klass: ClassToken<any>) => {
-    klass[ DI_PROVIDED_IN_ROOT ] = true;
+    klass[DI_PROVIDED_IN_ROOT] = true;
 };
