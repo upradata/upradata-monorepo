@@ -1,8 +1,8 @@
 {
+    "$schema": "https://json.schemastore.org/tsconfig",
     "compilerOptions": {
-        "target": "ES2022",
-        "module": "ESNext",
-        "lib": [ "ESNext" ],
+        "target": "es2025",
+        "module": "esnext",
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
@@ -17,6 +17,7 @@
         "strictFunctionTypes": true,
         "strictPropertyInitialization": true,
         "noImplicitThis": true,
-        "alwaysStrict": true
+        "alwaysStrict": true,
+        "types": [ "*" ]
     }
 }

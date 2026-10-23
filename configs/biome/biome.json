@@ -24,6 +24,9 @@
             "arrowParentheses": "asNeeded",
             "semicolons": "always",
             "trailingNewline": true
+        },
+        "parser": {
+            "unsafeParameterDecoratorsEnabled": true
         }
     },
     "css": {

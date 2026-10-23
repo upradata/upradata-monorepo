@@ -2,7 +2,7 @@ import { createConfig, type GetConfig } from './tsup-config.base';
 
 export const neutralLibConfig: GetConfig = ({ previousConfig }) => ({
     ...previousConfig,
-    entry: ['src/**/*.ts', '!src/**/*.test.ts', '!src/**/*.d.ts'],
+    entry: ['src/**/*.ts', '!src/**/*.test.ts', '!src/**/*.spec.ts', '!src/**/*.d.ts', '!src/@types/**/*.ts'],
     platform: 'neutral',
     bundle: false,
     splitting: false,
