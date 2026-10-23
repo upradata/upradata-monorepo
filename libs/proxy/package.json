@@ -1,41 +1,51 @@
 {
-  "name": "@upradata/proxy",
-  "version": "0.0.1",
-  "description": "Library",
-  "type": "module",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
-  "exports": {
-    ".": {
-      "import": "./lib-esm/index.js",
-      "require": "./lib/index.js"
-    }
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "lib",
-    "lib-esm",
-    "docs"
-  ],
-  "scripts": {
-    "build": "rm -rf lib lib-esm && tsup src/index.ts src/**/*.ts --format cjs --outDir lib --clean && tsup src/index.ts src/**/*.ts --format esm --outDir lib-esm --clean",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "lint": "eslint src --ext .ts",
-    "docs": "typedoc src/index.ts --skipErrorChecking || true"
-  },
-  "keywords": [
-    "upradata"
-  ],
-  "author": "Upra-Data Contributors",
-  "license": "MIT",
-  "dependencies": {
-    "@upradata/util": "workspace:*",
-    "rxjs": "^7.3.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0"
-  }
+    "name": "@upradata/proxy",
+    "version": "0.0.1",
+    "description": "Library",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./node": {
+            "types": "./dist/node/index.d.ts",
+            "import": "./dist/node/index.js",
+            "require": "./dist/node/index.cjs"
+        },
+        "./proxy": {
+            "types": "./dist/proxy.d.ts",
+            "import": "./dist/proxy.js",
+            "require": "./dist/proxy.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [ "dist", "docs" ],
+    "scripts": {
+        "build": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --env.NODE_ENV production",
+        "dev": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --watch --env.NODE_ENV development",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "lint": "biome lint src",
+        "lint:fix": "biome lint --write src",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+    },
+    "keywords": [ "upradata" ],
+    "author": "Upra-Data Contributors",
+    "license": "MIT",
+    "dependencies": {
+        "@upradata/util": "workspace:*",
+        "rxjs": "^7.8.2"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:^"
+    },
+    "types": "./dist/index.d.ts"
 }

@@ -1,19 +1,23 @@
-import { isNil, assignRecursive, AssignOptions } from '@upradata/util';
+/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
+/** biome-ignore-all lint/style/noNonNullAssertion: <explanation> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import { AssignOptions, assignRecursive, isNil } from '@upradata/util';
 import { Proxy } from '../proxy';
 import { Node } from './node';
-import { AllNodeOpts, NodeState } from './node.options';
+import type { AllNodeOpts, NodeState } from './node.options';
 
 export class NodeUndefined<T, E> extends Node<T, E> {
-
     constructor(target: T, options?: AllNodeOpts<T, E>, state?: Partial<NodeState>) {
         super(
             target,
             assignRecursive(
-                {}, options,
+                {},
+                options,
                 { private: { type: { isPrimitive: true } } },
-                new AssignOptions({ nonRecursivelyAssignableTypes: [ Proxy ] })
+                new AssignOptions({ nonRecursivelyAssignableTypes: [Proxy as any] }),
             ),
-            { ...state, bypassUsersTrap: true });
+            { ...state, bypassUsersTrap: true },
+        );
     }
 
     public sameType(_value: T) {
@@ -21,7 +25,8 @@ export class NodeUndefined<T, E> extends Node<T, E> {
     }
 
     public doSet(value: T) {
-        const parentNode = Proxy.node(this.parentProxy);
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        const parentNode = Proxy.node(this.parentProxy!);
 
         if (isNil(value)) {
             // value is undefined or null
@@ -33,14 +38,14 @@ export class NodeUndefined<T, E> extends Node<T, E> {
             // value is something (literal or object)
             // we unset proxy[prop] (so NodeUndefined will be destroyed and a Literal or Object Node will be created instead)
             // ==> lazy creation
-            const oldReset = parentNode.state.$.options.trap.set.reset;
-            parentNode.state.$.options.trap.set.reset = true;
+            const oldReset = parentNode.state.$!.options!.trap.set.reset;
+            parentNode.state.$!.options!.trap.set.reset = true;
 
             parentNode.createProxyIfNecessary(this.prop, value);
 
-            parentNode.state.$.options.trap.set.reset = oldReset;
+            parentNode.state.$!.options!.trap.set.reset = oldReset;
 
-            parentNode.proxy[/* parentNode.selected */this.prop ] = value;
+            (parentNode.proxy as any)[/* parentNode.selected */ this.prop] = value;
         }
 
         this.state.update({ targetUpdated: true });

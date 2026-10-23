@@ -1,22 +1,29 @@
-import { assignRecursive, isDefined, Key } from '@upradata/util';
-import { Proxy, ProxyType } from '../proxy';
-import { InnerGet } from './description-factory';
-import { NodeProperty, PropertyState } from './node-property';
-import { AllNodeOpts, NodeOptions, NodePrivateOptions, SetOptions, NodeOpts, NodeState, NodeType } from './node.options';
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
+import { assignRecursive, isDefined, type Key } from '@upradata/util';
+import { Proxy, type ProxyType } from '../proxy';
+import type { InnerGet } from './description-factory';
+import {
+    type AllNodeOpts,
+    NodeOptions,
+    type NodeOpts,
+    NodePrivateOptions,
+    NodeState,
+    NodeType,
+    SetOptions,
+} from './node.options';
+import { NodeProperty, type PropertyState } from './node-property';
 import { ImmutableValue } from './util';
-
-
 
 export abstract class Node<T, E> {
     public target: T;
-    protected _proxy: Proxy<T, E>;
-    public parentProxy: Proxy<any, E>;  // set the parent proxy ancestor
+    protected _proxy!: Proxy<T, E>;
+    public parentProxy!: Proxy<any, E> | undefined; // set the parent proxy ancestor
     public properties = new Set<Key>(); // for debugging
-    public prop: Key = undefined;
+    public prop!: Key;
     public type: ImmutableValue<NodeType>;
     public state: ImmutableValue<NodeState>;
     public options: NodeOptions<T, E>;
-
 
     constructor(target: T, options: AllNodeOpts<T, E> = {}, state?: Partial<NodeState>) {
         const { private: privateOptions, public: publicOptions } = options;
@@ -29,12 +36,11 @@ export abstract class Node<T, E> {
         Object.assign(this, new NodePrivateOptions(privateOptions));
 
         this.type = new ImmutableValue(new NodeType());
-        this.type.update(privateOptions.type);
+        this.type.update(privateOptions?.type);
 
         this.state = new ImmutableValue(new NodeState());
         this.state.update(state);
     }
-
 
     get proxy(): Proxy<T, E> {
         return this._proxy;
@@ -57,35 +63,31 @@ export abstract class Node<T, E> {
         } */
     }
 
-    public getNodeFromProp(prop: Key): Node<T, E> {
-        return Proxy.node(this.getProxyFromProp(prop));
+    public getNodeFromProp(prop: Key): Node<T, E> | undefined {
+        const proxy = this.getProxyFromProp(prop);
+        return proxy ? Proxy.node(proxy) : undefined;
     }
 
-
-    public getProxyFromProp(prop: Key): Proxy<T, E> {
+    public getProxyFromProp(prop: Key): Proxy<T, E> | undefined {
         const descr = Object.getOwnPropertyDescriptor(this.proxy, prop);
-        if (descr === undefined)
-            return undefined;
+        if (descr === undefined) return undefined;
 
         const get = descr.get as InnerGet<T, E>;
         return get({ plainProxy: true });
     }
 
-
     public createProxyIfNecessary(prop: Key, value: any): PropertyState {
         return new NodeProperty(this, prop, value).createProxyIfNecessary();
     }
 
-
     protected updateTarget(prop: Key, value: any) {
-        if (this.type.$.isPrimitive) {
-
-            const parentNode = Proxy.node(this.parentProxy);
+        if (this.type.$?.isPrimitive) {
+            // biome-ignore lint/style/noNonNullAssertion: it is sure that parentProxy is defined if we are at a primitive node
+            const parentNode = Proxy.node(this.parentProxy!);
             this.target = value;
-            parentNode.target[ prop ] = this.target;
-
+            parentNode.target[prop] = this.target;
         } else {
-            this.target[ prop ] = value;
+            (this.target as any)[prop] = value;
         }
     }
 
@@ -95,8 +97,7 @@ export abstract class Node<T, E> {
         // (not for c and d even if there were defined)
 
         // if we are at the starting entry node in the tree and we finished updating all properties
-        if (isDefined(this.parentProxy) && !this.state.$.beingVisited) {
-
+        if (isDefined(this.parentProxy) && !this.state.$?.beingVisited) {
             let { prop, parentProxy: proxy } = this;
 
             while (isDefined(proxy)) {
@@ -104,27 +105,27 @@ export abstract class Node<T, E> {
 
                 // we propagate upward the tree
                 node.options.propChanged?.call(
-                    proxy,
+                    proxy as unknown as ProxyType<any, E>,
                     prop,
-                    Proxy.node(node.proxy[ prop ]).target
+                    Proxy.node((node.proxy as any)[prop]).target,
                 );
 
                 prop = node.prop;
-                proxy = node.parentProxy;
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                proxy = node.parentProxy!;
             }
         }
     }
 
-
     set(value: any, options?: NodeOpts<T, E>): Node<T, E> {
         // const opts = assignRecursive({}, this.options.trap.set, this.state.$.options?.trap.set, setOptions);
-        const opts = assignRecursive({}, this.options, this.state.$.options, options);
+        const opts = assignRecursive({}, this.options, this.state.$?.options, options);
 
         /*  if (isUndefined(this.state.$.options))
              this.state.update({ options: new NodeOptions() }); // just to create the options object if it is not already
 
          this.state.$.options.trap.set = options; */
-        this.state.update({ options: opts });
+        this.state.update({ options: opts as any });
 
         this.doSet(value);
 
@@ -135,10 +136,12 @@ export abstract class Node<T, E> {
         return this;
     }
 
-
     abstract sameType(value: any): boolean;
     abstract doSet(param: any): void;
 }
 
-
-export type NodeConstructor<T, E> = new (target: T, node: AllNodeOpts<T, E>, initState?: Partial<NodeState>) => Node<T, E>;
+export type NodeConstructor<T, E> = new (
+    target: T,
+    node: AllNodeOpts<T, E>,
+    initState?: Partial<NodeState>,
+) => Node<T, E>;

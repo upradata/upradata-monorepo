@@ -1,10 +1,9 @@
 export * from './description-factory';
-// export * from './extra';
 export * from './handler';
+export * from './node';
+export * from './node.options';
 export * from './node-literal';
 export * from './node-object';
 export * from './node-property';
 export * from './node-undefined';
-export * from './node.options';
-export * from './node';
 export * from './util';

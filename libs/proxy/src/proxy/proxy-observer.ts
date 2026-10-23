@@ -1,15 +1,17 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** biome-ignore-all lint/style/noNonNullAssertion: <explanation> */
+/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
+/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
+import { assignRecursive, isDefined, type Key } from '@upradata/util';
 import { ReplaySubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { assignRecursive, isDefined, Key } from '@upradata/util';
-import { Node } from '../node';
-import { Proxy, ProxyOpts, Extra } from './proxy';
-
+import type { Node } from '../node';
+import { type Extra, Proxy, type ProxyOpts } from './proxy';
 
 interface PropValue<T = any> {
     prop: Key;
     value: T;
 }
-
 
 // type Target<T, Extra> = TargetAugmented</* Partial<T> */T, Extra>;
 
@@ -27,16 +29,14 @@ interface PropValue<T = any> {
 
 export type ProxyTypeObserver<T, E = {}> = Partial<ProxyObserver<T, E>> & Target<T, E> & E; // Partial<E>; */
 type _Proxy<T, E> = {
-    [ Key in keyof T ]: _Proxy<T[ Key ], E> & Partial<ProxyObserver<T[ Key ], E>> & _ProxyExtra<E>;
+    [Key in keyof T]: _Proxy<T[Key], E> & Partial<ProxyObserver<T[Key], E>> & _ProxyExtra<E>;
 };
 
 type _ProxyExtra<E> = {
-    [ Key in keyof E ]: _ProxyExtra<Extra<E[ Key ]>> & Partial<ProxyObserver<Extra<E[ Key ]>, {}>>;
+    [Key in keyof E]: _ProxyExtra<Extra<E[Key]>> & Partial<ProxyObserver<Extra<E[Key]>, {}>>;
 };
 
 export type ProxyTypeObserver<T, E = {}> = Partial<ProxyObserver<T, E>> & _Proxy<T, E> & _ProxyExtra<E>;
-
-
 
 export class ProxyObserver<T, E = {}> extends Proxy<T, E> {
     changed$ = new ReplaySubject<PropValue<T>>(1);
@@ -45,28 +45,26 @@ export class ProxyObserver<T, E = {}> extends Proxy<T, E> {
         super(node);
     }
 
-
     static create<T, E = {}>(target?: T, options?: ProxyOpts<T, E>): ProxyTypeObserver<T, E> {
         const observerOptions = {
             handler: {
-                // eslint-disable-next-line object-shorthand
                 set: function (prop: Key, value) {
-                    this[ prop ] = value;
-                    const success = Proxy.node(this[ prop ]).state.$.targetUpdated;
+                    (this as any)[prop] = value;
+                    const success = Proxy.node((this as any)[prop]).state.$!.targetUpdated;
 
                     if (success)
-                        this[ prop as Key ].changed$.next({ prop, value: this[ prop as Key ].$$ });
+                        (this as any)[prop as Key].changed$.next({ prop, value: (this as any)[prop as Key].$$ });
 
                     return success;
-                }
+                },
             },
             // eslint-disable-next-line object-shorthand
             propChanged: function (prop: Key, value: any) {
-                this[ prop ].changed$.next({ prop, value });
-            }
+                (this as any)[prop].changed$.next({ prop, value });
+            },
         } as ProxyOpts<T, E>;
 
-        const allOptions = assignRecursive(observerOptions, options);
+        const allOptions = assignRecursive(observerOptions, options) as any;
 
         return Proxy.create(target, allOptions, ProxyObserver) as ProxyTypeObserver<T, E>;
     }
@@ -85,31 +83,29 @@ export class ProxyObserver<T, E = {}> extends Proxy<T, E> {
         // const selected = Proxy.node(parentProxy).selected;
         const fromProp = Proxy.node(this).prop;
 
-        /* this */parentProxy[/* selected */fromProp ].changed$.pipe(
-            filter(() => !fromTarget) // to prevent looping
-        ).
-            subscribe(({ /* prop, */ value }) => {
+        /* this */ ((parentProxy as any)[/* selected */ fromProp]! as ProxyObserver<T, E>).changed$
+            .pipe(filter(() => !fromTarget)) // to prevent looping
+            .subscribe(({ /* prop, */ value }) => {
                 fromSource = true;
-                toProxy.$(mapping.fromTo(value));
+                toProxy.$!(mapping.fromTo(value));
                 fromSource = false;
             });
 
-
         if (isDefined(mapping.toFrom)) {
-            toProxy.changed$.pipe(
-                filter(() => !fromSource) // to prevent looping
-            ).subscribe(({ /* prop, */ value }) => {
-                fromTarget = true;
-                /* this */parentProxy[/* selected */fromProp ].$(mapping.toFrom(value));
-                fromTarget = false;
-            });
+            toProxy
+                .changed$!.pipe(
+                    filter(() => !fromSource), // to prevent looping
+                )
+                .subscribe(({ /* prop, */ value }) => {
+                    fromTarget = true;
+                    (parentProxy as any)[/* selected */ fromProp].$!(mapping.toFrom?.(value));
+                    fromTarget = false;
+                });
         }
-
 
         return toProxy;
     }
 }
-
 
 interface Mapping<T, U> {
     fromTo: (value: T) => U;

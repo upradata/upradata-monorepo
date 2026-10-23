@@ -1,12 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./lib",
-    "rootDir": "./src",
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "lib", "lib-esm", "**/*.test.ts"]
+    "extends": "@upradata/tsconfig/neutral.json",
+    "include": [ "src/**/*.ts" ],
+    "exclude": [ "node_modules", "dist", "**/*.test.ts", "**/*.spec.ts" ],
+    "compilerOptions": {
+        "rootDir": "./src"
+    }
 }

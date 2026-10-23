@@ -1,51 +1,66 @@
-/* eslint-disable object-shorthand */
+import { describe, expect, it } from 'vitest';
 
-import { Proxy, ProxyType } from '../src';
-import { makeTarget, Target } from './data';
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
+import { Proxy, type ProxyType } from '../src';
+import { makeTarget, type Target } from './data';
+
+const fail = (arg: string) => {
+    throw new Error(arg);
+};
 
 describe('set trap', () => {
-
     it('set trap should be invoked for each prop', () => {
-
         const target = makeTarget();
 
         Proxy.create<Target>(target, {
             handler: {
                 set: function (prop, value) {
                     switch (prop) {
-                        case 'root' as string: expect(value).toEqual(target); break;
-                        case 'a': expect(value).toBe(1); break;
-                        case 'b': expect(value).toEqual({ b1: 2 }); break;
-                        case 'b1': expect(value).toBe(2); break;
-                        case 'c': expect(value).toEqual({ c1: 3 }); break;
-                        case 'c1': expect(value).toBe(3); break;
+                        case 'root' as string:
+                            expect(value).toEqual(target);
+                            break;
+                        case 'a':
+                            expect(value).toBe(1);
+                            break;
+                        case 'b':
+                            expect(value).toEqual({ b1: 2 });
+                            break;
+                        case 'b1':
+                            expect(value).toBe(2);
+                            break;
+                        case 'c':
+                            expect(value).toEqual({ c1: 3 });
+                            break;
+                        case 'c1':
+                            expect(value).toBe(3);
+                            break;
                         // eslint-disable-next-line no-undef
-                        default: fail('property not valid');
+                        default:
+                            fail('property not valid');
                     }
 
-                    this[ prop ] = value;
-                }
-            }
+                    (this as unknown as Record<PropertyKey, unknown>)[prop!] = value;
+                },
+            },
         });
     });
 
-
     it('set trap should be able to change the value set', () => {
-
         const target = makeTarget();
         let isCreation = true;
 
         const proxy = Proxy.create<Target>(target, {
             handler: {
                 set: function (prop, value) {
-                    if (prop === 'b' && isCreation)
-                        this[ prop ] = { b1: 10, b2: '10' };
-                    else
-                        this[ prop ] = value;
+                    const self = this as unknown as Record<PropertyKey, unknown>;
+
+                    if (prop === 'b' && isCreation) self[prop] = { b1: 10, b2: '10' };
+                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                    else self[prop!] = value;
 
                     return true;
-                }
-            }
+                },
+            },
         });
 
         isCreation = false;
@@ -59,9 +74,7 @@ describe('set trap', () => {
         expect(proxy.b.$$).toEqual({ b1: 2, b2: '1' });
     });
 
-
     it('propChanged should be triggered', () => {
-
         const target = makeTarget();
 
         Proxy.create<Target>(target, {
@@ -73,22 +86,28 @@ describe('set trap', () => {
                 expect(root.target).toBe(target);
 
                 switch (prop) {
-                    case 'a': expect(value).toBe(1); break;
-                    case 'b': expect(value).toEqual({ b1: 2 }); break;
-                    case 'c': expect(value).toEqual({ c1: 3 }); break;
+                    case 'a':
+                        expect(value).toBe(1);
+                        break;
+                    case 'b':
+                        expect(value).toEqual({ b1: 2 });
+                        break;
+                    case 'c':
+                        expect(value).toEqual({ c1: 3 });
+                        break;
                     // eslint-disable-next-line no-undef
-                    default: fail('property not valid');
+                    default:
+                        fail('property not valid');
                 }
-            }
+            },
         });
     });
 
     it('extra properties should be added', () => {
-
         const target = makeTarget({ c: { c1: { c2: 2 } } });
         const extra = {
             extra1: 11,
-            extra2: { e1: 22, e3: { e4: 44 } }
+            extra2: { e1: 22, e3: { e4: 44 } },
         };
 
         const proxy = Proxy.create(target, { extra });
@@ -107,15 +126,13 @@ describe('set trap', () => {
         expect(proxy.extra2.e3.e4.$$).toBe(44);
     });
 
-
     it('extra function should be called every time a new proxy object is created', () => {
-
         const target = makeTarget();
 
         let counter = 0;
 
         const extra = {
-            counter: () => ++counter
+            counter: () => ++counter,
         };
 
         const proxy = Proxy.create(target, { extra });
@@ -124,5 +141,4 @@ describe('set trap', () => {
         expect(proxy.b.counter.$$).toBe(1);
         expect(proxy.c.counter.$$).toBe(2);
     });
-
 });
