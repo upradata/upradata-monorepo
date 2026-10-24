@@ -1,25 +1,15 @@
-import { defineConfig as vitestDefineConfig, mergeConfig } from 'vitest/config';
+import { mergeConfig, defineConfig as vitePlusDefineConfig } from 'vite-plus';
 
-const baseConfig = vitestDefineConfig({
+const baseConfig = vitePlusDefineConfig({
     test: {
         globals: true,
         environment: 'node',
         passWithNoTests: true,
-        include: [
-            'src/**/*.{test,spec}.{ts,tsx}',
-            'test/**/*.{test,spec}.{ts,tsx}'
-        ],
+        include: ['src/**/*.{test,spec}.{ts,tsx}', 'test/**/*.{test,spec}.{ts,tsx}'],
         coverage: {
             provider: 'v8',
-            reporter: [ 'text', 'json', 'html', 'lcov' ],
-            exclude: [
-                'node_modules/',
-                'dist/',
-                'lib/',
-                'lib-esm/',
-                '**/*.test.ts',
-                '**/*.spec.ts',
-            ],
+            reporter: ['text', 'json', 'html', 'lcov'],
+            exclude: ['node_modules/', 'dist/', 'lib/', 'lib-esm/', '**/*.test.ts', '**/*.spec.ts'],
         },
     },
 });

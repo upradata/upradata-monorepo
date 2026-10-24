@@ -2,64 +2,67 @@
     "name": "@upradata/browser-util",
     "version": "0.0.1",
     "description": "Library",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
     "type": "module",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
+            "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
         },
         "./create-event-in-raf": {
             "types": "./dist/create-event-in-raf.d.ts",
-            "import": "./dist/create-event-in-raf.js",
+            "import": "./dist/create-event-in-raf.mjs",
             "require": "./dist/create-event-in-raf.cjs"
         },
         "./custom-events": {
             "types": "./dist/custom-events.d.ts",
-            "import": "./dist/custom-events.js",
+            "import": "./dist/custom-events.mjs",
             "require": "./dist/custom-events.cjs"
         },
         "./services": {
             "types": "./dist/services/index.d.ts",
-            "import": "./dist/services/index.js",
+            "import": "./dist/services/index.mjs",
             "require": "./dist/services/index.cjs"
         },
         "./useful": {
             "types": "./dist/useful.d.ts",
-            "import": "./dist/useful.js",
+            "import": "./dist/useful.mjs",
             "require": "./dist/useful.cjs"
         }
     },
     "publishConfig": {
         "access": "public"
     },
-    "files": [
-        "dist",
-        "docs"
-    ],
     "scripts": {
-        "build": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --env.NODE_ENV production",
-        "dev": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --watch --env.NODE_ENV development",
-        "typecheck": "tsc --noEmit",
-        "test": "vitest run",
-        "test:coverage": "vitest run --coverage",
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
         "lint": "biome lint src",
         "lint:fix": "biome lint --write src",
-        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "tsc --noEmit"
     },
-    "keywords": [
-        "upradata"
-    ],
-    "author": "Upra-Data Contributors",
-    "license": "MIT",
     "dependencies": {
         "@upradata/util": "workspace:*"
     },
     "devDependencies": {
         "@types/node": "^26.6.5",
-        "@upradata/tsconfig": "workspace:^"
-    },
-    "types": "./dist/index.d.ts"
+        "@upradata/tsconfig": "workspace:^",
+        "@upradata/tsdown": "workspace:*",
+        "@upradata/vite-plus": "workspace:*",
+        "@upradata/vitest": "workspace:*"
+    }
 }

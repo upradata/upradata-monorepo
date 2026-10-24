@@ -1,15 +1,14 @@
 {
-    "name": "@upradata/vitest-config",
+    "name": "@upradata/vitest",
     "version": "0.0.1",
-    "description": "Shared Vitest configuration for Upra-Data",
     "private": false,
-    "type": "module",
-    "main": "index.ts",
+    "description": "Shared Vitest configuration for Upra-Data",
     "files": [
         "index.ts"
     ],
+    "type": "module",
+    "main": "index.ts",
     "peerDependencies": {
-        "vitest": "^1.0.0",
-        "@vitest/coverage-v8": "^1.0.0"
+        "vite-plus": "^1.3.0"
     }
 }

@@ -1,47 +1,50 @@
 {
-  "name": "@upradata/rxjs",
-  "version": "16.0.0",
-  "description": "RxJS utilities for Upra-Data",
-  "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+    "name": "@upradata/rxjs",
+    "version": "16.0.0",
+    "description": "RxJS utilities for Upra-Data",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "lint": "biome lint src",
+        "lint:fix": "biome lint --write src",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@upradata/util": "workspace:*",
+        "rxjs": "^7.8.2"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:^",
+        "@upradata/tsdown": "workspace:*",
+        "@upradata/vite-plus": "workspace:*",
+        "@upradata/vitest": "workspace:*"
     }
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "dist",
-    "docs"
-  ],
-  "scripts": {
-    "build": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --env.NODE_ENV production",
-    "dev": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --watch --env.NODE_ENV development",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "lint": "biome lint src",
-    "lint:fix": "biome lint --write src",
-    "docs": "typedoc src/index.ts --skipErrorChecking || true"
-},
-  "keywords": [
-    "upradata"
-  ],
-  "author": "Upra-Data Contributors",
-  "license": "MIT",
-  "dependencies": {
-    "@upradata/util": "workspace:*",
-    "rxjs": "^7.8.2"
-  },
-  "devDependencies": {
-    "@types/node": "^26.6.5",
-    "@upradata/tsconfig": "workspace:^"
-  }
 }

@@ -19,9 +19,9 @@ All session files are saved in: `~/.copilot/session-state/ea7c09e6.../files/`
 ### Repository Memory
 
 - **Plan:** `/memories/repo/upra-data-monorepo-migration-plan.md`
-  - Original 9-phase architecture
-  - Final design decisions
-  - Verification checklist
+    - Original 9-phase architecture
+    - Final design decisions
+    - Verification checklist
 
 ---
 
@@ -40,7 +40,7 @@ Monorepo(new)/
 │   ├── typescript/               ← @upradata/tsconfig (5 profiles)
 │   ├── eslint/                   ← @upradata/eslint-config
 │   ├── biome/                    ← @upradata/biome-config
-│   └── vitest/                   ← @upradata/vitest-config
+│   └── vitest/                   ← @upradata/vitest
 ├── libs/                         ← Libraries to migrate
 │   └── util/                     ← Template ready (source pending)
 ├── apps/                         ← Applications (empty, ready)
@@ -125,13 +125,13 @@ pnpm test
 
 ## 📚 Key Documentation
 
-| File | Purpose |
-|------|---------|
-| `README.md` | Project overview & quick start |
-| `CONTRIBUTING.md` | Development workflow |
+| File                 | Purpose                        |
+| -------------------- | ------------------------------ |
+| `README.md`          | Project overview & quick start |
+| `CONTRIBUTING.md`    | Development workflow           |
 | `MIGRATION_GUIDE.md` | Per-package migration template |
-| `SETUP_CHECKLIST.md` | Tasks completed & next steps |
-| `plan-prompt.md` | Original plan prompt |
+| `SETUP_CHECKLIST.md` | Tasks completed & next steps   |
+| `plan-prompt.md`     | Original plan prompt           |
 
 ---
 
@@ -228,7 +228,7 @@ pnpm dev               # Watch/dev mode for all packages
 ✅ **Type-safe** — Strict TypeScript with generated `.d.ts`  
 ✅ **Monorepo-optimized** — Turborepo caching for builds  
 ✅ **CI/CD-ready** — Automated tests, build, coverage, releases  
-✅ **Developer-friendly** — Pre-commit hooks, auto-format, commitlint  
+✅ **Developer-friendly** — Pre-commit hooks, auto-format, commitlint
 
 ---
 

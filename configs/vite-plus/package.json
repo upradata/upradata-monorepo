@@ -1,0 +1,14 @@
+{
+    "name": "@upradata/vite-plus",
+    "version": "0.0.1",
+    "private": false,
+    "description": "Shared vite-plus configuration for Upra-Data",
+    "files": [
+        "index.ts"
+    ],
+    "type": "module",
+    "main": "index.ts",
+    "peerDependencies": {
+        "vite-plus": "^1.3.0"
+    }
+}

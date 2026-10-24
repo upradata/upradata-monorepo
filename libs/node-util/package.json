@@ -1,103 +1,112 @@
 {
     "name": "@upradata/node-util",
+    "version": "16.0.12",
+    "description": "Set of typescript util tools working in NodeJs",
+    "keywords": [
+        "node",
+        "upradata",
+        "util",
+        "utility"
+    ],
+    "license": "MIT",
     "author": {
         "name": "El Pupi (Upra-Data)",
         "email": "elpupi@upradata.com",
         "url": "https://github.com/upradata/node-util.git"
     },
-    "license": "MIT",
-    "version": "16.0.12",
-    "description": "Set of typescript util tools working in NodeJs",
-    "sideEffects": false,
+    "files": [
+        "dist",
+        "docs"
+    ],
     "type": "module",
+    "sideEffects": false,
     "main": "./dist/index.cjs",
-    "module": "./dist/index.js",
+    "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
-    "files": [ "dist", "docs" ],
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
+            "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
         },
         "./cache": {
             "types": "./dist/cache/index.d.ts",
-            "import": "./dist/cache/index.js",
+            "import": "./dist/cache/index.mjs",
             "require": "./dist/cache/index.cjs"
         },
         "./csv": {
             "types": "./dist/csv/index.d.ts",
-            "import": "./dist/csv/index.js",
+            "import": "./dist/csv/index.mjs",
             "require": "./dist/csv/index.cjs"
         },
         "./files": {
             "types": "./dist/files.d.ts",
-            "import": "./dist/files.js",
+            "import": "./dist/files.mjs",
             "require": "./dist/files.cjs"
         },
         "./find-up": {
             "types": "./dist/find-up/index.d.ts",
-            "import": "./dist/find-up/index.js",
+            "import": "./dist/find-up/index.mjs",
             "require": "./dist/find-up/index.cjs"
         },
         "./fs": {
             "types": "./dist/fs.d.ts",
-            "import": "./dist/fs.js",
+            "import": "./dist/fs.mjs",
             "require": "./dist/fs.cjs"
         },
         "./json": {
             "types": "./dist/json/index.d.ts",
-            "import": "./dist/json/index.js",
+            "import": "./dist/json/index.mjs",
             "require": "./dist/json/index.cjs"
         },
         "./log-nice": {
             "types": "./dist/log-nice.d.ts",
-            "import": "./dist/log-nice.js",
+            "import": "./dist/log-nice.mjs",
             "require": "./dist/log-nice.cjs"
         },
         "./path-normalize": {
             "types": "./dist/path-normalize.d.ts",
-            "import": "./dist/path-normalize.js",
+            "import": "./dist/path-normalize.mjs",
             "require": "./dist/path-normalize.cjs"
         },
         "./program-args": {
             "types": "./dist/program-args/index.d.ts",
-            "import": "./dist/program-args/index.js",
+            "import": "./dist/program-args/index.mjs",
             "require": "./dist/program-args/index.cjs"
         },
         "./require": {
             "types": "./dist/require.d.ts",
-            "import": "./dist/require.js",
+            "import": "./dist/require.mjs",
             "require": "./dist/require.cjs"
         },
         "./stats": {
             "types": "./dist/stats/index.d.ts",
-            "import": "./dist/stats/index.js",
+            "import": "./dist/stats/index.mjs",
             "require": "./dist/stats/index.cjs"
         },
         "./template-style": {
             "types": "./dist/template-style/index.d.ts",
-            "import": "./dist/template-style/index.js",
+            "import": "./dist/template-style/index.mjs",
             "require": "./dist/template-style/index.cjs"
         },
         "./terminal": {
             "types": "./dist/terminal/index.d.ts",
-            "import": "./dist/terminal/index.js",
+            "import": "./dist/terminal/index.mjs",
             "require": "./dist/terminal/index.cjs"
         },
         "./tmpfile": {
             "types": "./dist/tmpfile.d.ts",
-            "import": "./dist/tmpfile.js",
+            "import": "./dist/tmpfile.mjs",
             "require": "./dist/tmpfile.cjs"
         },
         "./ts": {
             "types": "./dist/ts/index.d.ts",
-            "import": "./dist/ts/index.js",
+            "import": "./dist/ts/index.mjs",
             "require": "./dist/ts/index.cjs"
         },
         "./useful": {
             "types": "./dist/useful.d.ts",
-            "import": "./dist/useful.js",
+            "import": "./dist/useful.mjs",
             "require": "./dist/useful.cjs"
         }
     },
@@ -105,18 +114,18 @@
         "access": "public"
     },
     "scripts": {
-        "build": "tsup --config ../../configs/tsup/tsup-config.node.lib.ts --env.NODE_ENV production",
-        "dev": "tsup --config ../../configs/tsup/tsup-config.node.lib.ts --watch --env.NODE_ENV development",
-        "typecheck": "tsc --noEmit",
-        "test": "vitest run",
-        "test:coverage": "vitest run --coverage",
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
         "lint": "biome lint src",
         "lint:fix": "biome lint --write src",
-        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "tsc --noEmit"
     },
-    "keywords": [ "upradata", "node", "util", "utility" ],
     "dependencies": {
         "@schemastore/package": "^1.0.5",
+        "@typescript/typescript6": "catalog:",
         "@upradata/util": "workspace:*",
         "colors": "^1.4.0",
         "commander": "^12.1.0",
@@ -134,6 +143,8 @@
         "@types/fs-extra": "^11.0.4",
         "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:^",
+        "@upradata/tsdown": "workspace:*",
+        "@upradata/vite-plus": "workspace:*",
         "memory-fs": "^0.5.0",
         "types-tsconfig": "^2.1.1"
     }

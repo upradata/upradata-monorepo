@@ -53,7 +53,7 @@ Monorepo(new)/
 - `@upradata/tsconfig` - TypeScript configurations
 - `@upradata/eslint-config` - ESLint configurations
 - `@upradata/biome-config` - Biome formatting config
-- `@upradata/vitest-config` - Vitest testing config
+- `@upradata/vitest` - Vitest testing config
 
 ### Libraries
 

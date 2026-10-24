@@ -17,7 +17,7 @@
 - [x] `@upradata/tsconfig` - 5 config profiles
 - [x] `@upradata/eslint-config` - flat config
 - [x] `@upradata/biome-config` - formatting config
-- [x] `@upradata/vitest-config` - test configuration
+- [x] `@upradata/vitest` - test configuration
 
 ### Library Scaffolding (Phase 3)
 

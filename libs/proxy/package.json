@@ -2,50 +2,58 @@
     "name": "@upradata/proxy",
     "version": "0.0.1",
     "description": "Library",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
     "type": "module",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
+            "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
         },
         "./node": {
             "types": "./dist/node/index.d.ts",
-            "import": "./dist/node/index.js",
+            "import": "./dist/node/index.mjs",
             "require": "./dist/node/index.cjs"
         },
         "./proxy": {
             "types": "./dist/proxy.d.ts",
-            "import": "./dist/proxy.js",
+            "import": "./dist/proxy.mjs",
             "require": "./dist/proxy.cjs"
         }
     },
     "publishConfig": {
         "access": "public"
     },
-    "files": [ "dist", "docs" ],
     "scripts": {
-        "build": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --env.NODE_ENV production",
-        "dev": "tsup --config ../../configs/tsup/tsup-config.neutral.lib.ts --watch --env.NODE_ENV development",
-        "typecheck": "tsc --noEmit",
-        "test": "vitest run",
-        "test:coverage": "vitest run --coverage",
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
         "lint": "biome lint src",
         "lint:fix": "biome lint --write src",
-        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "tsc --noEmit"
     },
-    "keywords": [ "upradata" ],
-    "author": "Upra-Data Contributors",
-    "license": "MIT",
     "dependencies": {
         "@upradata/util": "workspace:*",
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
         "@types/node": "^26.6.5",
-        "@upradata/tsconfig": "workspace:^"
-    },
-    "types": "./dist/index.d.ts"
+        "@upradata/tsconfig": "workspace:^",
+        "@upradata/tsdown": "workspace:*",
+        "@upradata/vite-plus": "workspace:*",
+        "@upradata/vitest": "workspace:*"
+    }
 }

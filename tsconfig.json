@@ -1,27 +1,16 @@
 {
-    "include": [
-        "**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "build",
-        "coverage",
-        "libs",
-        "apps",
-        "docs",
-        "**/.*"
-    ],
+    "include": ["**/*"],
+    "exclude": ["node_modules", "dist", "build", "coverage", "libs", "apps", "docs", "**/.*"],
     "compilerOptions": {
-        "target": "ES2020",
-        "lib": [
-            "ES2020"
-        ],
+        "target": "esnext",
+        "lib": ["ESNext"],
         "module": "ESNext",
         "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "allowJs": true,
         "checkJs": false,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
@@ -30,10 +19,6 @@
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "types": [
-            "node",
-            "vitest/globals"
-        ]
+        "forceConsistentCasingInFileNames": true
     }
 }

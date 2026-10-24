@@ -1,5 +1,5 @@
-import { createConfig } from './tsup-config.base';
-import { neutralLibConfig } from './tsup-config.neutral.lib';
+import { createConfig } from './tsdown-config.base';
+import { neutralLibConfig } from './tsdown-config.neutral.lib';
 
 export default createConfig(neutralLibConfig, ({ previousConfig }) => ({
     ...previousConfig,

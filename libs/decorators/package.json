@@ -2,6 +2,15 @@
     "name": "@upradata/decorators",
     "version": "0.0.1",
     "description": "Library",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
     "type": "module",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
@@ -9,57 +18,48 @@
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
+            "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
         },
         "./angular": {
             "types": "./dist/angular/index.d.ts",
-            "import": "./dist/angular/index.js",
+            "import": "./dist/angular/index.mjs",
             "require": "./dist/angular/index.cjs"
         },
         "./inherit-builtin": {
             "types": "./dist/inherit-builtin/index.d.ts",
-            "import": "./dist/inherit-builtin/index.js",
+            "import": "./dist/inherit-builtin/index.mjs",
             "require": "./dist/inherit-builtin/index.cjs"
         },
         "./require": {
             "types": "./dist/require/index.d.ts",
-            "import": "./dist/require/index.js",
+            "import": "./dist/require/index.mjs",
             "require": "./dist/require/index.cjs"
         },
         "./save-property": {
             "types": "./dist/save-property/index.d.ts",
-            "import": "./dist/save-property/index.js",
+            "import": "./dist/save-property/index.mjs",
             "require": "./dist/save-property/index.cjs"
         },
         "./mixin": {
             "types": "./dist/mixin/index.d.ts",
-            "import": "./dist/mixin/index.js",
+            "import": "./dist/mixin/index.mjs",
             "require": "./dist/mixin/index.cjs"
         }
     },
     "publishConfig": {
         "access": "public"
     },
-    "files": [
-        "dist",
-        "docs"
-    ],
     "scripts": {
-        "build": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --env.NODE_ENV production",
-        "dev": "tsup --config ../../configs/tsup/tsup-config.web.lib.ts --watch --env.NODE_ENV development",
-        "typecheck": "tsc --noEmit",
-        "test": "vitest run",
-        "test:coverage": "vitest run --coverage",
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
         "lint": "biome lint src",
         "lint:fix": "biome lint --write src",
-        "docs": "typedoc src/index.ts --skipErrorChecking || true"
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "tsc --noEmit"
     },
-    "keywords": [
-        "upradata"
-    ],
-    "author": "Upra-Data Contributors",
-    "license": "MIT",
     "dependencies": {
         "@angular/core": "^12.2.3",
         "@upradata/util": "workspace:*",
@@ -68,6 +68,9 @@
     },
     "devDependencies": {
         "@types/node": "^26.6.5",
-        "@upradata/tsconfig": "workspace:^"
+        "@upradata/tsconfig": "workspace:^",
+        "@upradata/tsdown": "workspace:*",
+        "@upradata/vite-plus": "workspace:*",
+        "@upradata/vitest": "workspace:*"
     }
 }
