@@ -1,11 +1,9 @@
 // biome-ignore-all lint/suspicious/noExplicitAny: required for generic types
-/** biome-ignore-all lint/complexity/noExtraBooleanCast: <explanation> */
-
-import { isArray, isDefined, isPromise } from './is';
+/** Biome-ignore-all lint/complexity/noExtraBooleanCast: <explanation> */
 
 import type { Constructor } from './function';
+import { isArray, isDefined, isPromise } from './is';
 import type { Arr, InferArrayType, Key, TT$ } from './types';
-
 
 // chain(() => o.a.b.c) ==> if a prop doesn't exist ==> return defaultValue
 // Now it is not necessary anymore with o?.a syntax
@@ -13,13 +11,10 @@ export function chain<T>(exp: () => T, defaultValue?: T) {
     try {
         return exp();
     } catch (e) {
-        if (!(isErrorOf(e, ReferenceError as Constructor) || isErrorOf(e, TypeError as Constructor)))
-            throw e;
+        if (!(isErrorOf(e, ReferenceError as Constructor) || isErrorOf(e, TypeError as Constructor))) throw e;
     }
     return defaultValue;
 }
-
-
 
 export function isErrorOf(e: any, errorCtor: Constructor) {
     return e instanceof errorCtor || e.constructor === errorCtor || e.name === errorCtor.name;
@@ -30,7 +25,7 @@ export function isErrorOf(e: any, errorCtor: Constructor) {
 } */
 
 export function ensureArray<T>(v: T): T extends Arr<any, 'readonly'> ? T : T[] {
-    return (isArray(v) ? v : isDefined(v) ? [ v ] : []) as any;
+    return (isArray(v) ? v : isDefined(v) ? [v] : []) as any;
 }
 
 export function ensurePromise<T>(v: T | Promise<T>): Promise<T> {
@@ -48,24 +43,23 @@ const ff = ensureFunction(f as F); */
 
 type Filler<T> = (i: number) => T;
 export const arrayN = <T = any>(n: number, fill?: T | Filler<T>): T[] => {
-    const filler = (typeof fill === 'function' ? fill as Filler<T> : _i => fill) as Filler<T>;
+    const filler = (typeof fill === 'function' ? (fill as Filler<T>) : _i => fill) as Filler<T>;
 
     const create = (array: T[], i: number): T[] => {
-        if (i === n)
-            return array;
+        if (i === n) return array;
 
-        return create([ ...array, filler(i) ], i + 1);
+        return create([...array, filler(i)], i + 1);
     };
 
     return create([], 0);
 };
 
-
-
-
-export const filterByKey = <A extends Arr<any>, T extends InferArrayType<A>, V extends T[ K ], K extends Key = 'type'>(array: A, value: V, key: K = 'key' as any):
-    T extends { [ k in K ]: V } ? T[] : never => {
-    return array.filter(v => v[ key ] === value) as any;
+export const filterByKey = <A extends Arr<any>, T extends InferArrayType<A>, V extends T[K], K extends Key = 'type'>(
+    array: A,
+    value: V,
+    key: K = 'key' as any,
+): T extends { [k in K]: V } ? T[] : never => {
+    return array.filter(v => v[key] === value) as any;
 };
 
 /* const a = filterByKey([ { type: 'a', v: 1 }, { type: 'b', v: 2 }, { type: 'a', v: 11 }, { type: 'a', v: 111 }, { type: 'c', v: 3 } ] as const, 'a' as const, 'type');
@@ -76,16 +70,14 @@ a0.v === 11;
 const b = filterByKey([ { type: 'a', v: 1 }, { type: 'b', v: 2 }, { type: 'a', v: 11 }, { type: 'a', v: 111 }, { type: 'c', v: 3 } ], 'a', 'type');
  */
 
-
 export const firstTruthy = <T>(...array: Array<T>): any => {
     // biome-ignore lint/complexity/noBannedTypes: <explanation>
     const isFunction = (v: any): v is Function => typeof v === 'function' && v.length === 0;
 
     const first = (array: Array<T>): any => {
-        if (array.length === 0)
-            return false;
+        if (array.length === 0) return false;
 
-        const [ head, ...tail ] = array;
+        const [head, ...tail] = array;
 
         const value = isFunction(head) ? head() : head;
 
@@ -99,17 +91,14 @@ export const firstTruthy = <T>(...array: Array<T>): any => {
 /* firstTruthy([ false, undefined, 1, 2 ]) === 1;
 firstTruthy([ false, undefined, () => 'bonjour', 2 ]) === 'bonjour'; */
 
-
-export const arrayFromIterable = <T>(it: Iterable<T>): T[] => Array.isArray(it) ? it : [ ...it ];
-
+export const arrayFromIterable = <T>(it: Iterable<T>): T[] => (Array.isArray(it) ? it : [...it]);
 
 export interface PollOptions {
     duration: number;
     timeStep?: number;
 }
 
-
-export type PollHandler<S, E> = () => TT$<{ stop: boolean; error?: E; success?: S; }>;
+export type PollHandler<S, E> = () => TT$<{ stop: boolean; error?: E; success?: S }>;
 export const poll = <S, E, H extends PollHandler<S, E>>(handler: H, options: PollOptions) => {
     const { duration, timeStep = 100 } = options;
     let totalWait = 0;
