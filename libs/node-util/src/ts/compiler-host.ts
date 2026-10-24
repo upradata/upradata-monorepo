@@ -1,10 +1,12 @@
 import path from 'node:path';
-import ts from 'typescript';
+
+import ts from '@typescript/typescript6';
 
 export const createCompilerHost = (
     options: ts.CompilerOptions,
     extraOptions: { nodeModules?: string[] } = {},
 ): ts.CompilerHost => {
+    //
     const nodeModules = new Set(
         (extraOptions.nodeModules || [])
             .map(p => p.split('node_modules')[0])

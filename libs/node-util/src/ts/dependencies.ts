@@ -1,6 +1,8 @@
-import { assignRecursive } from '@upradata/util';
+import ts from '@typescript/typescript6';
 import fs from 'fs-extra';
-import ts from 'typescript';
+
+import { assignRecursive } from '@upradata/util';
+
 import { defaultTscOptions } from './tsc';
 
 function getExternalModuleName(node: ts.Node): ts.Expression | undefined {
@@ -21,9 +23,9 @@ function getExternalModuleName(node: ts.Node): ts.Expression | undefined {
 }
 
 const isImportOrExport = (node: ts.Node) =>
-    node.kind === ts.SyntaxKind.ImportDeclaration ||
-    node.kind === ts.SyntaxKind.ImportEqualsDeclaration ||
-    node.kind === ts.SyntaxKind.ExportDeclaration;
+    node.kind === ts.SyntaxKind.ImportDeclaration
+    || node.kind === ts.SyntaxKind.ImportEqualsDeclaration
+    || node.kind === ts.SyntaxKind.ExportDeclaration;
 
 function getSourceDependencies(sourceFile: ts.SourceFile, checker: ts.TypeChecker) {
     const depsSymbols: ts.Symbol[] = [];

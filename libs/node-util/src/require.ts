@@ -1,8 +1,10 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** Biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+
+import type ts from '@typescript/typescript6';
 import fs from 'fs-extra';
-import type ts from 'typescript';
+
 import { Cache } from './cache';
 import { readJson } from './json/read-json5';
 import { red, yellow } from './template-style';

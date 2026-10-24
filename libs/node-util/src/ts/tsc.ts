@@ -1,11 +1,15 @@
 // import { createCompilerHost } from './compiler-host';
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** Biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** Biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 
 import path from 'node:path';
-import { AssignOptions, assignRecursive, type RemoveIndexSignature } from '@upradata/util';
+
+import ts from '@typescript/typescript6';
 import fs from 'fs-extra';
 import tsconfig from 'tsconfig';
-import ts from 'typescript';
+
+import { AssignOptions, assignRecursive, type RemoveIndexSignature } from '@upradata/util';
+
 import type { TsConfig } from './tsconfig.json';
 
 export const defaultTscOptions = () =>
