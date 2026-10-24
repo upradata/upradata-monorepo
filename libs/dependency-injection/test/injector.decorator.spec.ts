@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { AppInjector, Component, DiInjector, INJECT, Inject, InjectProp, ProvidedIn, RootService } from '../src';
 
 describe('Injector Decorator', () => {

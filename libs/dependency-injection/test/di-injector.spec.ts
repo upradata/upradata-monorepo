@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { DiInjector, Inject, type ProviderToken } from '../src';
 
 describe('DiInjector', () => {
