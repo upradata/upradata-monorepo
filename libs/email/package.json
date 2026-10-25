@@ -1,0 +1,74 @@
+{
+    "name": "@upradata/email",
+    "version": "1.0.2",
+    "description": "Email sending utilities for Upra-Data",
+    "keywords": [
+        "email",
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": {
+        "name": "Upra-Data",
+        "email": "code@upradata.com",
+        "url": "https://github.com/upradata"
+    },
+    "repository": {
+        "url": "https://github.com/upradata/email"
+    },
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "dependencies": {
+        "@mailchimp/mailchimp_marketing": "^3.0.78",
+        "@mailchimp/mailchimp_transactional": "^1.0.47",
+        "@sendgrid/client": "^7.7.0",
+        "@sendgrid/mail": "^7.7.0",
+        "@upradata/node-util": "workspace:*",
+        "@upradata/util": "workspace:*",
+        "form-data": "^4.0.0",
+        "fs-extra": "^10.1.0",
+        "html-minifier-terser": "7.0.0-beta.0",
+        "mailgun.js": "^8.0.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^9.0.13",
+        "@types/html-minifier-terser": "^6.1.0",
+        "@types/mailchimp__mailchimp_transactional": "^1.0.5",
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "extends": "@upradata/tsconfig/node.json",
+    "compilerOptions": {
+        "strict": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "strictPropertyInitialization": false,
+        "strictFunctionTypes": false,
+        "noImplicitThis": false,
+        "paths": {
+            "@mailchimp/mailchimp_marketing": [
+                "./src/@types/@mailchimp/mailchimp_marketing"
+            ],
+            "@mailchimp/mailchimp_marketing/*": [
+                "./src/@types/@mailchimp/mailchimp_marketing/*"
+            ]
+        }
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}
