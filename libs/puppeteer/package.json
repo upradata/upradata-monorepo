@@ -1,0 +1,68 @@
+{
+    "name": "@upradata/puppeteer",
+    "version": "1.0.2",
+    "description": "Set of utils to use puppeteer",
+    "keywords": [
+        "puppeteer",
+        "util"
+    ],
+    "license": "MIT",
+    "author": {
+        "name": "Thomas Milotti",
+        "email": "thomas.milotti@gmail.com",
+        "url": "https://github.com/milottit"
+    },
+    "repository": {
+        "url": "https://github.com/upradata/puppeteer.git"
+    },
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "dependencies": {
+        "@upradata/node-util": "workspace:*",
+        "@upradata/util": "workspace:*",
+        "puppeteer": "^13.0.0"
+    },
+    "peerDependencies": {
+        "@upradata/webpack": "^1.0.0",
+        "memfs": "^3.4.0"
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.12",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}
