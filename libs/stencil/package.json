@@ -1,0 +1,49 @@
+{
+  "name": "@upradata/stencil",
+  "version": "1.0.0",
+  "description": "Stencil utilities for Upra-Data",
+  "keywords": ["upradata", "stencil", "web-components"],
+  "license": "MIT",
+  "author": "Upra-Data Contributors",
+  "files": ["dist", "docs"],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "build": "UPRADATA_PACK_MODE=production vp pack",
+    "build:stencil": "stencil build --docs",
+    "dev": "vp pack --watch",
+    "start": "stencil build --dev --watch --serve",
+    "generate": "stencil generate",
+    "docs": "typedoc src/index.ts --skipErrorChecking || true",
+    "format": "turbo run format",
+    "format:check": "vp fmt --write",
+    "lint": "vp check",
+    "lint:fix": "vp check --fix",
+    "typecheck": "vp check --no-fmt --no-lint"
+  },
+  "dependencies": {
+    "@stencil/core": "^2.12.1",
+    "@stencil/store": "^1.5.0",
+    "@upradata/util": "workspace:*"
+  },
+  "devDependencies": {
+    "@upradata/tsconfig": "workspace:*",
+    "@upradata/vite-plus": "workspace:*"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "extends": "@upradata/tsconfig/dom.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "paths": {
+      "#util/*": ["./src/util/*"],
+      "#util": ["./src/util"]
+    },
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "www", "**/*.test.ts", "**/*.spec.ts"]
+}
