@@ -54,11 +54,13 @@
         "build": "UPRADATA_PACK_MODE=production vp pack",
         "dev": "vp pack --watch",
         "docs": "typedoc src/index.ts --skipErrorChecking || true",
-        "lint": "biome lint src",
-        "lint:fix": "biome lint --write src",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
         "test": "vp test run",
         "test:coverage": "vp test run --coverage",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "vp check --no-fmt --no-lint"
     },
     "dependencies": {
         "@angular/core": "^12.2.3",
@@ -68,9 +70,7 @@
     },
     "devDependencies": {
         "@types/node": "^26.6.5",
-        "@upradata/tsconfig": "workspace:^",
-        "@upradata/tsdown": "workspace:*",
-        "@upradata/vite-plus": "workspace:*",
-        "@upradata/vitest": "workspace:*"
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
     }
 }
