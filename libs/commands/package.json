@@ -1,0 +1,103 @@
+{
+    "name": "@upradata/commands",
+    "version": "1.0.0",
+    "description": "Command line utilities for Upra-Data",
+    "keywords": [
+        "cli",
+        "commands",
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": {
+        "name": "Upra-Data",
+        "email": "code@upradata.com",
+        "url": "https://github.com/upradata"
+    },
+    "repository": {
+        "url": "https://github.com/upradata/commands"
+    },
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "sideEffects": [
+        "./dist/json/json.command.*"
+    ],
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "imports": {
+        "#is-cli": {
+            "import": "./lib/src/utils/is-cli.mjs",
+            "require": "./lib/src/utils/is-cli.cjs"
+        }
+    },
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        },
+        "./json": {
+            "import": {
+                "types": "./dist/json/json.command.d.mts",
+                "default": "./dist/json/json.command.mjs"
+            },
+            "require": {
+                "types": "./dist/json/json.command.d.cts",
+                "default": "./dist/json/json.command.cjs"
+            }
+        },
+        "./json/csv-to-json": {
+            "import": {
+                "types": "./dist/json/csv-to-json.command.d.mts",
+                "default": "./dist/json/csv-to-json.command.mjs"
+            },
+            "require": {
+                "types": "./dist/json/csv-to-json.command.d.cts",
+                "default": "./dist/json/csv-to-json.command.cjs"
+            }
+        },
+        "./json/json-to-csv": {
+            "import": {
+                "types": "./dist/json/json-to-csv.command.d.mts",
+                "default": "./dist/json/json-to-csv.command.mjs"
+            },
+            "require": {
+                "types": "./dist/json/json-to-csv.command.d.cts",
+                "default": "./dist/json/json-to-csv.command.cjs"
+            }
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "dependencies": {
+        "@upradata/node-util": "workspace:*",
+        "fs-extra": "^10.0.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^9.0.13",
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}

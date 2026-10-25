@@ -1,0 +1,10 @@
+{
+    "extends": "@upradata/tsconfig/node.json",
+    "include": ["src/**/*.ts", "src/**/*.mts", "src/**/*.cts", "**/types/**/*.d.ts"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "src/@types/**/*.d.ts"],
+    "compilerOptions": {
+        "paths": {
+            "#is-cli": ["./src/utils/is-cli.mts"]
+        }
+    }
+}
