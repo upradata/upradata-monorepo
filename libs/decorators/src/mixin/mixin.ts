@@ -1,9 +1,6 @@
 // Inspired by https://github.com/michaelolof/typescript-mix/blob/master/src/index.ts
-/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { type Constructor, ensureArray } from '@upradata/util';
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export type Mixin<T> = T extends Constructor<any, any> | Object ? T : never;
 
 export type Override = 'override' | 'merge' | 'none';
@@ -94,7 +91,6 @@ const setDescriptor = (options: { client: object; mixin: object; key: string; ov
                     // console.warn(`Mixin: "class ${client.constructor.name}" --> ${descr.client[ type ]} has been overriden. Set options override: true to remove this message.`);
                 } else {
                     Object.defineProperty(client, key, {
-                        // eslint-disable-next-line object-shorthand
                         [type]: function (...args: any[]) {
                             descr.mixin[type].apply(this, args);
                             return descr.client[type].apply(this, args);
@@ -111,10 +107,7 @@ const objectType = (o: object, key: string): 'get' | 'set' | 'value' => {
     return descr.get ? 'get' : descr.set ? 'set' : 'value';
 };
 
-/**
- * Takes a list of classes or object literals and adds their methods
- * to the class calling it.
- */
+/** Takes a list of classes or object literals and adds their methods to the class calling it. */
 type Const = Constructor | { constructor: Constructor };
 
 export const Mixin = (mixins: MixinOptions) => {
@@ -167,9 +160,7 @@ export function Mixin5<M1, M2, M3, M4, M5>(mixins: MixinOptions5<M1, M2, M3, M4,
  */
 
 // export const Mixin = mixin as any as Mix1 & Mix2 & Mix3 & Mix4 & Mix5;
-/**
- * Takes a method as a parameter and add it to the class calling it.
- */
+/** Takes a method as a parameter and add it to the class calling it. */
 /* export function delegate(method: (...args: any[]) => any) {
     return function (target: any, propertyKey: string) {
         target.constructor.prototype[ propertyKey ] = method;
@@ -186,7 +177,7 @@ export type Mix4 = <Target, M1, M2, M3, M4>(mixins: MixinOptions4<M1, M2, M3, M4
 export type Mix5 = <Target, M1, M2, M3, M4, M5>(mixins: MixinOptions5<M1, M2, M3, M4, M5>) => Target & MixinType<M1> & MixinType<M2> & MixinType<M3> & MixinType<M4> & MixinType<M5>;
  */
 
-type Decorator<M> = <S extends string | never, T extends S extends string ? any : Const>(
+type Decorator<M> = <S extends string | never, T extends (S extends string ? any : Const)>(
     target: T,
     propertyKey?: S,
 ) => S extends string ? any : T & M;

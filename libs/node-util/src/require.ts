@@ -1,4 +1,3 @@
-/** Biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 

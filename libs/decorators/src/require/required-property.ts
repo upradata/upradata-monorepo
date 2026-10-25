@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import 'reflect-metadata';
 import { type Condition, type PropCond, requiredSymbolKey } from './definition';
 
@@ -19,8 +17,8 @@ export class RequiredProperty {
                 if (prop.condition.call(thisObj)) {
                     if (thisObj[prop.name] === undefined) {
                         throw new Error(
-                            `The property ${String(prop.name)} of class ${prototype.constructor.name} doesn't fullfill` +
-                                `the required condition: \n${prop.condition}`,
+                            `The property ${String(prop.name)} of class ${prototype.constructor.name} doesn't fullfill`
+                                + `the required condition: \n${prop.condition}`,
                         );
                     }
                 }

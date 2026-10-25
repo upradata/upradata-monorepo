@@ -30,9 +30,11 @@ describe('ts-util-is methods', () => {
     });
 
     it('ensure value is a function', () => {
-        expect(util.isFunction(() => {
-            // empty
-        })).toEqual(true);
+        expect(
+            util.isFunction(() => {
+                // empty
+            }),
+        ).toEqual(true);
     });
 
     it('ensure value is a guid', () => {
@@ -90,8 +92,7 @@ describe('ts-util-is methods', () => {
         const err = new Error();
         expect(util.isInstance(err, Error)).toEqual(true);
 
-        // eslint-disable-next-line no-new-func
-        const fn = new Function();
+                const fn = new Function();
         expect(util.isInstance(fn, Function)).toEqual(true);
 
         expect(util.isInstance(null, Error)).toEqual(false);

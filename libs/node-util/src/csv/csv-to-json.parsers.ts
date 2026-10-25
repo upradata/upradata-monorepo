@@ -1,6 +1,5 @@
-/** biome-ignore-all lint/suspicious/noThenProperty: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { TransformOptions } from 'node:stream';
+
 import {
     compose,
     composeLeft,
@@ -15,6 +14,7 @@ import {
     mergeRegexes,
     regexToString,
 } from '@upradata/util';
+
 import { type CsvToJsonOpts, csvToJson } from './csv-json';
 
 export type Parser<D = string, N = unknown> = (data: D, key: string, resultRow: any, row: string[], index: number) => N;
@@ -215,8 +215,8 @@ export const getParsers = <O extends { default?: string }, Headers extends strin
     const parsers = names.map(name => {
         const n = name as keyof ParsersOptions<O>;
 
-        const defaultParser = (defaultParserOptions[n] as ParserOptions) ||
-            defaultParserOptions.default || { emptyCell: '', parser: cellParsers.string() };
+        const defaultParser = (defaultParserOptions[n] as ParserOptions)
+            || defaultParserOptions.default || { emptyCell: '', parser: cellParsers.string() };
         const option = parsersOptions[n];
 
         const emptyCell = ifThen()
@@ -267,7 +267,10 @@ export const csvToJsonWithDefaultParsers =
         return csvToJson<R>(
             file,
             {
-                colParser: getParsers(csvOptions?.headers, defaultParserOptions, options.parsers) as Record<string, Parser>,
+                colParser: getParsers(csvOptions?.headers, defaultParserOptions, options.parsers) as Record<
+                    string,
+                    Parser
+                >,
                 ...csvOptions,
             },
             options.stream,

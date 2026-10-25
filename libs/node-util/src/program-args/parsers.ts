@@ -1,4 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import { InvalidArgumentError } from 'commander';
+
 import {
     composeLeft,
     isBoolean,
@@ -9,7 +10,7 @@ import {
     stringToRegex,
     type TT,
 } from '@upradata/util';
-import { InvalidArgumentError } from 'commander';
+
 import { type RequireOptions, requireModule } from '../require';
 
 import type { AliasTransform, CliOption } from './cli.option';
@@ -116,7 +117,6 @@ export const parsers = {
 
     object: (key?: string) =>
         function (this: CliOption, value, previous) {
-            // biome-ignore lint/complexity/noUselessUndefinedInitialization: for clarity
             let v: any = undefined;
 
             try {
@@ -202,7 +202,7 @@ export const parsers = {
         function (this: CliOption, value: string, previous: CliParserPrevious<T>) {
             try {
                 return parser.call(this, value, previous);
-            } catch  {
+            } catch {
                 return value;
             }
         } as CommanderParser<T | string>,

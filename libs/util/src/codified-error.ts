@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 export interface CodifiedErrorArgs<ErrorsEnum> {
     code?: ErrorsEnum;
     message?: string;
@@ -34,7 +33,6 @@ export class CodifiedError<ErrorsEnum = string> extends Error {
         if (Object.setPrototypeOf) {
             Object.setPrototypeOf(this, actualProto);
         } else {
-            // biome-ignore lint/suspicious/noProto: backward compatible
             (this as any).__proto__ = actualProto;
         }
 

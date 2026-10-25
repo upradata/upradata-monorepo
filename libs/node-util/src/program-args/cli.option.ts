@@ -1,8 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noThenProperty: <explanation> */
+import { Option } from 'commander';
 
 import { ifthen, isDefinedProp, type NonFunctionProperties } from '@upradata/util';
-import { Option } from 'commander';
+
 import { type CommanderParser, parsers } from './parsers';
 import { camelcase } from './util';
 
@@ -183,8 +182,8 @@ export class CliOption extends Option {
                 const transform = ifthen({
                     if: typeof alias.transform === 'function',
                     then: aliasTransform as AliasTransform,
-                    else: ((aliasTransform as AliasTransforms)[a.option.name()] ||
-                        (aliasTransform as AliasTransforms)[a.option.attributeName()]) as AliasTransform,
+                    else: ((aliasTransform as AliasTransforms)[a.option.name()]
+                        || (aliasTransform as AliasTransforms)[a.option.attributeName()]) as AliasTransform,
                 });
 
                 a.option.addAlias({ option: aliasOption, mode: 'two-way', transform });

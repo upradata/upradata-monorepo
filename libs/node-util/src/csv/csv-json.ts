@@ -1,9 +1,11 @@
 import type { TransformOptions } from 'node:stream';
-import { delayedPromise } from '@upradata/util';
+
 import csvtojson from 'csvtojson';
 import type { Fileline } from 'csvtojson/v2/fileline';
 import type { CSVParseParam } from 'csvtojson/v2/Parameters';
 import { type MultipleRowResult, RowSplit } from 'csvtojson/v2/rowSplit';
+
+import { delayedPromise } from '@upradata/util';
 
 // To filter empty rows (row with all empty columns)
 // There is no option to skip empty lines
@@ -25,18 +27,16 @@ const enableSkipEmptyRows = () => {
 
         const self = this as unknown as RowSplitWithPrivates;
 
-        // biome-ignore lint/complexity/useArrowFunction: A class member function is defined here
         lines.shift = function () {
             let line: string = '';
 
             while (line === '' && lines.length > 0) {
-                // biome-ignore lint/style/noNonNullAssertion: test done and we are sure that lines.length > 0
                 line = oldShift.call(lines)!;
                 let delimiter: string;
 
                 if (
-                    Array.isArray(self.conv.parseRuntime.delimiter) ||
-                    self.conv.parseRuntime.delimiter.toLowerCase() === 'auto'
+                    Array.isArray(self.conv.parseRuntime.delimiter)
+                    || self.conv.parseRuntime.delimiter.toLowerCase() === 'auto'
                 ) {
                     delimiter = self.getDelimiter(line);
                 } else delimiter = self.conv.parseRuntime.delimiter;

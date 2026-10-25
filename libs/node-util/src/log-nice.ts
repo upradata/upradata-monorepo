@@ -1,22 +1,19 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { entries, isArray, isPlainObject } from '@upradata/util';
-import { bold, styles as s } from './template-style';
 
+import { bold, styles as s } from './template-style';
 
 const open = (v: any[] | object, style: BracketStyle) => style(isArray(v) ? '[' : '{');
 const close = (v: any[] | object, style: BracketStyle) => style(isArray(v) ? ']' : '}');
 
-
 const defaultV = {
     key: (k: PropertyKey) => bold`${String(k)}`,
     value: (v: any) => `${v}`,
-    bracket: (v => v === '[' || v === ']' ? s.bold.yellow.$`${v}` : s.bold.green.$`${v}`) as BracketStyle,
-    indentize: (o => o.symbol.repeat(o.size)) as Indentize
+    bracket: (v => (v === '[' || v === ']' ? s.bold.yellow.$`${v}` : s.bold.green.$`${v}`)) as BracketStyle,
+    indentize: (o => o.symbol.repeat(o.size)) as Indentize,
 };
 
-
 export type BracketStyle = (v: '{' | '}' | '[' | ']') => string;
-export type Indentize = (options: { level: number, size: number, symbol: string; }) => string;
+export type Indentize = (options: { level: number; size: number; symbol: string }) => string;
 
 export type NiceOptions = {
     indent?: number;
@@ -27,8 +24,6 @@ export type NiceOptions = {
     bracket?: BracketStyle;
 };
 
-
-
 export const nice = (v: any, options: NiceOptions = {}): string => {
     const {
         indent: indentSize = 4,
@@ -36,7 +31,7 @@ export const nice = (v: any, options: NiceOptions = {}): string => {
         key: keyTransform = defaultV.key,
         value = defaultV.value,
         bracket = defaultV.bracket,
-        indentize = defaultV.indentize
+        indentize = defaultV.indentize,
     } = options;
 
     const ref = new Map<object, PropertyKey>();
@@ -46,14 +41,16 @@ export const nice = (v: any, options: NiceOptions = {}): string => {
         const indentClose = indentize({ symbol: indentSymbol, size: indentCount - indentSize, level });
 
         if (isArray(u) || isPlainObject(u)) {
-            if (ref.has(u))
-                return value(`<circular ref>: "${ref.get(u)?.toString()}"`);
+            if (ref.has(u)) return value(`<circular ref>: "${ref.get(u)?.toString()}"`);
 
             ref.set(u, key);
 
-            const s = entries(u).reduce((s: string, [ k, v ]: [ PropertyKey, any ]) => {
-                return `${s}\n${indentKey}${keyTransform(k)}: ${_(k, v, indentCount + indentSize + `${String(k)}`.length + 2, level + 1)},`;
-            }, `${open(u, bracket)}`);
+            const s = entries(u).reduce(
+                (s: string, [k, v]: [PropertyKey, any]) => {
+                    return `${s}\n${indentKey}${keyTransform(k)}: ${_(k, v, indentCount + indentSize + `${String(k)}`.length + 2, level + 1)},`;
+                },
+                `${open(u, bracket)}`,
+            );
 
             const closeIndent = s === open(u, bracket) ? ` ` : `\n${indentClose}`;
             return `${s}${closeIndent}${close(u, bracket)}`;
@@ -64,7 +61,6 @@ export const nice = (v: any, options: NiceOptions = {}): string => {
 
     return _('', v, indentSize);
 };
-
 
 /* console.log(nice({
     a: 1,

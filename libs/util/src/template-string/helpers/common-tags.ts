@@ -1,7 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { styles as s } from '../init';
 
-const byName = (name: keyof typeof s) => ((...args: any[]) => (s[ name ] as any).$(...args));
+const byName =
+    (name: keyof typeof s) =>
+    (...args: any[]) =>
+        (s[name] as any).$(...args);
 
 export const html = byName('html');
 export const codeBlock = byName('codeBlock');

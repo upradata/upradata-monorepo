@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 export const requiredSymbolKey = Symbol('required');
 
 export type ClassType = { new (...args: any[]): any };

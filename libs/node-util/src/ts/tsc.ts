@@ -1,6 +1,4 @@
 // import { createCompilerHost } from './compiler-host';
-/** Biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** Biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 
 import path from 'node:path';
 
@@ -41,7 +39,6 @@ function loadTsConfig(tsconfigPath?: string): { path: string; config: TsConfig }
 }
 
 export class TscCompiler {
-    // biome-ignore lint/complexity/noUselessConstructor: <explanation>
     constructor() {}
 
     static compile(fileNames: string[], options: TsCompileOptions = {}) {

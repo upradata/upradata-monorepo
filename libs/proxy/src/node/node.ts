@@ -1,8 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
 import { assignRecursive, isDefined, type Key } from '@upradata/util';
+
 import { Proxy, type ProxyType } from '../proxy';
+
 import type { InnerGet } from './description-factory';
+import { NodeProperty, type PropertyState } from './node-property';
 import {
     type AllNodeOpts,
     NodeOptions,
@@ -12,7 +13,6 @@ import {
     NodeType,
     SetOptions,
 } from './node.options';
-import { NodeProperty, type PropertyState } from './node-property';
 import { ImmutableValue } from './util';
 
 export abstract class Node<T, E> {
@@ -82,7 +82,6 @@ export abstract class Node<T, E> {
 
     protected updateTarget(prop: Key, value: any) {
         if (this.type.$?.isPrimitive) {
-            // biome-ignore lint/style/noNonNullAssertion: it is sure that parentProxy is defined if we are at a primitive node
             const parentNode = Proxy.node(this.parentProxy!);
             this.target = value;
             parentNode.target[prop] = this.target;
@@ -111,7 +110,6 @@ export abstract class Node<T, E> {
                 );
 
                 prop = node.prop;
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 proxy = node.parentProxy!;
             }
         }

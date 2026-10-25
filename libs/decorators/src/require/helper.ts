@@ -1,6 +1,5 @@
 import type { ClassType } from './definition';
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export function methodArgs(method: Function | ClassType) {
     let args: string;
 

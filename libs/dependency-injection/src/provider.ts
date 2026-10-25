@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { ClassProviderToken, ProviderToken } from './token';
 
 export interface ClassProvider<T> {

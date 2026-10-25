@@ -1,11 +1,10 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/style/noNonNullAssertion: <explanation> */
-/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
-import { assignRecursive, isDefined, type Key } from '@upradata/util';
 import { ReplaySubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
+import { assignRecursive, isDefined, type Key } from '@upradata/util';
+
 import type { Node } from '../node';
+
 import { type Extra, Proxy, type ProxyOpts } from './proxy';
 
 interface PropValue<T = any> {
@@ -58,7 +57,6 @@ export class ProxyObserver<T, E = {}> extends Proxy<T, E> {
                     return success;
                 },
             },
-            // eslint-disable-next-line object-shorthand
             propChanged: function (prop: Key, value: any) {
                 (this as any)[prop].changed$.next({ prop, value });
             },

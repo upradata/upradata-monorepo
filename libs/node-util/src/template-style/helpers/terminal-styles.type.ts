@@ -1,5 +1,4 @@
 // const styleList = (colorsSafe as any).styles as { [k: string]: { open: string; close: string; closeRe: RegExp } };
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 // Object.keys(require('colorsSafe').styles) gives the following (we are obliged to get the strings at compile time for the TypeScript Type)
 
 export class TerminalStylesHelper<T = any> {

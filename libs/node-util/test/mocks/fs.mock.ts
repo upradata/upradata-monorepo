@@ -1,9 +1,9 @@
+import type fs from 'fs-extra';
+import type MemoryFs from 'memory-fs';
 /* eslint-disable global-require */
 import type VinylFile from 'vinyl';
-import type MemoryFs from 'memory-fs';
-import type fs from 'fs-extra';
-import { assignRecursive, Function2, ObjectOf } from '@upradata/util';
 
+import { assignRecursive, Function2, ObjectOf } from '@upradata/util';
 
 export interface MockFS {
     files: ObjectOf<VinylFile>;
@@ -11,7 +11,6 @@ export interface MockFS {
     deleteFile: (filepath: string) => void;
     clean: () => void;
 }
-
 
 export const mockFs = (): MockFS => {
     const MemoryFs = require('memory-fs');
@@ -22,38 +21,31 @@ export const mockFs = (): MockFS => {
     const mockFiles: ObjectOf<VinylFile> = {};
 
     const addOrUpdateFile = (file: VinylFile) => {
-        mockFiles[ file.path ] = file;
+        mockFiles[file.path] = file;
 
-        if (file.stat.isDirectory && file.stat.isDirectory())
-            fs.mkdirp(file.path);
-        else
-            fs.outputFileSync(file.path, file.contents.toString());
+        if (file.stat.isDirectory && file.stat.isDirectory()) fs.mkdirp(file.path);
+        else fs.outputFileSync(file.path, file.contents.toString());
     };
 
     const deleteFile = (filepath: string) => {
         const fs: MemoryFs = (MemoryFs as any).__instance__;
         fs.unlinkSync(filepath);
-        delete mockFiles[ filepath ];
+        delete mockFiles[filepath];
     };
-
 
     const clean = () => {
         for (const file of Object.values(mockFiles)) {
-            if (file.stat.isDirectory && file.stat.isDirectory())
-                fs.rmdirSync(file.path);
-            else
-                fs.unlinkSync(file.path);
+            if (file.stat.isDirectory && file.stat.isDirectory()) fs.rmdirSync(file.path);
+            else fs.unlinkSync(file.path);
         }
 
-        // eslint-disable-next-line no-multi-assign
         // (MemoryFs as any).__files__ = files = {};
-        for (const k of Object.keys(mockFiles))
-            delete mockFiles[ k ];
+        for (const k of Object.keys(mockFiles)) delete mockFiles[k];
     };
 
-
     // will be hoisted in the function "mockFs"
-    jest.mock('fs', () => { // 'fs-extra' is using 'graceful-fs' under the hood that is using 'fs'. Here we will use an in-memory filesystem
+    jest.mock('fs', () => {
+        // 'fs-extra' is using 'graceful-fs' under the hood that is using 'fs'. Here we will use an in-memory filesystem
         const makeAsync = (fn: string | Function2<string, any>) => {
             function make(path: string, callback: Function2<Error, any>);
             function make(path: string, option: any, callback: Function2<Error, any>);
@@ -67,7 +59,7 @@ export const mockFs = (): MockFS => {
                 }
 
                 try {
-                    const result = typeof fn === 'string' ? this[ `${fn}Sync` ](path, opts) : fn.call(this, path, opts);
+                    const result = typeof fn === 'string' ? this[`${fn}Sync`](path, opts) : fn.call(this, path, opts);
                     setImmediate(() => cb(null, result));
                 } catch (e) {
                     setImmediate(() => cb(e, null));
@@ -79,8 +71,7 @@ export const mockFs = (): MockFS => {
 
         const MemoryFsAny = MemoryFs as any;
 
-        if (MemoryFsAny.__instance__)
-            return MemoryFsAny.__instance__;
+        if (MemoryFsAny.__instance__) return MemoryFsAny.__instance__;
 
         /* const accessSync = (_path, _mode) => { };
         const access = makeAsync(accessSync);
@@ -97,18 +88,17 @@ export const mockFs = (): MockFS => {
 
             try {
                 stats = oldStatSync.call(fs, path);
-            } catch (e) { }
+            } catch (e) {}
 
             const files = mockFiles;
-            return assignRecursive(stats || {}, files[ path ]?.stat);
+            return assignRecursive(stats || {}, files[path]?.stat);
         };
 
         // MemoryFs does not implement the options parameter
         // fsExtra is calling mkdirSync with { recursive: true } in fsExtra.outputFileSync
         const oldMkdirSync = MemoryFs.prototype.mkdirSync;
         MemoryFs.prototype.mkdirSync = function (this: MemoryFs, path: string, options: fs.MakeDirectoryOptions = {}) {
-            if (options.recursive)
-                return this.mkdirpSync(path);
+            if (options.recursive) return this.mkdirpSync(path);
 
             return oldMkdirSync.call(this, path);
         };
@@ -126,25 +116,22 @@ export const mockFs = (): MockFS => {
         const instanceKeys = Object.getOwnPropertyNames(MemoryFsAny.__instance__);
 
         for (const k of Object.getOwnPropertyNames(MemoryFs.prototype)) {
-            if (k !== 'constructor' && !instanceKeys.includes(k))
-                MemoryFsAny.__instance__[ k ] = MemoryFs.prototype[ k ];
+            if (k !== 'constructor' && !instanceKeys.includes(k)) MemoryFsAny.__instance__[k] = MemoryFs.prototype[k];
         }
 
         const fs = jest.requireActual('fs');
 
         for (const k of Object.getOwnPropertyNames(fs)) {
-            if (typeof fs[ k ] === 'function' && !MemoryFsAny.__instance__[ k ])
-                MemoryFsAny.__instance__[ k ] = fs[ k ];
+            if (typeof fs[k] === 'function' && !MemoryFsAny.__instance__[k]) MemoryFsAny.__instance__[k] = fs[k];
         }
 
         return MemoryFsAny.__instance__;
     });
 
-
     return {
         files: mockFiles,
         addOrUpdateFile,
         deleteFile,
-        clean
+        clean,
     };
 };

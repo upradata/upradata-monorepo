@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
 export type Key = string | number | symbol;
 export type Prop = Key;
 
@@ -31,7 +29,6 @@ export type RecordRecursive<O extends {}, Type> = {
 // (array.prototype.flat is doing so also => see ts definition)
 export type Levels = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export type GetParam<F extends Function, N extends Levels[number]> = N extends 1
     ? F extends (arg: infer U, ...args: any[]) => any
         ? U

@@ -1,4 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+import colorsStyles from 'colors/lib/styles';
+import { supportsColor } from 'colors/lib/system/supports-colors';
+import colorsSafe from 'colors/safe';
+
 import {
     buildStyle,
     type DefinedStringTransforms,
@@ -12,9 +15,6 @@ import {
     styles as s,
     type ToString,
 } from '@upradata/util';
-import colorsStyles from 'colors/lib/styles';
-import { supportsColor } from 'colors/lib/system/supports-colors';
-import colorsSafe from 'colors/safe';
 
 import type { TerminalStyleNames } from './helpers';
 
@@ -28,17 +28,14 @@ COLORS_SAFE.none = (s: string) => s;
 
 const props = Object.keys(colorsStyles).concat('none', 'stripColors', 'strip') as AllTerminalStyleNames[];
 
-export const colorsTransforms = makeObject(
-    props,
-    (k: AllTerminalStyleNames): StyleOptions => ({
-        transforms: [
-            (strings: TemplateStringsArray | ToString, ...keys: ToString[]) =>
-                recreateString(ensureArray(strings) as any, ...keys),
-            COLORS_SAFE[k],
-        ],
-        flattenIfNoTransforms: recreateString,
-    }),
-);
+export const colorsTransforms = makeObject(props, (k: AllTerminalStyleNames): StyleOptions => ({
+    transforms: [
+        (strings: TemplateStringsArray | ToString, ...keys: ToString[]) =>
+            recreateString(ensureArray(strings) as any, ...keys),
+        COLORS_SAFE[k],
+    ],
+    flattenIfNoTransforms: recreateString,
+}));
 
 buildStyle(props, colorsTransforms);
 

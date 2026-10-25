@@ -15,7 +15,6 @@ export interface MakeTargetOptions {
     optional: boolean;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const makeTarget = <T = unknown>(overwrite: T = {} as any, options?: MakeTargetOptions): Target & T =>
     assignRecursive(
         options?.optional
@@ -32,5 +31,4 @@ export const makeTarget = <T = unknown>(overwrite: T = {} as any, options?: Make
                   c: { c1: 3 },
               },
         overwrite,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     ) as any as Target & T;

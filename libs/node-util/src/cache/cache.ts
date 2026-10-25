@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { ensureArray, isDefined, isUndefined } from '@upradata/util';
+
 import { warn } from './common';
 import { type File, GlobFiles } from './glob-files';
 import { CacheChangeOptions, Store, type StoreOpts } from './store';

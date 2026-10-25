@@ -104,8 +104,7 @@ const p3 = Proxy.create(ccc,
             mutable: true
         },
         handler: {
-            // tslint:disable-next-line:object-literal-shorthand
-            set: function (prop: Key, value: any) {
+                        set: function (prop: Key, value: any) {
                 console.log('CACACAA');
                 let v = value;
 
@@ -216,15 +215,13 @@ const proxyConfig = Proxy.createPartialExtra(allConfig, {
         mutable: true
     },
     handler: {
-        // tslint:disable-next-line:object-literal-shorthand
-        set: function (prop: Key, value: any) {
+                set: function (prop: Key, value: any) {
             this[ prop ] = value;
             console.log(`set: ${String(prop)} --> ${value}`);
             this[ prop ].changed$.next({ prop, value });
         }
     },
-    // tslint:disable-next-line:object-literal-shorthand
-    changedUp: function (prop: Key, value: any) {
+        changedUp: function (prop: Key, value: any) {
         console.log(`changed: ${String(prop)} --> ${value}`);
         this.changed$.next({ prop, value });
     },

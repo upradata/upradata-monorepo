@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { ClassType, FunctionType } from './definition';
 import { RequiredParameter } from './required-parameter';
 import { RequiredProperty } from './required-property';

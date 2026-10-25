@@ -1,9 +1,12 @@
-/** biome-ignore-all lint/suspicious/noThenProperty: <explanation> */
 import path from 'node:path';
-import { ifThen, oneLineTrim } from '@upradata/util';
+
 import fs from 'fs-extra';
+
+import { ifThen, oneLineTrim } from '@upradata/util';
+
 import { green, yellow } from '../template-style';
 import { type ExecAsyncOptions, execAsync, isExecLog } from '../useful';
+
 import { odsToXlsx, type XslxToCsvOption, xlsxToCsv } from './ods-xlsx.convert';
 import { absolutePath } from './util';
 

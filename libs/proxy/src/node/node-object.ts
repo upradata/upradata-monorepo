@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
 import { AssignOptions, assignRecursive, isDefined, isNil, isUndefined, type Key } from '@upradata/util';
+
 import { Proxy } from '../proxy';
+
 import { Node } from './node';
 import type { AllNodeOpts, NodeState } from './node.options';
 
@@ -39,12 +39,10 @@ export class NodeObject<T, E> extends Node<T, E> {
 
             /* delete this.parentProxy[ prop ];
             this.parentProxy[ prop ] = value; */
-            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             const state = Proxy.node(this.parentProxy!).createProxyIfNecessary(prop, value);
 
             if (state === 'skipped') this.state.update({ targetUpdated: false });
             else {
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 (this.parentProxy! as any)[prop] = value;
                 this.updateTarget(prop, value);
                 this.state.update({ targetUpdated: true });

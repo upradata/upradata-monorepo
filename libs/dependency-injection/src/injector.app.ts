@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { DiInjector } from './di-injector';
 import type { Injector, InjectorConstructor, InjectorOptions } from './injector';
 

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { Provider } from './provider';
 import type { ClassProviderToken, ProviderToken } from './token';
 

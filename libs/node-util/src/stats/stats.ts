@@ -1,7 +1,8 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { type CamelCase, camelize } from '@upradata/util';
+
 import { styles as s } from '../template-style';
 import { Terminal } from '../terminal';
+
 import type { Stat, StatCtor, StatData } from './stat';
 import {
     type OutputStats,
@@ -15,103 +16,106 @@ import {
     statSorters,
 } from './types';
 
-
 export class Stats<S extends Stat> {
     stats: Statistics<S> = {};
 
-    constructor (public statsName: string, public StatClass: StatCtor<S>) {}
+    constructor(
+        public statsName: string,
+        public StatClass: StatCtor<S>,
+    ) {}
 
     private isStat(s: any): s is S {
         return s instanceof this.StatClass;
     }
 
     add(stat: S, ...names: string[]) {
-        let stats: Statistics<S> = this.stats as Statistics<S> || {};
+        let stats: Statistics<S> = (this.stats as Statistics<S>) || {};
         this.stats = stats;
 
         names.forEach((name, i) => {
-            if (i === names.length - 1)
-                return;
+            if (i === names.length - 1) return;
 
-            stats[ name ] = stats[ name ] || {};
-            stats = stats[ name ] as Statistics<S>;
+            stats[name] = stats[name] || {};
+            stats = stats[name] as Statistics<S>;
 
             if (stats instanceof this.StatClass)
                 throw new Error(`${names.slice(0, i + 1).join('.')} is an existing Stat and not a Collection`);
         });
 
-        stats[ names.slice(-1)[ 0 ] ] = stat;
+        stats[names.slice(-1)[0]] = stat;
 
         return stat;
     }
-
 
     create(...names: string[]): S {
         return this.add(new this.StatClass(names.join('.')), ...names);
     }
 
     get(...names: string[]) {
-        return names.reduce((stat, name) => (stat[ name ] || {}) as Statistics<S>, this.stats);
+        return names.reduce((stat, name) => (stat[name] || {}) as Statistics<S>, this.stats);
     }
-
 
     output(...names: string[]): OutputStats {
         const stats = names.length === 0 ? this.stats : this.get(...names);
 
         const datas: OutputStats = {
             collections: {},
-            global: {}
+            global: {},
         };
 
-        const isGlobalStat = (s: StatData): s is StatData<'global'> => !Array.isArray(s.data[ 0 ]);
+        const isGlobalStat = (s: StatData): s is StatData<'global'> => !Array.isArray(s.data[0]);
 
         const addData = (fullName: string, stat: S) => {
-            for (const [ dataName, _statData ] of Object.entries(stat.datas(fullName))) {
+            for (const [dataName, _statData] of Object.entries(stat.datas(fullName))) {
                 const statData = _statData as StatData;
 
                 if (statData.data?.length > 0) {
-
                     if (isGlobalStat(statData)) {
                         const s = statData as StatData<'global'>;
 
-                        const stat = datas.global[ dataName ] as StatTableWithName || {
-                            collectionName: '', name: dataName, headers: s.headers, rows: []
+                        const stat = (datas.global[dataName] as StatTableWithName) || {
+                            collectionName: '',
+                            name: dataName,
+                            headers: s.headers,
+                            rows: [],
                         };
 
                         stat.rows.push(s.data);
 
-                        datas.global[ dataName ] = stat;
+                        datas.global[dataName] = stat;
                     } else {
-                        const collection = (datas.collections[ fullName ] || { collectionName: fullName, stats: {} }) as StatCollection;
+                        const collection = (datas.collections[fullName] || {
+                            collectionName: fullName,
+                            stats: {},
+                        }) as StatCollection;
 
                         const s = statData as StatData<'detailed'>;
-                        collection.stats[ dataName ] = { headers: s.headers, rows: s.data, name: dataName, collectionName: fullName };
+                        collection.stats[dataName] = {
+                            headers: s.headers,
+                            rows: s.data,
+                            name: dataName,
+                            collectionName: fullName,
+                        };
 
-                        datas.collections[ fullName ] = collection;
+                        datas.collections[fullName] = collection;
                     }
                 }
             }
         };
 
-        const mergeNames = (name1: string, name2: string) => name1 === '' ? name2 : `${name1}.${name2}`;
+        const mergeNames = (name1: string, name2: string) => (name1 === '' ? name2 : `${name1}.${name2}`);
 
         const buildData = (parentName: string, stats: Statistics<S>) => {
-            for (const [ name, stat ] of Object.entries(stats)) {
+            for (const [name, stat] of Object.entries(stats)) {
                 const mergeName = mergeNames(parentName, name);
 
-                if (this.isStat(stat))
-                    addData(mergeName, stat);
-                else
-                    buildData(mergeName, stat as Statistics<S>);
+                if (this.isStat(stat)) addData(mergeName, stat);
+                else buildData(mergeName, stat as Statistics<S>);
             }
         };
 
-        if (this.isStat(stats))
-            addData(stats.name, stats);
-        else
-            buildData('', stats as Statistics<S>);
-
-
+        if (this.isStat(stats)) addData(stats.name, stats);
+        else buildData('', stats as Statistics<S>);
 
         return datas;
     }
@@ -119,10 +123,10 @@ export class Stats<S extends Stat> {
     toString(...names: string[]): string;
     toString(names: string[], options?: StatsToStringOptions): string;
     toString(...args: any[]): string {
-        const hasOptions = Array.isArray(args[ 0 ]);
+        const hasOptions = Array.isArray(args[0]);
 
-        const names = (hasOptions ? args[ 0 ] || [] : args) as string[];
-        const options = (hasOptions ? args[ 1 ] || {} : {}) as StatsToStringOptions;
+        const names = (hasOptions ? args[0] || [] : args) as string[];
+        const options = (hasOptions ? args[1] || {} : {}) as StatsToStringOptions;
 
         const datas = this.output(...names);
 
@@ -132,43 +136,43 @@ export class Stats<S extends Stat> {
             maxWidth: {
                 row: {
                     width: rowWidth,
-                    indexToShrink: columnToShrink > 0 ? columnToShrink - 1 : undefined
+                    indexToShrink: columnToShrink > 0 ? columnToShrink - 1 : undefined,
                 },
-                cell: maxCellWidth
-            }
+                cell: maxCellWidth,
+            },
         });
 
-
-        // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
         const toString = ({ name, collectionName, headers, rows }: StatTableWithName) => {
             if (rows.length > 0) {
-                return terminal.table({
-                    title: collectionName ? `${collectionName.replaceAll('.', ' ❯ ')} ⟹  ${name}` : name,
-                    headers,
-                    data: rows
-                }, options.tableConfig);
+                return terminal.table(
+                    {
+                        title: collectionName ? `${collectionName.replaceAll('.', ' ❯ ')} ⟹  ${name}` : name,
+                        headers,
+                        data: rows,
+                    },
+                    options.tableConfig,
+                );
             }
         };
 
-        const title = terminal.title(`"${this.statsName}" summary`, { type: 'band', style: s.white.bgMagenta.transform });
+        const title = terminal.title(`"${this.statsName}" summary`, {
+            type: 'band',
+            style: s.white.bgMagenta.transform,
+        });
 
         const sort = <T extends SortType>(datas: SortData<T>[], type: T): SortData<T>[] => {
-            type SSsort = Exclude<StatsToStringOptions[ 'sort' ], undefined>;
+            type SSsort = Exclude<StatsToStringOptions['sort'], undefined>;
 
-            const sorter = options.sort?.[ camelize(type) as keyof SSsort ] as SSsort[ CamelCase<T> ];
+            const sorter = options.sort?.[camelize(type) as keyof SSsort] as SSsort[CamelCase<T>];
 
-            if (!sorter)
-                return datas;
+            if (!sorter) return datas;
 
             const s = (
-                typeof sorter === 'function' ?
-                    sorter :
-                    statSorters[ camelize(sorter) as keyof typeof statSorters ](type)
+                typeof sorter === 'function' ? sorter : statSorters[camelize(sorter) as keyof typeof statSorters](type)
             ) as StatSorter<T>;
 
             return s?.(datas) ?? datas;
         };
-
 
         const stats = [
             ...sort(Object.values(datas.collections), 'collections').flatMap(c => Object.values(c.stats)),
@@ -176,15 +180,21 @@ export class Stats<S extends Stat> {
                 sort(Object.values(datas.detailed), 'collections').flatMap(c => Object.values(c.stats)),
                 'stats'
             ), */
-            ...sort(Object.values(datas.global).map(stats => options.sort?.globalRows ? ({
-                ...stats,
-                rows: sort(stats.rows, 'global-rows')
-            }) : stats), 'stats')
+            ...sort(
+                Object.values(datas.global).map(stats =>
+                    options.sort?.globalRows
+                        ? {
+                              ...stats,
+                              rows: sort(stats.rows, 'global-rows'),
+                          }
+                        : stats,
+                ),
+                'stats',
+            ),
         ];
 
         return stats.reduce((s, data) => `${s}\n${toString(data)}`, `${title}\n`);
     }
-
 
     log(...names: string[]): this;
     log(names: string[], options?: StatsToStringOptions): this;

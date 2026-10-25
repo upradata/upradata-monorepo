@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { describe, expect, it } from 'vite-plus/test';
+
 import { DiInjector, Inject, type ProviderToken } from '../src';
 
 describe('DiInjector', () => {
@@ -153,7 +153,6 @@ describe('DiInjector', () => {
             }
         }
 
-        // eslint-disable-next-line no-new
         new DiInjector({ bootstrap: [FooService, BarService] });
 
         expect(initialized).toEqual([FooService, BarService]);
@@ -349,7 +348,6 @@ describe('DiInjector', () => {
     });
 
     it('should use the root parent if provideInRoot is true', () => {
-        // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
         class BarService {
             static providedInRoot = true;
         }

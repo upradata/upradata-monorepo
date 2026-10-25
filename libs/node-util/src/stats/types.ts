@@ -1,6 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { KebabCase, Levels, ObjectOf } from '@upradata/util';
+
 import type { TableConfig, TableRow, TableRows } from '../terminal';
+
 import type { Stat } from './stat';
 
 export type Statistics<S extends Stat, Depth extends number = 6> = ObjectOf<

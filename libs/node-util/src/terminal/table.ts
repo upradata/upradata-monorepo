@@ -1,3 +1,8 @@
+import { type Alignment, type TableUserConfig, table } from 'table';
+import * as alignString from 'table/dist/src/alignString.js';
+import * as calculateCellWidths from 'table/dist/src/calculateMaximumColumnWidths';
+import { makeTableConfig } from 'table/dist/src/makeTableConfig';
+
 import {
     AssignOptions,
     arrayN,
@@ -7,10 +12,6 @@ import {
     type PartialRecursive,
     stringWidth,
 } from '@upradata/util';
-import { type Alignment, type TableUserConfig, table } from 'table';
-import * as alignString from 'table/dist/src/alignString.js';
-import * as calculateCellWidths from 'table/dist/src/calculateMaximumColumnWidths';
-import { makeTableConfig } from 'table/dist/src/makeTableConfig';
 
 type RemoveReadOnly<T> = {
     -readonly [K in keyof T]: T[K];
@@ -144,7 +145,6 @@ export class TableString {
     }
 
     private resizeColumnsWidth(columnsWidth: number[], builtConfig: TableConfig): number[] {
-        // tslint:disable-next-line: prefer-const
         const { width, indexToShrink } = this.maxWidth.row || {};
 
         if (width && indexToShrink) {
@@ -178,7 +178,6 @@ export class TableString {
 
                     columnsWidth[index] = maxShrinkWidth;
                     return this.resizeColumnsWidth(columnsWidth, builtConfig);
-                    // tslint:disable-next-line: no-else-after-return
                 }
 
                 columnsWidth[index] = shrinkWidth;

@@ -1,9 +1,12 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import crypto from 'node:crypto';
 import path from 'node:path';
-import { ensureArray, isDefined, isUndefined, type PartialRecursive } from '@upradata/util';
+
 import fs from 'fs-extra';
+
+import { ensureArray, isDefined, isUndefined, type PartialRecursive } from '@upradata/util';
+
 import { findUpDir } from '../find-up';
+
 import { warn } from './common';
 import { type FileIteration, type FilePrint, isFilePrint, StoreCollection } from './store-collection';
 
@@ -198,7 +201,6 @@ export class Store {
             return !this.options.isSameComparator(filepath, file.fileprint[criteria]);
         }
 
-        // biome-ignore lint/complexity/noUselessTernary: for clarity
         return opts.onlyExistingFiles ? false : true;
     }
 

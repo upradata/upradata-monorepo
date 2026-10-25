@@ -1,8 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
 
 import { ensureArray, isString, type TT$ } from '@upradata/util';
+
 import type { SyncAsyncMode, SyncAsyncType } from '../useful';
+
 import { FindFirstPathOptions, type FindFirstPathOpts, findFirstPath } from './find-first-path';
 
 export const findUpStop = Symbol('findUpStop');

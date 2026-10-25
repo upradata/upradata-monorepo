@@ -1,6 +1,3 @@
-// biome-ignore-all lint/suspicious/noExplicitAny: <explanation>
-/** biome-ignore-all lint/complexity/noUselessUndefinedInitialization: <explanation> */
-
 import { objectToString } from './format-string';
 import type { Constructor } from './function';
 import { isDefined, isNil, isUndefined } from './is';
@@ -25,9 +22,7 @@ export class AssignOptions {
     onlyExistingProp: { level: number } | undefined = undefined;
     props?: (string | symbol)[] = undefined;
     except?: (string | symbol)[] = undefined;
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     accept?: (key: string | symbol, value: any) => boolean = undefined;
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     transform?: (key: string | symbol, value: any) => any = undefined;
     nonRecursivelyAssignableTypes!: Set<Constructor>;
 
@@ -72,9 +67,7 @@ const isAssignOptions = (v: any): v is AssignOptions => {
 };
 
 // If an object is created like so Object.create(null), the prototype is null and not Object.prototype
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 const hasOwnProperty = (o: object, prop: Key) => {
-    // biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
     return !isNil(Object.getPrototypeOf(o)) ? Object.prototype.hasOwnProperty.call(o, prop) : prop in o;
 };
 
@@ -84,7 +77,6 @@ class Assign {
     private options: AssignOptions;
     private currentlevel!: number;
 
-    // biome-ignore lint/correctness/noUnusedPrivateClassMembers: it is a parsing error because it is used in the form of { in, out } = this later
     constructor(
         private out: PlainObj,
         private ins: PlainObj[],
@@ -102,7 +94,6 @@ class Assign {
 
         const getFrom = () => {
             const v = typeof from === 'function' ? from() : from[prop];
-            // biome-ignore lint/style/noNonNullAssertion: faster than type narrowing with === undefined
             return isDefined(transform) ? transform!(prop, v) : v;
         };
 
@@ -160,7 +151,6 @@ class Assign {
         for (const inn of ins) {
             if (inn === undefined || inn === null || !isObjectOrArray(inn)) continue;
 
-            // eslint-disable-next-line guard-for-in
             for (const prop in inn) {
                 if ((assignMode === 'of' && hasOwnProperty(inn, prop)) || assignMode === 'in') {
                     const isPropPrimitive = fromPrimitive || (prop in to && !isObjectOrArray(to[prop]));

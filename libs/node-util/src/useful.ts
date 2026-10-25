@@ -1,11 +1,11 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { type ExecOptions, type ExecSyncOptionsWithStringEncoding, exec, execSync as execS } from 'node:child_process';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { promisify } from 'node:util';
 
-import { guidGenerator, type TT$ } from '@upradata/util';
 import fs from 'fs-extra';
+
+import { guidGenerator, type TT$ } from '@upradata/util';
 
 const nodeEnv = (process.env.NODE_ENV || '').trim().toLowerCase();
 export const isDev = ['production', 'prod'].some(t => t === nodeEnv);

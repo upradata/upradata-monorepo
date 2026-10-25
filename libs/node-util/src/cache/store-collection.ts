@@ -1,6 +1,6 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-import { isDefined, isUndefined, type ObjectOf } from '@upradata/util';
 import fs from 'fs-extra';
+
+import { isDefined, isUndefined, type ObjectOf } from '@upradata/util';
 
 export interface FilePrint {
     mtime: number;
@@ -155,7 +155,6 @@ export class StoreCollection {
         //
         const { actionBefore, actionAfter } = args;
 
-        // biome-ignore lint/complexity/noUselessUndefinedInitialization: needed for the return type of the function
         let lastAction: R | undefined = undefined;
 
         const isPathMode = args.nodePath && args.nodePath.length > 0;

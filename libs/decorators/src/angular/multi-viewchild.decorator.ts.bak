@@ -57,8 +57,7 @@ export function MultiViewChild<Component, Directive, Service>(
                 targetObj2[key] = target[subPropertyName(name, key)];
 
             Object.defineProperty(target, name, {
-                // tslint:disable-next-line:object-literal-shorthand
-                get: function () {
+                                get: function () {
                     // return decs.map((x, i) => this[`${name}_${i}`], this);
                     const targetObj = {};
 

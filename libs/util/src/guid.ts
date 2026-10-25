@@ -6,7 +6,6 @@ import { random } from './random';
 
 I PREFER TO SEPARATE THEM
 */
-/** biome-ignore-all lint/style/useTemplate: <explanation> */
 
 /* import { TypedArray } from './types';
 

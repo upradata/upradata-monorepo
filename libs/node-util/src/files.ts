@@ -1,7 +1,8 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
-import type { TT$ } from '@upradata/util';
+
 import fs from 'fs-extra';
+
+import type { TT$ } from '@upradata/util';
 
 export interface ForEachFilesOptions {
     recursive?: boolean;

@@ -1,7 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { TT$ } from './types';
 import { arrayN } from './useful';
-
 
 export type ChainedFunc<T> = (value: T, i?: number) => TT$<T>;
 
@@ -12,13 +10,22 @@ export const chained$ = <T>(functions: ChainedFunc<T>[], init?: T): Promise<T> =
 export const composed$ = chained$;
 
 export const repeatChained$ = <T>(func: ChainedFunc<T>, n: number, init?: T): Promise<T> => {
-    return chained$(arrayN(n).map(_i => func), init);
+    return chained$(
+        arrayN(n).map(_i => func),
+        init,
+    );
 };
 
-export const chainedArr$ = <T, R>(array: T[], func: (arrayValue: T, reducerValue?: R, i?: number) => TT$<R>, init?: R): Promise<R> => {
-    return chained$(array.map(v => (r, i) => func(v, r, i)), init);
+export const chainedArr$ = <T, R>(
+    array: T[],
+    func: (arrayValue: T, reducerValue?: R, i?: number) => TT$<R>,
+    init?: R,
+): Promise<R> => {
+    return chained$(
+        array.map(v => (r, i) => func(v, r, i)),
+        init,
+    );
 };
-
 
 export const delayedPromise = <T>() => {
     let resolve: (value: T | PromiseLike<T>) => void = undefined as any;
@@ -32,9 +39,7 @@ export const delayedPromise = <T>() => {
     return { promise, resolve, reject };
 };
 
-
-
-export type CallTimeoutOptions = { ms?: number; waitPromise?: boolean; };
+export type CallTimeoutOptions = { ms?: number; waitPromise?: boolean };
 
 export const callTimeout = <R, O extends CallTimeoutOptions>(func: () => R, options?: O): Promise<Awaited<R>> => {
     const { ms = 0, waitPromise = true } = options || {};
@@ -43,14 +48,12 @@ export const callTimeout = <R, O extends CallTimeoutOptions>(func: () => R, opti
         setTimeout(() => {
             const r = func();
 
-            if (r instanceof Promise && waitPromise)
-                return r.then(resolve);
+            if (r instanceof Promise && waitPromise) return r.then(resolve);
 
             return resolve(r);
         }, ms);
     }) as any;
 };
-
 
 /* export const compose$ = <FN extends (arg: any) => TT$<any>, V extends Parameters<FN>[ 0 ] = Parameters<FN>[ 0 ], R = ReturnType<FN>>(functions: FN[], value: V): Promise<Awaited<R>> => {
     return composeLeft(functions.map(f => async (...args: any[]) => {

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { type ClassToken, DI_PROVIDED_IN_ROOT } from '../token';
 
 export const RootService = () => (klass: ClassToken<any>) => {

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { type Key, oneLine } from '@upradata/util';
 
 export class ImmutableValue<T> {

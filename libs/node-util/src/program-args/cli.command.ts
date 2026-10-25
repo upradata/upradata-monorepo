@@ -1,8 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-
 import type { EventEmitter } from 'node:events';
-import type { FunctionN, PlainObj, TT, TT$ } from '@upradata/util';
+
 import { Command, type CommanderError, /* Option as CommanderOption,*/ type OptionValueSource } from 'commander';
+
+import type { FunctionN, PlainObj, TT, TT$ } from '@upradata/util';
+
 import { CliOption, type CliOptionInit } from './cli.option';
 import { CliHelper, type CliHelperOpts } from './helper';
 import type { CommanderParser } from './parsers';
@@ -48,7 +49,6 @@ export class CliCommand extends Command {
     private _actionHandlers: FunctionN<any[], TT$<void>>[] = [];
     private optionNames = new Set<string>();
 
-    // biome-ignore lint/complexity/noUselessConstructor: <explanation>
     constructor(name?: string) {
         super(name);
     }

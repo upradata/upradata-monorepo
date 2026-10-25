@@ -1,7 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
-/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
 import { isDefined, isPlainObject, type Key } from '@upradata/util';
+
 import { type Handler, type Node, NodeObject, type NodeOpts, type PropChanged, type ProxyHandler } from '../node';
 
 export type ProxyOpts<T, E = {}> = Omit<NodeOpts<T, E>, 'handler' | 'propChanged'> & {
@@ -98,7 +96,6 @@ export class Proxy<T, E = {}> {
     $(value: any, options?: NodeOpts<T, E>): this {
         const node = Proxy.node<T, E>(this);
         const { parentProxy } = node;
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         const parentNode = Proxy.node(parentProxy!);
 
         parentNode.set({ [node.prop]: value }, options);

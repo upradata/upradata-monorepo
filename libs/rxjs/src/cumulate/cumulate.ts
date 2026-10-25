@@ -1,8 +1,6 @@
 import { Observable, OperatorFunction } from 'rxjs';
 
-
 // Inspiried by node_modules/rxjs/src/internal/operators/buffer.ts
-
 
 export abstract class Cumulator<T> {
     abstract clear(): void;
@@ -10,9 +8,7 @@ export abstract class Cumulator<T> {
     toArray?(): T[];
 }
 
-
 export type CumulatorCtor<T> = new () => Cumulator<T>;
-
 
 export class CumulateOptions<T> {
     filter: (value: T) => boolean = _value => true;
@@ -21,20 +17,17 @@ export class CumulateOptions<T> {
 
 export type CumulateOpts<T> = Partial<CumulateOptions<T>>;
 
-
-
 /**
  * Cumulates the source Observable values until `closingNotifier` emits.
  *
- * <span class="informal">Collects values from the past in a Cumulator, and emits
- * this cumulator or copies it as an "array" only when another Observable emits.</span>
+ * <span class="informal">Collects values from the past in a Cumulator, and emits this cumulator or copies it as an
+ * "array" only when another Observable emits.</span>
  *
  * ![](cumulate.png)
  *
- * Cumulates the incoming Observable values until the given `closingNotifier`
- * Observable emits a value, at which point it emits the cumulator/array on the output
- * Observable and restart the cumulator internally (calling cumulator.clean()), awaiting the next time
- * `closingNotifier` emits.
+ * Cumulates the incoming Observable values until the given `closingNotifier` Observable emits a value, at which point
+ * it emits the cumulator/array on the output Observable and restart the cumulator internally (calling
+ * cumulator.clean()), awaiting the next time `closingNotifier` emits.
  *
  * ## Example
  *
@@ -54,27 +47,29 @@ export type CumulateOpts<T> = Partial<CumulateOptions<T>>;
  * cumulateSet.subscribe(x => console.log(x)); => [0, 1, 2, 3] (if we wait at least 4s, otherwise [0, 1] for 2s for instance)
  * ```
  *
- * // @see {@link cumulateUnique}
- * // @see {@link lastValue}
- * // @see {@link bufferToggle}
+ * // @see {@link cumulateUnique} // @see {@link lastValue} // @see {@link bufferToggle}
  *
- * @param {Observable<any>} closingNotifier An Observable that signals the
- * buffer to be emitted on the output Observable.
+ * @param {Observable<any>} closingNotifier An Observable that signals the buffer to be emitted on the output
+ *   Observable.
  * @param {CumulatorCtor<T> | Cumulator<T>} cumulator A cumulator instance or Constructor
- * @param {CumulateOpts<T>} options cumulate options
- * @return A function that returns an Observable of buffers, which are arrays
+ * @param {CumulateOpts<T>} options Cumulate options
+ * @returns A function that returns an Observable of buffers, which are arrays
  * of values.
  */
 
 type CumulatorType<T> = CumulatorCtor<T> | Cumulator<T>;
 type CumulatorInstance<C extends CumulatorType<any>> = C extends CumulatorCtor<any> ? InstanceType<C> : C;
 
-export type Return<T, C extends CumulatorType<T>, O extends CumulateOpts<T>> = [ O ] extends [ never ] ? CumulatorInstance<C> :
-    O[ 'toArray' ] extends true ?
-    T[] :
-    CumulatorInstance<C>;
+export type Return<T, C extends CumulatorType<T>, O extends CumulateOpts<T>> = [O] extends [never]
+    ? CumulatorInstance<C>
+    : O['toArray'] extends true
+      ? T[]
+      : CumulatorInstance<C>;
 
-export type CumulateReturn<T, C extends CumulatorType<T>, O extends CumulateOpts<any>> = OperatorFunction<T, Return<T, C, O>>;
+export type CumulateReturn<T, C extends CumulatorType<T>, O extends CumulateOpts<any>> = OperatorFunction<
+    T,
+    Return<T, C, O>
+>;
 
 /*
 source.pipe(
@@ -91,23 +86,20 @@ source.pipe(
 export const cumulate = <T, C extends CumulatorType<T>, O extends CumulateOpts<T>>(
     closingNotifier: Observable<any>,
     cumulator: C,
-    options?: O
+    options?: O,
 ): CumulateReturn<T, C, O> => {
-
     const newCumulator = () => {
         if (cumulator instanceof Cumulator) {
             cumulator.clear();
             return cumulator;
         }
 
-        // eslint-disable-next-line new-cap
         return new (cumulator as CumulatorCtor<T>)();
     };
 
     const getResult = (buffer: Cumulator<T>) => {
         if (options?.toArray) {
-            if (buffer[ Symbol.iterator ])
-                return [ ...buffer[ Symbol.iterator ]() ];
+            if (buffer[Symbol.iterator]) return [...buffer[Symbol.iterator]()];
 
             return buffer.toArray();
         }
@@ -115,32 +107,31 @@ export const cumulate = <T, C extends CumulatorType<T>, O extends CumulateOpts<T
         return buffer;
     };
 
-
     let kumulator = newCumulator();
 
+    return ((source: Observable<T>) =>
+        new Observable(subscriber => {
+            const sourceSubscription = source.subscribe({
+                next: value => kumulator.add(value),
+                error: error => subscriber.error(error),
+                complete: () => {
+                    subscriber.next(getResult(kumulator) as any);
+                    subscriber.complete();
+                },
+            });
 
-    return ((source: Observable<T>) => new Observable(subscriber => {
-        const sourceSubscription = source.subscribe({
-            next: value => kumulator.add(value),
-            error: error => subscriber.error(error),
-            complete: () => {
-                subscriber.next(getResult(kumulator) as any);
-                subscriber.complete();
-            }
-        });
+            const notifierSubscription = closingNotifier.subscribe({
+                next: () => {
+                    subscriber.next(getResult(kumulator) as any);
+                    kumulator.clear();
+                },
+                error: error => subscriber.error(error),
+            });
 
-        const notifierSubscription = closingNotifier.subscribe({
-            next: () => {
-                subscriber.next(getResult(kumulator) as any);
-                kumulator.clear();
-            },
-            error: error => subscriber.error(error)
-        });
-
-        return () => {
-            sourceSubscription.unsubscribe();
-            notifierSubscription.unsubscribe();
-            kumulator = null;
-        };
-    })) as CumulateReturn<T, C, O>;
+            return () => {
+                sourceSubscription.unsubscribe();
+                notifierSubscription.unsubscribe();
+                kumulator = null;
+            };
+        })) as CumulateReturn<T, C, O>;
 };

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { Injector } from '../injector';
 import { type ClassToken, DI_PROVIDED_IN } from '../token';
 

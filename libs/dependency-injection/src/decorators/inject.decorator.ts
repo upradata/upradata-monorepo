@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { Injector } from '../injector';
 import { AppInjector } from '../injector.app';
 import {

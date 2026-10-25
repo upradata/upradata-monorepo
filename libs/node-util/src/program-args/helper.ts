@@ -1,5 +1,7 @@
-import { assignRecursive, type PartialRecursive, type StyleTransformString } from '@upradata/util';
 import { type Argument, type Command, Help } from 'commander';
+
+import { assignRecursive, type PartialRecursive, type StyleTransformString } from '@upradata/util';
+
 import { styles as s } from '../template-style';
 
 import type { CliOption } from './cli.option';
@@ -62,7 +64,6 @@ export class CliHelper extends Help {
     formatHelp(command: Command, helper: CliHelper) {
         const output = super.formatHelp(command, helper);
 
-        // eslint-disable-next-line prefer-template
         return output.replaceAll(/^(\S*?):(.*)/gm, `${s.underline.$`$1`}:$2`);
     }
 }

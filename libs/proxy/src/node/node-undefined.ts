@@ -1,8 +1,7 @@
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
-/** biome-ignore-all lint/style/noNonNullAssertion: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { AssignOptions, assignRecursive, isNil } from '@upradata/util';
+
 import { Proxy } from '../proxy';
+
 import { Node } from './node';
 import type { AllNodeOpts, NodeState } from './node.options';
 
@@ -25,7 +24,6 @@ export class NodeUndefined<T, E> extends Node<T, E> {
     }
 
     public doSet(value: T) {
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         const parentNode = Proxy.node(this.parentProxy!);
 
         if (isNil(value)) {

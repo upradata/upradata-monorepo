@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { Required, RequiredIf, Validate, ValidateProperties } from '../required';
 
 @ValidateProperties

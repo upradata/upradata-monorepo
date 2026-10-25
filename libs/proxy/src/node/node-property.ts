@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
 import { isUndefined, type Key, oneLine } from '@upradata/util';
+
 import { Proxy, ProxyFactory } from '../proxy';
+
 import { DescriptionFactory } from './description-factory';
 import type { Node } from './node';
 import { throwExtendableError, throwMutableTypeError } from './util';
@@ -66,8 +66,8 @@ export class NodeProperty<T, E> {
         const cycleProxy = this.getPotentialCycleProxy();
 
         const newProxy =
-            cycleProxy ||
-            (ProxyFactory.create({ node: this.node, prop: this.prop, value: this.value }) as Proxy<any, E>);
+            cycleProxy
+            || (ProxyFactory.create({ node: this.node, prop: this.prop, value: this.value }) as Proxy<any, E>);
 
         this.setDescription(newProxy);
 

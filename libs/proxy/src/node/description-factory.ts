@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
 import type { Key } from '@upradata/util';
+
 import { Proxy } from '../proxy';
+
 import type { Node } from './node';
 
 export type InnerGet<T, E> = (option?: { plainProxy: boolean }) => Proxy<T, E>;
@@ -14,7 +14,6 @@ export class DescriptionFactory<T, E> {
         public prop: Key,
         private node: Node<T, E>,
     ) {
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         this.parentNode = Proxy.node(this.node.parentProxy!);
     }
 

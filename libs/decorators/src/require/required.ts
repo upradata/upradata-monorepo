@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { Condition, FunctionType } from './definition';
 import { RequiredParameter } from './required-parameter';
 import { RequiredProperty } from './required-property';

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
 import process from 'node:process';
 
@@ -15,35 +14,38 @@ export type Type = keyof typeof typeMappings;
 
 export class FindFirstPathOptions {
     /**
-    The current working directory.
-    @default process.cwd()
-    */
+     * The current working directory.
+     *
+     * @default process.cwd()
+     */
     readonly directory: string = process.cwd();
 
     /**
-    The type of path to match.
-    @default 'file'
-    */
+     * The type of path to match.
+     *
+     * @default 'file'
+     */
     readonly type: Type = 'file';
 
     /**
-    Allow symbolic links to match if they point to the requested path type.
-    @default true
-    */
+     * Allow symbolic links to match if they point to the requested path type.
+     *
+     * @default true
+     */
     readonly allowSymlinks: boolean = true;
 
     /**
-    Preserve `paths` order when searching.
-    Disable this to improve performance if you don't care about the order.
-    @default true
-    */
+     * Preserve `paths` order when searching. Disable this to improve performance if you don't care about the order.
+     *
+     * @default true
+     */
     readonly preserveOrder: boolean = true;
 
     /**
-    The number of concurrently pending promises.
-    Minimum: `1`
-    @default Infinity
-    */
+     * The number of concurrently pending promises. Minimum: `1`
+     *
+     * @default Infinity
+     */
     readonly nbConcurrentPromises: number = Infinity;
 
     constructor(options: FindFirstPathOpts = {}) {

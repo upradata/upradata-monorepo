@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { isDefined, isUndefined } from '@upradata/util';
+
 import { guid } from './useful';
 
 /* import { rafFeature } from '@features-detection/features/js/requestAnimationFrame';
@@ -44,7 +44,6 @@ export class ElementTargetCache<T> {
     // And every EventName can save a data of type T
     cache = new Map<EventTarget, Map<EventName, T>>();
 
-    // biome-ignore lint/complexity/noUselessConstructor: for clarity
     constructor() {}
 
     getFirstOrSecondMapping(param: CacheParameterWithEventNameOption) {

@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import 'reflect-metadata';
 import { type ClassType, type Condition, type ParamCond, requiredSymbolKey } from './definition';
 import { methodArgs } from './helper';
@@ -18,7 +16,6 @@ export class RequiredParameter {
         else _require(target, methodName, parameterIndex);
     }
 
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     public static check(prototype: any, methodName: string, method: Function | ClassType, args: ArrayLike<any>) {
         const requiredParameters: ParamCond[] = Reflect.getOwnMetadata(requiredSymbolKey, prototype, methodName);
 
@@ -29,7 +26,6 @@ export class RequiredParameter {
                         const args = methodArgs(method);
                         const arg = ` "${args[param.index]}" `;
 
-                        // tslint:disable-next-line:no-parameter-reassignment
                         let signature = args.reduce((accu, arg) => (accu += `${arg}, `), '');
                         signature = signature.slice(0, -2);
 

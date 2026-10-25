@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { Injector } from './injector';
 
 export const DI_DEPS = Symbol('di dependencies');

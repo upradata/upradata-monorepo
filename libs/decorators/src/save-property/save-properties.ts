@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import 'reflect-metadata';
 
 type PropertyType = string | symbol;
@@ -13,7 +12,6 @@ export interface Property extends Optional {
 
 const propsSymbolKey = Symbol('properties');
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
 interface SavePropType extends Function {
     get: (konstructor: Class) => Property[];
 }

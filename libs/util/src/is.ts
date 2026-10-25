@@ -1,5 +1,4 @@
 /* eslint-disable space-before-function-paren */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 // export * from 'ts-util-is';
 // export * is not supported by rollup with commonjs :(((
 
@@ -67,10 +66,7 @@ export function isDefined<T>(value: T | undefined): value is T {
  * @param value Reference to check.
  */
 export function isError(value: any): value is Error {
-    return (
-        Object.prototype.toString.call(value) === '[object Error]' ||
-        value instanceof Error
-    );
+    return Object.prototype.toString.call(value) === '[object Error]' || value instanceof Error;
 }
 
 /**
@@ -130,17 +126,13 @@ export function isObject(value: any): value is object {
 }
 
 /**
- * Determines if a reference is a plain `Object`. A "plain" object is typically created by `{}` or
- * `new Object()`. Some types such as arrays and null, while technically objects, are not considered
- * plain objects.
+ * Determines if a reference is a plain `Object`. A "plain" object is typically created by `{}` or `new Object()`. Some
+ * types such as arrays and null, while technically objects, are not considered plain objects.
  *
  * @param value Reference to check.
  */
 export function isPlainObject(value: any): value is object {
-    return (
-        isObject(value) &&
-        Object.prototype.toString.call(value) === '[object Object]'
-    );
+    return isObject(value) && Object.prototype.toString.call(value) === '[object Object]';
 }
 
 /**
@@ -194,27 +186,18 @@ export function isNil(value: any): value is null | undefined {
  * @param value Reference to check
  * @param ctor Constructor type to check against
  */
-export function isInstance<T extends new (...args: any[]) => any>(
-    value: any,
-    ctor: T
-): value is InstanceType<T> {
+export function isInstance<T extends new (...args: any[]) => any>(value: any, ctor: T): value is InstanceType<T> {
     return value instanceof ctor;
 }
 
-
-
-
 // MDN Polyfill
 export function isInt(n: number) {
-    return typeof n === 'number' &&
-        Number.isFinite(n) &&
-        Math.floor(n) === n;
+    return typeof n === 'number' && Number.isFinite(n) && Math.floor(n) === n;
 }
 
 export function isFloat(n: number) {
     return !isInt(n);
 }
-
 
 export function isAsyncFunction(value: any) {
     return Object.prototype.toString.call(value) === '[object AsyncFunction]';
@@ -223,7 +206,6 @@ export function isAsyncFunction(value: any) {
 export function isPromise<T>(v: T | Promise<T>): v is Promise<T> {
     return isDefined(v) && (v instanceof Promise || isDefined((v as any).then));
 }
-
 
 export function isDefinedProp<T extends {} | any[]>(o: T, k: keyof T) {
     return k in o;

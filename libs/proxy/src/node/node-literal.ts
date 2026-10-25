@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
 import { AssignOptions, assignRecursive, isNil } from '@upradata/util';
+
 import { Proxy } from '../proxy';
+
 import { Node } from './node';
 import type { AllNodeOpts, NodeState } from './node.options';
 import { throwMutableTypeError } from './util';

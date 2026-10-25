@@ -1,9 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { assignRecursive, ensureArray, isPlainObject } from '@upradata/util';
 import { type GlobOptions, globSync } from 'glob';
+
+import { assignRecursive, ensureArray, isPlainObject } from '@upradata/util';
 
 export type GlobFilesOptions = (GlobOptions & { withFileTypes?: false }) & { noGlob?: boolean };
 export type GlobFile = { pattern: string; options?: GlobFilesOptions };

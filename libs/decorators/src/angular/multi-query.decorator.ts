@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type {
     ContentChildDecorator,
     ContentChildrenDecorator,
@@ -60,8 +59,7 @@ export function MultiQuery<Component, Directive, Service>(
     const queryDecoratorsFactory: (target: any, prop: PropertyKey) => any = {} as undefined;
 
     let options: QueryOptions<Component, Directive, Service>[];
-    if (isQueryOptions<Component, Directive, Service>(opts))
-        options = opts as any; // typing not working ? :((
+    if (isQueryOptions<Component, Directive, Service>(opts)) options = opts as any; // typing not working ? :((
     else options = (opts as any).map(o => ({ read: o }));
 
     if (options.length === 0) (queryDecoratorsFactory as any).component = qDecorator(selector);
@@ -97,8 +95,6 @@ export function MultiQuery<Component, Directive, Service>(
             }
 
             Object.defineProperty(target, name, {
-                // tslint:disable-next-line:object-literal-shorthand
-                // eslint-disable-next-line object-shorthand
                 get: function () {
                     // return decs.map((x, i) => this[`${name}_${i}`], this);
                     const targetObj = {};
@@ -132,16 +128,15 @@ type MutliView<T> = T extends ElementRef
         : T extends Provider
           ? { provider: T }
           : T extends Null
-            ? // biome-ignore lint/complexity/noBannedTypes: <explanation>
-              {}
+            ? {}
             : T;
 // { renderElement: T };
 
-export type MultiViewQuery<T1, T2 = Null, T3 = Null, T4 = Null, T5 = Null> = MutliView<T1> &
-    MutliView<T2> &
-    MutliView<T3> &
-    MutliView<T4> &
-    MutliView<T5>;
+export type MultiViewQuery<T1, T2 = Null, T3 = Null, T4 = Null, T5 = Null> = MutliView<T1>
+    & MutliView<T2>
+    & MutliView<T3>
+    & MutliView<T4>
+    & MutliView<T5>;
 
 /* class A { }
 type Example = MultiViewChildType<ElementRef, Provider, TemplateRef<A>, ViewContainerRef, { component: A }>;

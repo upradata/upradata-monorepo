@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { isDefined, isNil, isPlainObject, type Key } from '@upradata/util';
+
 import { type Node, NodeLiteral, NodeObject, NodeUndefined } from '../node';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
+
 import { createProxy, Proxy, type ProxyCtor } from './proxy';
 
 export interface CreateParams<T, E> {
@@ -10,7 +10,6 @@ export interface CreateParams<T, E> {
     value: T;
 }
 
-// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class ProxyFactory {
     static create<T, E>(params: CreateParams<T, E>): Proxy<T, E> {
         // const options = node.getSetOptions();

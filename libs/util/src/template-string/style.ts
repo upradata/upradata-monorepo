@@ -1,15 +1,12 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { recreateString } from './recreate-string';
 
 export type StyleTransform<T = any, R = T> = (...args: T[]) => R;
 export type StyleTransformString<T = any> = (s: string) => T;
 export type StyleMode = 'args' | 'full' | 'both' | 'null';
 
-
 export type StyleTemplate<T = any, K = any> = (strings: TemplateStringsArray, ...keys: K[]) => T;
 export type StyleFlatten = (strings: TemplateStringsArray, ...keys: any[]) => any;
-export type StyleTransforms = Array<StyleTransform | { mode: StyleMode; transform: StyleTransform; } | Style>;
-
+export type StyleTransforms = Array<StyleTransform | { mode: StyleMode; transform: StyleTransform } | Style>;
 
 export class StyleOptions {
     flatten?: StyleFlatten;
@@ -18,24 +15,23 @@ export class StyleOptions {
     transforms?: StyleTransforms;
 }
 
-
 // const flatMap = (arr: any[]) => arr.reduce((a, v) => a.concat(Array.isArray(v) ? flatMap(v) : v), []);
 
 export class Style {
-    static get [ Symbol.species ]() { return Style; }
+    static get [Symbol.species]() {
+        return Style;
+    }
     public transforms: StyleTransforms = [];
     public mode: StyleMode;
     public flatten?: StyleFlatten;
     flattenIfNoTransforms?: StyleFlatten;
 
-
-    constructor (public options: StyleOptions = {}) {
+    constructor(public options: StyleOptions = {}) {
         this.mode = options.mode || 'null';
         this.flatten = options.flatten;
         this.flattenIfNoTransforms = options.flattenIfNoTransforms;
 
-        if (options.transforms)
-            this.add(...options.transforms);
+        if (options.transforms) this.add(...options.transforms);
     }
 
     get args() {
@@ -53,24 +49,22 @@ export class Style {
         return this;
     }
 
-    private getTransforms(level: number = 0): Array<{ mode: StyleMode; transform: StyleTransform; }> {
-        const transforms = /* flatMap( */this.transforms.flatMap(tr => {
+    private getTransforms(level: number = 0): Array<{ mode: StyleMode; transform: StyleTransform }> {
+        const transforms = /* flatMap( */ this.transforms.flatMap(tr => {
             if (tr instanceof Style) return tr.getTransforms(level + 1);
-            if (typeof tr === 'function') return { mode: this.mode || 'null' as const, transform: tr };
+            if (typeof tr === 'function') return { mode: this.mode || ('null' as const), transform: tr };
             return tr;
         }); // );
 
-        const setMode = (t: { mode: StyleMode; transform: StyleTransform; }, i: number) => {
-
+        const setMode = (t: { mode: StyleMode; transform: StyleTransform }, i: number) => {
             if (i === transforms.length - 1 && t.mode === 'null' && level === 0)
                 t.mode = this.mode === 'null' ? 'full' : this.mode;
 
             if (t.mode !== 'null') {
                 for (let j = i - 1; j >= 0; --j) {
-                    if (transforms[ j ].mode !== 'null')
-                        break;
+                    if (transforms[j].mode !== 'null') break;
 
-                    transforms[ j ].mode = t.mode;
+                    transforms[j].mode = t.mode;
                 }
             }
 
@@ -80,14 +74,13 @@ export class Style {
         return transforms.map(setMode);
     }
 
-
     add(...transforms: StyleTransforms): Style {
-        this.transforms = [ ...this.transforms, ...transforms ];
+        this.transforms = [...this.transforms, ...transforms];
         return this;
     }
 
     copy<T>(): T {
-        return new (this.constructor as any)[ Symbol.species ](this);
+        return new (this.constructor as any)[Symbol.species](this);
     }
 
     get p() {
@@ -107,11 +100,11 @@ export class Style {
     }
 
     private isArgsMode(mode: StyleMode) {
-        return [ 'args', 'both' ].some(m => m === mode);
+        return ['args', 'both'].some(m => m === mode);
     }
 
     private isFullMode(mode: StyleMode) {
-        return [ 'full', 'both' ].some(m => m === mode);
+        return ['full', 'both'].some(m => m === mode);
     }
 
     protected styleTemplate(): StyleTemplate {
@@ -129,8 +122,7 @@ export class Style {
 
     public applyTransformsToKeys(...keys: any[]) {
         const transforms = this.getTransforms().filter(t => this.isArgsMode(t.mode));
-        if (transforms.length === 0)
-            return keys;
+        if (transforms.length === 0) return keys;
 
         return keys.map(k => {
             return transforms.reduce((prev, t) => t.transform(prev), k);
@@ -138,20 +130,21 @@ export class Style {
     }
 
     public applyTransforms(...args: any[]) {
-        const transforms = this.getTransforms().filter(t => this.isFullMode(t.mode)).map(t => t.transform);
+        const transforms = this.getTransforms()
+            .filter(t => this.isFullMode(t.mode))
+            .map(t => t.transform);
 
         if (transforms.length === 0) {
-            if (this.flattenIfNoTransforms)
-                transforms.push(this.flattenIfNoTransforms);
-            else
-                return undefined;
+            if (this.flattenIfNoTransforms) transforms.push(this.flattenIfNoTransforms);
+            else return undefined;
         }
 
-        // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-        return transforms.reduce((prev, transform) => Array.isArray(prev) ? transform(...prev) : transform(prev), args);
+        return transforms.reduce(
+            (prev, transform) => (Array.isArray(prev) ? transform(...prev) : transform(prev)),
+            args,
+        );
     }
 }
-
 
 export const stringify = new Style({ flatten: recreateString });
 export const flattenStringStyle = stringify;

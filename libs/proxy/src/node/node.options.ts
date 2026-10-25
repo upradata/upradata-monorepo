@@ -1,8 +1,7 @@
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: <explanation> */
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
 import { assignRecursive, type Key, type KeysRecursive } from '@upradata/util';
+
 import type { Proxy, ProxyType } from '../proxy';
+
 import { type Handler, ProxyHandler } from './handler';
 
 export type NodeKind = 'object' | 'literal' | 'none';

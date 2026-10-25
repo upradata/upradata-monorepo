@@ -1,6 +1,3 @@
-// biome-ignore-all lint/suspicious/noExplicitAny: required for generic types
-/** Biome-ignore-all lint/complexity/noExtraBooleanCast: <explanation> */
-
 import type { Constructor } from './function';
 import { isArray, isDefined, isPromise } from './is';
 import type { Arr, InferArrayType, Key, TT$ } from './types';
@@ -71,7 +68,6 @@ const b = filterByKey([ { type: 'a', v: 1 }, { type: 'b', v: 2 }, { type: 'a', v
  */
 
 export const firstTruthy = <T>(...array: Array<T>): any => {
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     const isFunction = (v: any): v is Function => typeof v === 'function' && v.length === 0;
 
     const first = (array: Array<T>): any => {
@@ -81,7 +77,6 @@ export const firstTruthy = <T>(...array: Array<T>): any => {
 
         const value = isFunction(head) ? head() : head;
 
-        // eslint-disable-next-line no-extra-boolean-cast
         return !!value ? value : first(tail);
     };
 

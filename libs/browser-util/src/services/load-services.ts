@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import {
     AssignOptions,
     assignRecursive,
@@ -8,7 +7,9 @@ import {
     isPromise,
     type TT$,
 } from '@upradata/util';
+
 import { dispatchCustomEvent } from '../custom-events';
+
 import {
     type DefaultModuleServices,
     type LoadModuleServices,
@@ -49,7 +50,6 @@ type ServicesLoadedError = {
 export function loadServices<
     Modules extends ModulesServices<MServices>,
     Service = any,
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     MServices extends ModuleServices<Service, {}> = ModuleServices<Service, {}>,
 >(
     modulesServicesConfig?: ModulesServicesConfig<UnresolvedModuleServices<Modules>>,

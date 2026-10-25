@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { type Arr, type FunctionN, isDefined, type KeysRecursive, keys } from '@upradata/util';
 
 export type FunctionWithThis<T, R = any> = (this: T, ...args: Arr<any>) => R;

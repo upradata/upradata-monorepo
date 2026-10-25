@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { Injector, type InjectorOptions } from './injector';
 import { type FactoryProvider, isClassProvider, isFactoryProvider, isValueProvider, type Provider } from './provider';
 import {
@@ -14,11 +13,11 @@ import {
 } from './token';
 
 /**
- * Create an instance of a Dependency injector.
- * Can be used to create a singleton of any class that is property annotated with dependencies.
+ * Create an instance of a Dependency injector. Can be used to create a singleton of any class that is property
+ * annotated with dependencies.
  *
- * @param opts configuration options for the current instance of Injector
- * @param parent a parent instance of Injector
+ * @param opts Configuration options for the current instance of Injector
+ * @param parent A parent instance of Injector
  */
 export class DiInjector extends Injector {
     private classProviderMap!: WeakMap<ClassToken<any>, any>;
@@ -59,9 +58,7 @@ export class DiInjector extends Injector {
         return root(this);
     }
 
-    /**
-     * recursively check if a singleton instance is available for a provider
-     */
+    /** Recursively check if a singleton instance is available for a provider */
     has(token: ProviderToken<any>): boolean {
         return !!this.whoHas(token);
     }
@@ -113,9 +110,7 @@ export class DiInjector extends Injector {
         throw new Error(`The token "${token}" is not a class and does not have any provider defined`);
     }
 
-    /**
-     * fetches a singleton instance of a provider
-     */
+    /** Fetches a singleton instance of a provider */
     get<T>(token: ProviderToken<T>): T {
         if (isClassToken(token) && token[DI_PROVIDED_IN] && token[DI_PROVIDED_IN] !== this) {
             return token[DI_PROVIDED_IN].getStrict(token);

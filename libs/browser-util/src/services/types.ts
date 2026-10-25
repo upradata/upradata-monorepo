@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { TT$ } from '@upradata/util';
 // export type Service<BaseService = any> = BaseService | any;
 
@@ -69,7 +68,6 @@ export type ModulesServicesConfOptions<
 };
 
 export class ModulesServicesConfiguration<
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     Modules extends ModulesServices<{}>,
     ModulesConfOptions extends ModulesServicesConfOptions<Modules, any> = ModulesServicesConfOptions<Modules, any>,
 > {
