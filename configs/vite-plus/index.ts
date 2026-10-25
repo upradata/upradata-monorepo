@@ -1,5 +1,5 @@
 // import { defineConfig as defineViteConfig } from 'vite-plus';
-import { defineConfig as defineViteConfig, type UserConfig } from 'vite-plus';
+import { defineConfig as defineViteConfig, mergeConfig, type UserConfig } from 'vite-plus';
 
 import { type ConfigReducer, type DefineConfigParams, reduceConfig } from './config-reducer.ts';
 import { getTsDownConfigReducer, type TsDownConfigType } from './tsdown/tsdown-config.ts';
@@ -7,7 +7,7 @@ import { reduceTsdownConfig } from './tsdown/tsdown-reducer.ts';
 
 // import packageJson from '../../../package.json' with { type: 'json' };
 
-export type VitePlusConfig = Omit<UserConfig, 'pack'> & {
+export type VitePlusConfig = UserConfig & {
     tsdown?: TsDownConfigType;
 };
 
@@ -28,10 +28,13 @@ export const defineConfig = (...configReducers: readonly ConfigReducer<VitePlusC
 
                         return {
                             ...config,
-                            pack: reduceTsdownConfig({
-                                configReducers: getTsDownConfigReducer(tsdown),
-                                configParams: params,
-                            }),
+                            pack: mergeConfig(
+                                config.pack || {},
+                                reduceTsdownConfig({
+                                    configReducers: getTsDownConfigReducer(tsdown),
+                                    configParams: params,
+                                }),
+                            ),
                         };
                     }
 

@@ -71,6 +71,20 @@ export default defineConfig({
             reportUnusedDisableDirectives: 'warn',
             respectEslintDisableDirectives: true,
         },
+        rules: {
+            // Correctness and safety
+            'no-debugger': 'error',
+            'no-duplicate-imports': 'error',
+            'no-unreachable': 'error',
+            'no-constant-condition': 'error',
+
+            // Node.js import conventions
+            'unicorn/prefer-node-protocol': 'error',
+
+            // Avoid accidental production logging.
+            // Keep console.error and console.warn if useful.
+            'no-console': ['warn', { allow: ['warn', 'error'] }],
+        },
     },
 
     // Combined formatting, linting and type checking
