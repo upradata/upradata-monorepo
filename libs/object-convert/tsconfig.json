@@ -1,0 +1,13 @@
+{
+    "extends": "@upradata/tsconfig/neutral.json",
+    "include": [
+        "src/**/*.ts",
+        "**/types/**/*.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "**/*.test.ts",
+        "**/*.spec.ts"
+    ]
+}
