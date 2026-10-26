@@ -92,10 +92,10 @@
     },
     "dependencies": {
         "@upradata/node-util": "workspace:*",
-        "fs-extra": "^10.0.0"
+        "fs-extra": "^11.4.1"
     },
     "devDependencies": {
-        "@types/fs-extra": "^9.0.13",
+        "@types/fs-extra": "^11.0.4",
         "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:*",
         "@upradata/vite-plus": "workspace:*"

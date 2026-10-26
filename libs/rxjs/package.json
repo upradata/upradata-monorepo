@@ -43,7 +43,6 @@
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
-        "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:*",
         "@upradata/vite-plus": "workspace:*"
     }

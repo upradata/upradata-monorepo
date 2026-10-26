@@ -2,10 +2,17 @@
   "name": "@upradata/stencil",
   "version": "1.0.0",
   "description": "Stencil utilities for Upra-Data",
-  "keywords": ["upradata", "stencil", "web-components"],
+  "keywords": [
+    "upradata",
+    "stencil",
+    "web-components"
+  ],
   "license": "MIT",
   "author": "Upra-Data Contributors",
-  "files": ["dist", "docs"],
+  "files": [
+    "dist",
+    "docs"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
@@ -23,7 +30,9 @@
       }
     }
   },
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "UPRADATA_PACK_MODE=production vp pack",
     "build:stencil": "stencil build --docs",
@@ -38,8 +47,8 @@
     "typecheck": "vp check --no-fmt --no-lint"
   },
   "dependencies": {
-    "@stencil/core": "^2.12.1",
-    "@stencil/store": "^1.5.0",
+    "@stencil/core": "^4.45.2",
+    "@stencil/store": "^2.2.5",
     "@upradata/util": "workspace:*"
   },
   "devDependencies": {
