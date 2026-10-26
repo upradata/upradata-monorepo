@@ -3,8 +3,10 @@ packages:
     - 'apps/*'
     - 'tools/*'
     - 'configs/*'
+    - 'puppeteer'
 allowBuilds:
     esbuild: true
+    protobufjs: true
 catalog:
     '@changesets/cli': ^3.0.3
     '@commitlint/cli': ^21.2.4
