@@ -11,8 +11,8 @@ const nodeEnv = (process.env.NODE_ENV || '').trim().toLowerCase();
 export const isDev = ['production', 'prod'].some(t => t === nodeEnv);
 
 export class SyncAsync<T = any> {
-    sync: T = undefined as T;
-    async: Promise<T> = undefined as any;
+    sync!: T;
+    async!: Promise<T>;
 }
 
 export type SyncAsyncMode = keyof SyncAsync;

@@ -114,7 +114,7 @@ export class CliOption extends Option {
 
     addAlias(alias: Alias) {
         const add = (d: Omit<AliasCliOption, 'transform'> & { transform: AliasTransform }) => {
-            const { option, mode, transform = (v: string) => v } = d;
+            const { option, mode, transform /*= (v: string) => v*/ } = d;
 
             const addAlias = (d: { alias: AliasType; this: AliasType }) => {
                 option.cliAliases.add({ option: this, type: d.this, transform: transform.bind(this) });
