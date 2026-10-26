@@ -47,16 +47,15 @@
         "@upradata/dependency-injection": "workspace:*",
         "@upradata/node-util": "workspace:*",
         "@upradata/util": "workspace:*",
-        "fs-extra": "^11.2.0",
+        "fs-extra": "^11.4.1",
         "node-watch": "^0.7.4",
-        "shelljs": "^0.8.5",
+        "shelljs": "^0.10.0",
         "shelljs-live": "^0.0.5"
     },
     "devDependencies": {
-        "@schemastore/package": "0.0.10",
+        "@schemastore/package": "1.0.5",
         "@types/fs-extra": "^11.0.4",
-        "@types/node": "^22.5.4",
-        "@types/shelljs": "^0.8.15",
+        "@types/shelljs": "^0.10.0",
         "@upradata/tsconfig": "workspace:*",
         "@upradata/vite-plus": "workspace:*"
     }

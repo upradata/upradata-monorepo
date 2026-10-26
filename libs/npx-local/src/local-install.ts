@@ -1,6 +1,8 @@
+// oxlint-disable unicorn/no-thenable
 import { AppInjector, Component, InjectProp } from '@upradata/dependency-injection';
 import { green, red, styles as s, terminal, yellow } from '@upradata/node-util';
 import { CodifiedError, ifThen, values } from '@upradata/util';
+
 import { FilesInstaller } from './files-installer';
 import { FilesInstallerWatcher } from './files-installer.watcher';
 import { Dependency, LocalDependency } from './local-dependency';
@@ -10,33 +12,26 @@ import { NpmPackage, NpmPackageDependency } from './npm-package';
 import { DependencyName, isSkipped, SemVersionType, Skipped } from './types';
 import { dependenciesDef, getDependencyName } from './util';
 
-
-export type InstalledLocalDependency = { npmPackageDependency: NpmPackageDependency; npmPackage: NpmPackage; } | Skipped;
+export type InstalledLocalDependency = { npmPackageDependency: NpmPackageDependency; npmPackage: NpmPackage } | Skipped;
 
 @Component()
 export class LocalInstall {
-    @InjectProp(Logger) private logger: Logger;
-    public options: LocalInstallOptions;
+    @InjectProp(Logger) private logger!: Logger;
+    public options: Required<LocalInstallOptions>;
     private filesInstallerByProject = new Map<NpmPackage, FilesInstaller>();
 
-
     constructor(options?: LocalInstallOptions) {
-        this.options = Object.assign(new LocalInstallOptions(), options);
+        this.options = Object.assign(new LocalInstallOptions(), options) as Required<LocalInstallOptions>;
 
         AppInjector.init({
-            providers: [
-                { provide: LocalInstallOptions, useValue: this.options }
-            ]
+            providers: [{ provide: LocalInstallOptions, useValue: this.options }],
         });
     }
 
     public async install() {
         try {
-            if (this.options.localPackages.length > 0)
-                await this.addLocalDepedencies();
-            else
-                await this.installLocalDependenciesFromPackageJson();
-
+            if (this.options.localPackages.length > 0) await this.addLocalDepedencies();
+            else await this.installLocalDependenciesFromPackageJson();
         } catch (e) {
             handlerError(e);
         }
@@ -44,18 +39,27 @@ export class LocalInstall {
 
     public async getLocalDependencies(npmPackage: NpmPackage) {
         await npmPackage.loadProject();
-        type Deps = { depName: DependencyName; dependency: Dependency; }[];
+        type Deps = { depName: DependencyName; dependency: Dependency }[];
         const packageJson = await npmPackage.getPackageJson();
 
-        const dependencies = dependenciesDef.filter(({ depName }) => !!packageJson.local[ depName ]).reduce((deps, { depName }) => [
-            ...deps,
-            ...values(packageJson.local[ depName ]).map(d => ({
-                depName,
-                dependency: d
-            })) ], [] as Deps);
+        if (!packageJson.local) return [];
 
+        const dependencies = dependenciesDef
+            .filter(({ depName }) => !!packageJson.local![depName])
+            .reduce(
+                (deps, { depName }) => [
+                    ...deps,
+                    ...values(packageJson.local![depName]!).map(d => ({
+                        depName,
+                        dependency: d,
+                    })),
+                ],
+                [] as Deps,
+            );
 
-        return dependencies.map(({ depName, dependency }) => new LocalDependency(dependency, { dependencyName: depName }));
+        return dependencies.map(
+            ({ depName, dependency }) => new LocalDependency(dependency, { dependencyName: depName }),
+        );
     }
 
     public async installLocalDependenciesFromPackageJson(): Promise<void> {
@@ -63,31 +67,40 @@ export class LocalInstall {
         const localDeps = await this.getLocalDependencies(npmPackage);
 
         if (localDeps.length === 0) {
-            this.logger.log(s.yellow.full.bold.args.$`No ${'local.dependencies'} found in package.json of "${npmPackage.packageJson.json.name}"`);
+            this.logger.log(
+                s.yellow.full.bold.args
+                    .$`No ${'local.dependencies'} found in package.json of "${npmPackage.packageJson.json.name}"`,
+            );
             return;
         }
 
         return this.installLocalDependencies(localDeps);
     }
 
-
     async updateLatest() {
         return this.installLocalDependenciesFromPackageJson();
     }
 
     public addLocalDepedencies(): Promise<void> {
-        return this.installLocalDependencies(this.options.localPackages.map(l =>
-            new LocalDependency({
-                path: typeof l === 'string' ? l : l.path,
-                installDir: this.options.installDir
-            }, { mode: typeof l === 'string' ? undefined : l.mode || this.options.mode, dependencyName: getDependencyName(this.options.dependencyType) }))
+        return this.installLocalDependencies(
+            this.options.localPackages.map(
+                l =>
+                    new LocalDependency(
+                        {
+                            path: typeof l === 'string' ? l : l.path,
+                            installDir: this.options.installDir,
+                        },
+                        {
+                            mode: typeof l === 'string' ? undefined : l.mode || this.options.mode,
+                            dependencyName: getDependencyName(this.options.dependencyType),
+                        },
+                    ),
+            ),
         );
     }
 
     public async installLocalDependencies(dependencies: LocalDependency[]): Promise<void> {
-
-        if (!dependencies || dependencies.length === 0)
-            return Promise.resolve();
+        if (!dependencies || dependencies.length === 0) return Promise.resolve();
 
         const npmPackage = new NpmPackage(this.options.projectDir);
         await npmPackage.addDependency(...dependencies);
@@ -96,23 +109,24 @@ export class LocalInstall {
 
         this.logger.log();
 
-        await Promise.all(installedPackages.map(async result => {
-            if (isSkipped(result)) {
-                const { reason } = result;
-                console.warn(yellow`- Skipped: "${reason}"`);
-                return;
-            }
+        await Promise.all(
+            installedPackages.map(async result => {
+                if (isSkipped(result)) {
+                    const { reason } = result;
+                    console.warn(yellow`- Skipped: "${reason}"`);
+                    return;
+                }
 
-            const { npmPackage, npmPackageDependency: dependency } = result;
+                const { npmPackage, npmPackageDependency: dependency } = result;
 
-            await dependency.package.writePackageJson();
-            await npmPackage.writePackageJson();
+                await dependency.package.writePackageJson();
+                await npmPackage.writePackageJson();
 
-            this.logger.log(s.oneLine.blue.bold.full.underline.args.$`
+                this.logger.log(s.oneLine.blue.bold.full.underline.args.$`
                     - Package "${dependency.package.packageJson.json.name}" installed in "${npmPackage.packageJson.json.name}"
-                      "[package.json].local.${dependency.localDependency.dependencyName}" (mode: ${dependency.localDependency.mode})`
-            );
-        }));
+                      "[package.json].local.${dependency.localDependency.dependencyName}" (mode: ${dependency.localDependency.mode})`);
+            }),
+        );
 
         this.logger.log();
 
@@ -123,11 +137,12 @@ export class LocalInstall {
     }
 
     private async startWatch(): Promise<void> {
-
-        await Promise.all([ ...this.filesInstallerByProject ].map(([ npmProject, filesInstaller ]) => {
-            this.logger.log(s.green.bold.$`Start watching ${npmProject.packageJson.json.name}`);
-            return new FilesInstallerWatcher(filesInstaller).startWatch();
-        }));
+        await Promise.all(
+            [...this.filesInstallerByProject].map(([npmProject, filesInstaller]) => {
+                this.logger.log(s.green.bold.$`Start watching ${npmProject.packageJson.json.name}`);
+                return new FilesInstallerWatcher(filesInstaller).startWatch();
+            }),
+        );
 
         this.logger.log('\n');
     }
@@ -143,26 +158,25 @@ export class LocalInstall {
      } */
 
     private async doInstallPackageLocalDependencies(npmPackage: NpmPackage): Promise<InstalledLocalDependency[]> {
-
         await npmPackage.loadProject();
 
-        return Promise.all(Object.entries(npmPackage.dependencies).map(async ([ npmDepName, dependency ]) => {
+        return Promise.all(
+            Object.entries(npmPackage.dependencies).map(async ([npmDepName, dependency]) => {
+                const npmDepPackage = dependency.package;
+                await npmDepPackage.loadProject();
 
-            const npmDepPackage = dependency.package;
-            await npmDepPackage.loadProject();
+                const filesInstaller = new FilesInstaller({
+                    npmPackage,
+                    dependency: new NpmPackage(dependency.package.absolutePath()),
+                    mode: dependency.localDependency.mode,
+                    verbose: this.options.verbose,
+                    installDir: dependency.localDependency.installDir,
+                });
 
-            const filesInstaller = new FilesInstaller({
-                npmPackage,
-                dependency: new NpmPackage(dependency.package.absolutePath()),
-                mode: dependency.localDependency.mode,
-                verbose: this.options.verbose,
-                installDir: dependency.localDependency.installDir
-            });
+                this.filesInstallerByProject.set(npmDepPackage, filesInstaller);
+                const filesToBeInstalled = await filesInstaller.readFilesToBeInstalled();
 
-            this.filesInstallerByProject.set(npmDepPackage, filesInstaller);
-            const filesToBeInstalled = await filesInstaller.readFilesToBeInstalled();
-
-            /*  if (await dependency.isInstalledIn(project)) {
+                /*  if (await dependency.isInstalledIn(project)) {
 
                  for (const [ key, file ] of filesToBeInstalled) {
                      // install only what does not exist already
@@ -184,24 +198,22 @@ export class LocalInstall {
                  }
              } */
 
+                if (filesToBeInstalled.size === 0)
+                    console.warn(yellow`${npmDepPackage.packageJson.json.name} has no file to be copied`);
+                else await filesInstaller.copyFiles(filesToBeInstalled);
 
-            if (filesToBeInstalled.size === 0)
-                console.warn(yellow`${npmDepPackage.packageJson.json.name} has no file to be copied`);
-            else
-                await filesInstaller.copyFiles(filesToBeInstalled);
+                if (this.options.verbose) {
+                    filesInstaller.logInstalledFiles();
+                    this.logger.log('\n');
+                }
 
-            if (this.options.verbose) {
-                filesInstaller.logInstalledFiles();
-                this.logger.log('\n');
-            }
+                // add localDependencies project in package.json
+                await npmPackage.addLocalDependency(npmDepName);
 
-            // add localDependencies project in package.json
-            await npmPackage.addLocalDependency(npmDepName);
-
-            return { npmPackage, npmPackageDependency: dependency };
-        }));
+                return { npmPackage, npmPackageDependency: dependency };
+            }),
+        );
     }
-
 
     async copyLocalDepsToNpmProperty() {
         try {
@@ -216,7 +228,7 @@ export class LocalInstall {
             const title = terminal.title(`Dependencies installed`, {
                 style: s.white.bold.bgMagenta.transform,
                 bgStyle: s.bgMagenta.transform,
-                type: 'band'
+                type: 'band',
             });
 
             this.logger.log(`\n${title}\n`);
@@ -224,8 +236,7 @@ export class LocalInstall {
 
             const indent = '    - ';
 
-            for (const dep of depNames)
-                this.logger.log(green`${indent}"${dep}"`);
+            for (const dep of depNames) this.logger.log(green`${indent}"${dep}"`);
 
             this.logger.log();
         } catch (e) {
@@ -233,7 +244,7 @@ export class LocalInstall {
         }
     }
 
-    async bumpVersion(options: { semVer?: SemVersionType; version?: string; }) {
+    async bumpVersion(options: { semVer?: SemVersionType; version?: string }) {
         const { semVer, version } = options;
 
         const npmPackage = new NpmPackage(this.options.projectDir);
@@ -243,8 +254,11 @@ export class LocalInstall {
         if (version) {
             packageJson.version = version;
         } else {
-            const [ major, minor, patch ] = packageJson.version.split('.').map(s => parseInt(s, 10));
-            const makeSemVer = (major: string | number, minor: string | number, patch: string | number) => `${major}.${minor}.${patch}`;
+            if (!packageJson.version) throw new Error(`Package "${packageJson.name}" has no version in package.json`);
+
+            const [major, minor, patch] = packageJson.version.split('.').map(s => parseInt(s, 10));
+            const makeSemVer = (major: string | number, minor: string | number, patch: string | number) =>
+                `${major}.${minor}.${patch}`;
 
             const newVersion = ifThen()
                 .next({ if: semVer === 'major', then: makeSemVer(major + 1, minor, patch) })
@@ -259,14 +273,11 @@ export class LocalInstall {
     }
 }
 
-
 const handlerError = (e: any) => {
     if (e instanceof CodifiedError) {
         console.error(red`${e.message}`);
     } else {
-        if (e instanceof Error)
-            console.error(red`${typeof e === 'string' ? e : `"${e.message}"\n${e.stack}`}`);
-        else
-            console.error(red`${e?.message || JSON.stringify(e)}`);
+        if (e instanceof Error) console.error(red`${typeof e === 'string' ? e : `"${e.message}"\n${e.stack}`}`);
+        else console.error(red`${e?.message || JSON.stringify(e)}`);
     }
 };

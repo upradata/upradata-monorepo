@@ -1,24 +1,19 @@
 import { AppInjector } from '@upradata/dependency-injection';
 import { keys } from '@upradata/util';
+
 import { DependencyName, DependencyType } from './types';
 
+export const INSTALL_MODES = ['link', 'copy'] as const;
+export type InstallMode = (typeof INSTALL_MODES)[number];
 
-export class InstallModes { copy; link; }
-
-export type InstallMode = keyof InstallModes;
 export const isInstallMode = (mode: string | undefined | null): mode is InstallMode => {
-    return mode && keys(InstallModes).includes(mode as any);
+    return !!mode && keys(INSTALL_MODES).includes(mode as any);
 };
-
-
 
 export interface LocalPackage {
     path: string;
     mode: InstallMode;
 }
-
-
-
 
 export class LocalInstallOptions<LocalDep extends string | LocalPackage = string | LocalPackage> {
     dependencyType?: DependencyType = 'prod';
@@ -33,7 +28,5 @@ export class LocalInstallOptions<LocalDep extends string | LocalPackage = string
     watch?: boolean = false;
     npmPropertyToCopyLocalDeps?: DependencyName = 'dependencies';
 }
-
-
 
 export const getOptions = (): LocalInstallOptions => AppInjector.root.get(LocalInstallOptions);

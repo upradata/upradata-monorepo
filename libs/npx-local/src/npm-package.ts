@@ -1,18 +1,19 @@
+import path from 'node:path';
+
 import { writeJSON } from 'fs-extra';
-import path from 'path';
+
 import { yellow } from '@upradata/node-util';
 import { entries, makeObject, ObjectOf } from '@upradata/util';
+
 import { LocalDependency } from './local-dependency';
 import { LocalInstallPackageJson } from './package-json';
 import { DependencyName, RelativeAbsolute } from './types';
 import { dependenciesDef, relativeAbsolutPath } from './util';
 
-
 export type NpmPackageDependency = {
     package: NpmPackage;
     localDependency: LocalDependency;
 };
-
 
 export class NpmPackage {
     public packageJson: LocalInstallPackageJson;
@@ -28,15 +29,12 @@ export class NpmPackage {
         return !path.isAbsolute(this.projectPath.relative);
     } */
 
-
     public async getPackageJson(force?: boolean) {
         return this.packageJson.readJson(force);
     }
 
-
     public absolutePath(...filepaths: string[]) {
-        if (filepaths.length === 1 && path.isAbsolute(filepaths[ 0 ]))
-            return filepaths[ 0 ];
+        if (filepaths.length === 1 && path.isAbsolute(filepaths[0])) return filepaths[0];
 
         return path.join(this.projectPath.absolute, ...filepaths);
     }
@@ -48,7 +46,7 @@ export class NpmPackage {
     public path(...filepaths: string[]): RelativeAbsolute {
         return {
             absolute: this.absolutePath(...filepaths),
-            relative: this.relativePath(...filepaths)
+            relative: this.relativePath(...filepaths),
         };
     }
 
@@ -57,14 +55,18 @@ export class NpmPackage {
     }
 
     public async addDependency(...dependencies: LocalDependency[]) {
-        const deps = (await Promise.all(dependencies.map(async d => {
-            const npmPackage = new NpmPackage(d.sourcePath);
+        const deps = (
+            await Promise.all(
+                dependencies.map(async d => {
+                    const npmPackage = new NpmPackage(d.sourcePath);
 
-            return {
-                name: (await npmPackage.getPackageJson()).name,
-                packageDependency: { package: npmPackage, localDependency: d } as NpmPackageDependency
-            };
-        }))).filter(v => !!v);
+                    return {
+                        name: (await npmPackage.getPackageJson()).name,
+                        packageDependency: { package: npmPackage, localDependency: d } as NpmPackageDependency,
+                    };
+                }),
+            )
+        ).filter(v => !!v) as { name: string; packageDependency: NpmPackageDependency }[];
 
         const npmPackageDependencies = makeObject(deps, dep => ({ key: dep.name, value: dep.packageDependency }));
         this.dependencies = { ...this.dependencies, ...npmPackageDependencies };
@@ -74,20 +76,20 @@ export class NpmPackage {
         const packageJson = await this.getPackageJson();
         const depPackageJson = await dependency.getPackageJson();
 
-        return !!packageJson.local[ dependencyName ][ depPackageJson.name ];
+        return !!packageJson.local?.[dependencyName]?.[depPackageJson.name];
     }
 
-    public async localDependency(name: string, dependencyName: DependencyName): Promise<LocalDependency> {
-        const dep = (await this.packageJson.localProp(dependencyName).async)[ name ];
+    public async localDependency(name: string, dependencyName: DependencyName): Promise<LocalDependency | undefined> {
+        const localProp = await this.packageJson.localProp(dependencyName).async;
+        const dep = localProp?.[name];
 
-        if (!dep)
-            return undefined;
+        if (!dep) return undefined;
 
         return new LocalDependency(dep, { dependencyName });
     }
 
     public async addLocalDependency(name: string) {
-        const projectDependency = this.dependencies[ name ];
+        const projectDependency = this.dependencies[name];
 
         if (!projectDependency) {
             console.warn(yellow`${this.packageJson.json.name} has no dependency called "${name}"`);
@@ -103,36 +105,33 @@ export class NpmPackage {
         const projectDeps = await this.packageJson.localProp(dependencyName).async;
         const depUsedBy = await dependency.packageJson.localProp('usedBy').async;
 
-
         const dep = new LocalDependency(
             { installDir, path: dependency.projectPath.absolute },
-            { version: depJson.version, mode, dependencyName }
+            { version: depJson.version, mode, dependencyName },
         );
 
-        projectDeps[ depJson.name ] = dep.unparse();
-        depUsedBy[ projectJson.name ] = this.projectPath.absolute;
+        projectDeps![depJson.name] = dep.unparse();
+        depUsedBy![projectJson.name] = this.projectPath.absolute;
     }
 
     public async copyLocalDependencyToNpmDependencies(): Promise<string[]> {
         await this.loadProject();
 
         return dependenciesDef.flatMap(({ depName }) => {
+            const dependency = this.packageJson.json.local?.[depName] || {};
 
-            const dependency = this.packageJson.json.local[ depName ] || {};
+            this.packageJson.json[depName] = this.packageJson.json[depName] || {};
 
-            this.packageJson.json[ depName ] = this.packageJson.json[ depName ] || {};
-
-            const depNames = entries(dependency).map(([ name, dep ]) => {
+            const depNames = entries(dependency).map(([name, dep]) => {
                 const { version } = new LocalDependency(dep);
 
-                this.packageJson.json[ depName ][ name ] = `^${version}`;
+                this.packageJson.json[depName][name] = `^${version}`;
                 return name as string;
             });
 
             return depNames;
         });
     }
-
 
     public async writePackageJson() {
         return writeJSON(this.absolutePath('package.json'), await this.getPackageJson(), { spaces: 4 });

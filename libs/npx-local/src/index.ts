@@ -1,25 +1,21 @@
 #!/usr/bin/env node
 
-import path from 'path';
-
+import path from 'node:path';
 
 import type { SettingsPrivate } from './settings.private';
 
-
 if (process.env.UPRA_DATA === 'development') {
-
     const main = async () => {
-
         // To be independent from self package
         const settings: SettingsPrivate = await import('../settings.private.json');
 
-        const libraryFolder = settings.upradata.libraryFolder.replace(/^~/, process.env.HOME);
+        const libraryFolder = settings.upradata.libraryFolder.replace(/^~/, process.env.HOME!);
 
         const { RequireOverride } = await import(path.join(libraryFolder, 'require-override'));
         const { lookForLocalPackages } = await import('./local-packages');
 
         const localPackages = await lookForLocalPackages(libraryFolder, {
-            filterFolders: folder => ![ '.git', '.vscode', 'node_modules' ].some(f => f === folder)
+            filterFolders: folder => !['.git', '.vscode', 'node_modules'].some(f => f === folder),
         });
 
         new RequireOverride().start({
@@ -30,7 +26,7 @@ if (process.env.UPRA_DATA === 'development') {
 
                 const foundPackage = localPackages.find(p => p.package.name === packageName);
                 return foundPackage ? foundPackage.folder : undefined;
-            }
+            },
         });
 
         const { runCli } = await import('./cli');
@@ -38,7 +34,7 @@ if (process.env.UPRA_DATA === 'development') {
         runCli();
     };
 
-    main();
+    void main();
 
     /* (async function f() {
         const libraryFolder = '/home/milottit/Libraries';
@@ -48,9 +44,6 @@ if (process.env.UPRA_DATA === 'development') {
         })).map(p => p.folder));
         process.exit(1);
     })(); */
-
 } else {
-
-    import('./cli').then(({ runCli }) => runCli());
-
+    void import('./cli').then(({ runCli }) => runCli());
 }
