@@ -51,7 +51,7 @@ export const createSendgridSendService: MailSendServiceFactory<SendgridSendClien
             return checkEmailOptions({
                 ...body,
                 from: getAddress(body.from),
-                to: ensureArray(body.to).map(getAddress),
+                to: ensureArray(body.to!).map(getAddress),
                 subject: body.subject,
                 text: body.text,
                 html: body.html

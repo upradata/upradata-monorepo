@@ -1,4 +1,3 @@
-
 export interface MinimalEmailOptions {
     from: string;
     to: string | string[];
@@ -6,6 +5,5 @@ export interface MinimalEmailOptions {
     text?: string;
     html?: string;
 }
-
 
 // export type SendMail = (emailOptions: MinimalEmailOptions) => Promise<void>;

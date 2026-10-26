@@ -1,9 +1,16 @@
-/* eslint-disable camelcase */
 import { minify } from 'html-minifier-terser';
+
 import { ensureArray } from '@upradata/util';
-import { EmailProviders, SendClientOptions, createSendMailService, EmailSendData, EmailServices } from './send.services';
+
 import { EmailCodifiedError, EmailErrors } from './email-error';
 import { SendReturn } from './providers';
+import {
+    EmailProviders,
+    SendClientOptions,
+    createSendMailService,
+    EmailSendData,
+    EmailServices,
+} from './send.services';
 
 export type EmailData<Extra = {}> = Extra & {
     subject: string;
@@ -26,49 +33,46 @@ export type EmailData<Extra = {}> = Extra & {
         name?: string;
         id?: string;
     };
-    template?: { name: string; };
-    campaign?: { name: string; };
+    template?: { name: string };
+    campaign?: { name: string };
 };
 
 export type EmailProviderOptions<P extends EmailProviders = 'mailgun'> = {
     providerName: P;
-    provider?: EmailServices<P>[ P ];
-    options?: SendClientOptions[ P ];
+    provider?: EmailServices<P>[P];
+    options?: SendClientOptions[P];
     isLast?: boolean;
 };
-
 
 /* type ResponseSuccess = { type: 'success'; id: string; message: string; };
 type ResponseError = { type: 'error'; message: string; error: EmailCodifiedError; };
 type Response = ResponseSuccess | ResponseError;
  */
-export type SendEmailReturn = { result: SendReturn[]; isMarketing: boolean; };
+export type SendEmailReturn = { result: SendReturn[]; isMarketing: boolean };
 
-export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends Partial<EmailSendData[ P ]> = {}>(
-    options: EmailProviderOptions<P>, data: EmailData<E>
+export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends Partial<EmailSendData[P]> = {}>(
+    options: EmailProviderOptions<P>,
+    data: EmailData<E>,
 ): Promise<SendEmailReturn> => {
-
     const { providerName = 'mailgun', provider, options: clientOptions, isLast } = options;
-    const { html, text, dry, deliveryTime, subject, from, tag, to, contact, list, template, campaign, ...restOptions } = data;
-    let sendMail: EmailServices<P>[ P ] = undefined;
+    const { html, text, dry, deliveryTime, subject, from, tag, to, contact, list, template, campaign, ...restOptions } =
+        data;
+    let sendMail: EmailServices<P>[P] | undefined = undefined;
 
     try {
-
-        const minimizedHtml = await minify(html, {
+        const minimizedHtml = await minify(html!, {
             collapseWhitespace: true,
             removeComments: true,
             removeScriptTypeAttributes: true,
             removeStyleLinkTypeAttributes: true,
             useShortDoctype: true,
             minifyCSS: true,
-            minifyJS: true
+            minifyJS: true,
         });
 
+        sendMail = provider || (await createSendMailService<P>(providerName as P, clientOptions));
 
-        sendMail = provider || await createSendMailService<P>(providerName as P, clientOptions);
-
-
-        const emailData = (): EmailSendData[ P ] => {
+        const emailData = (): EmailSendData[P] => {
             const message = {
                 to,
                 from,
@@ -87,9 +91,9 @@ export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends 
                         trackingClicks: true,
                         trackingOpens: true,
                         dkim: true,
-                        testmode: dry
-                    }
-                } as EmailSendData[ 'mailgun' ] as EmailSendData[ P ];
+                        testmode: dry,
+                    },
+                } as EmailSendData['mailgun'] as EmailSendData[P];
             }
 
             if (providerName === 'sendgrid') {
@@ -98,10 +102,10 @@ export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends 
                     trackingSettings: {
                         clickTracking: { enable: true },
                         openTracking: { enable: true },
-                        ganalytics: { enable: false }
+                        ganalytics: { enable: false },
                     },
-                    sendAt: 1
-                } as EmailSendData[ 'mailgun' ] as EmailSendData[ P ];
+                    sendAt: 1,
+                } as EmailSendData['mailgun'] as EmailSendData[P];
             }
 
             if (providerName === 'mandrill') {
@@ -114,17 +118,16 @@ export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends 
                         ...mess,
                         from_email,
                         from_name,
-                        to: ensureArray(to).map(address => ({ ...splitNameEmail(address), type: 'to' }))
+                        to: ensureArray(to).map(address => ({ ...splitNameEmail(address), type: 'to' })),
                     },
                     tags: ensureArray(tag),
                     track_opens: true,
                     track_clicks: true,
                     send_at: '',
-                } as EmailSendData[ 'mandrill' ] as EmailSendData[ P ];
+                } as EmailSendData['mandrill'] as EmailSendData[P];
             }
 
             if (providerName === 'mailchimp') {
-
                 const { name: fromName, email: fromEmail } = splitNameEmail(message.from);
                 const { name: toName, email: toEmail } = splitNameEmail(message.to as string);
 
@@ -137,31 +140,39 @@ export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends 
                     subject: message.subject,
                     contact: {
                         ...contact,
-                        address1: contact.address
+                        address1: contact!.address,
                     },
                     audience: list,
-                    templateName: template.name,
-                    campaignName: campaign.name,
-                    isLastContact: true
-                } as EmailSendData[ 'mailchimp' ] as EmailSendData[ P ];
+                    templateName: template!.name,
+                    campaignName: campaign!.name,
+                    isLastContact: true,
+                } as EmailSendData['mailchimp'] as EmailSendData[P];
             }
         };
 
         const emailOptions = { ...emailData(), ...restOptions };
-        return sendMail.send({ ...emailOptions, isLastContact: isLast }).then(result => ({ result, isMarketing: sendMail.isMarketing }));
-
+        return sendMail
+            .send({ ...emailOptions, isLastContact: isLast })
+            .then(result => ({ result, isMarketing: sendMail!.isMarketing }));
     } catch (e) {
         return {
-            result: [ {
-                type: 'error' as const,
-                error: new EmailCodifiedError({
-                    code: EmailErrors.MAILCHIMP,
-                    message: e instanceof Error ? e.message : typeof e === 'string' ? e : e?.toString?.() || `Error while sending mail`
-                }),
-                to: JSON.stringify(to),
-                hasSendBeenRequested: false
-            } ],
-            isMarketing: sendMail?.isMarketing,
+            result: [
+                {
+                    type: 'error' as const,
+                    error: new EmailCodifiedError({
+                        code: EmailErrors.MAILCHIMP,
+                        message:
+                            e instanceof Error
+                                ? e.message
+                                : typeof e === 'string'
+                                  ? e
+                                  : e?.toString?.() || `Error while sending mail`,
+                    }),
+                    to: JSON.stringify(to),
+                    hasSendBeenRequested: false,
+                },
+            ],
+            isMarketing: sendMail?.isMarketing ?? false,
         };
         /*  if (e instanceof EmailCodifiedError)
              return { type: 'error', message: e.toString(), error: e };
@@ -180,20 +191,17 @@ export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends 
     }
 };
 
-
-
 // address => Name <contact@gmail.com> => { name: 'Name', email: 'contact@gmail.com' }
-export const splitNameEmail = (address: string): { name: string; email: string; } => {
-
+export const splitNameEmail = (address: string): { name: string; email: string } => {
     // if no email bracket present, return as is
     if (!/</.test(address)) {
         return { name: '', email: address };
     }
 
-    const [ name, email ] = address.split('<');
+    const [name, email] = address.split('<');
 
     return {
         name: name.trim(),
-        email: email.replace('>', '').trim()
+        email: email.replace('>', '').trim(),
     };
 };

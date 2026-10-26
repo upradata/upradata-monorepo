@@ -27,12 +27,12 @@ export const createMandrillSendService: MailSendServiceFactory<MandrillSendClien
             const res = await client.messages.send(body);
             if (res instanceof Error) {
                 const { response: r } = res;
-                const reason = r.data ? nice(r.data, { indent: 2 }) : undefined;
+                const reason = r?.data ? nice(r.data, { indent: 2 }) : undefined;
 
                 return [
                     returnError(new EmailCodifiedError({
                         code: EmailErrors.MANDRILL, message: `${res.message}${reason ? `: ${reason}` : ''}`
-                    }), r.request)
+                    }), r?.request)
                 ];
             }
 
@@ -54,7 +54,7 @@ export const createMandrillSendService: MailSendServiceFactory<MandrillSendClien
             });
 
         } catch (e) {
-            return [ returnError(e, body.send_at) ];
+            return [ returnError(e, body.send_at!) ];
         }
     };
 
@@ -62,7 +62,7 @@ export const createMandrillSendService: MailSendServiceFactory<MandrillSendClien
         send,
         checkSendOptions: (body: MandrillSendData) => checkEmailOptions({
             ...body.message,
-            from: body.message.from_email,
+            from: body.message.from_email!,
             to: body.message.to.map(address => address.email)
         }),
         isMarketing: false

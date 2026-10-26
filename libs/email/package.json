@@ -52,21 +52,21 @@
         "typecheck": "vp check --no-fmt --no-lint"
     },
     "dependencies": {
-        "@mailchimp/mailchimp_marketing": "^3.0.78",
-        "@mailchimp/mailchimp_transactional": "^1.0.47",
-        "@sendgrid/client": "^7.7.0",
-        "@sendgrid/mail": "^7.7.0",
+        "@mailchimp/mailchimp_marketing": "^3.0.80",
+        "@mailchimp/mailchimp_transactional": "^1.4.1",
+        "@sendgrid/client": "^8.1.6",
+        "@sendgrid/mail": "^8.1.6",
         "@upradata/node-util": "workspace:*",
         "@upradata/util": "workspace:*",
-        "form-data": "^4.0.0",
-        "fs-extra": "^10.1.0",
-        "html-minifier-terser": "7.0.0-beta.0",
-        "mailgun.js": "^8.0.0"
+        "form-data": "^4.0.6",
+        "fs-extra": "^11.4.1",
+        "html-minifier-terser": "7.2.0",
+        "mailgun.js": "^14.1.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^9.0.13",
-        "@types/html-minifier-terser": "^6.1.0",
-        "@types/mailchimp__mailchimp_transactional": "^1.0.5",
+        "@types/fs-extra": "^11.0.4",
+        "@types/html-minifier-terser": "^7.0.2",
+        "@types/mailchimp__mailchimp_transactional": "^1.0.12",
         "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:*",
         "@upradata/vite-plus": "workspace:*"

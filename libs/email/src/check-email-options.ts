@@ -23,7 +23,7 @@ export const checkEmailOptions = (emailOptions: MinimalEmailOptions): EmailCodif
         if (type === 'address') {
             for (const address of ensureArray(emailOptions[ key ])) {
 
-                if (!EMAIL_REGEXP.test(address) && !EMAIL_REGEXP_WITH_BRACKETS.test(address)) {
+                if (!EMAIL_REGEXP.test(address!) && !EMAIL_REGEXP_WITH_BRACKETS.test(address!)) {
                     const message = `Wrong email format for "${key}" address: "${address || 'not provided'}"`;
                     codifiedError.list.push(new EmailCodifiedError({ code: EmailErrors.WRONG_FORMAT, message }));
                 }

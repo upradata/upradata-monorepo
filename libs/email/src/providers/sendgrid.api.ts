@@ -20,7 +20,7 @@ export const sendgridApi = async (options: SendgridClientOptions) => {
     client.setApiKey(options.apiKey);
     await options.setMailService?.(sendgridJs);
 
-    client.api = (requestOpts?: ClientRequest) => {
+    client.api = (requestOpts: ClientRequest) => {
         const request = client.createRequest(requestOpts);
         return client.request(request);
     };
