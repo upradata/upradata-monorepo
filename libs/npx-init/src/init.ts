@@ -1,62 +1,61 @@
-import { exec } from 'child_process';
+import { exec } from 'node:child_process';
+import path from 'node:path';
+import { promisify } from 'node:util';
+
 import fs from 'fs-extra';
 import ini from 'ini';
-import path from 'path';
 import semver from 'semver';
-import { promisify } from 'util';
+
 import { bold, red, styles as s, yellow } from '@upradata/node-util';
+
 import { getUserPkgJson } from './get-config';
 import prompts from './prompts';
 import { InitContext, PkgJson } from './types';
 
-
 export const getContext = async (): Promise<InitContext> => {
-
     const dir = process.cwd();
     const packageFile = path.resolve(dir, 'package.json');
 
-    const pkgJson = await fs.pathExists(packageFile).then(async is => is ? (await import(packageFile)).default : {}) as PkgJson;
+    const pkgJson = (await fs
+        .pathExists(packageFile)
+        .then(async is => (is ? (await import(packageFile)).default : {}))) as PkgJson;
 
     const { stdout: npmConfigIni, stderr } = await promisify(exec)('npm config ls -l');
 
-    if (process.env.JEST_WORKER_ID !== undefined ? !!stderr && !npmConfigIni : !!stderr)
-        throw new Error(stderr);
+    if (process.env.JEST_WORKER_ID !== undefined ? !!stderr && !npmConfigIni : !!stderr) throw new Error(stderr);
 
     const npmConfig = ini.parse(npmConfigIni);
 
-    const config: InitContext[ 'config' ] = {
-        get: k => npmConfig[ k ],
-        toJSON: () => npmConfig
+    const config: InitContext['config'] = {
+        get: k => npmConfig[k],
+        toJSON: () => npmConfig,
     };
-
 
     const { yes } = await prompts({
         type: 'confirm',
         name: 'yes',
         message: `Do you want to use the default values?`,
-        initial: true
+        initial: true,
     });
-
 
     return { yes, config, dirname: path.basename(dir), basename: dir, filename: packageFile, package: pkgJson };
 };
 
-
-export type PkgJsonGenerated<Data> = { isNew: boolean; data: Data; path: string; };
-
+export type PkgJsonGenerated<Data> = { isNew: boolean; data: Data; path: string };
 
 export const getPkgJson = async (ctx: InitContext): Promise<PkgJsonGenerated<PkgJson>> => {
-
     const { package: pkgJson, filename: pkgJsonFile } = ctx;
 
     const isNew = Object.keys(pkgJson).length === 0;
 
-    if (pkgJson.version && !semver.valid(pkgJson.version))
-        delete pkgJson.version;
+    if (pkgJson.version && !semver.valid(pkgJson.version)) delete pkgJson.version;
 
     const config = await getUserPkgJson(ctx);
 
-    Object.keys(config).forEach(k => { pkgJson[ k ] = config[ k ] ?? pkgJson[ k ]; });
+    Object.keys(config).forEach(k => {
+        const key = k as keyof PkgJson;
+        pkgJson[key] = config[key] as any ?? pkgJson[key];
+    });
 
     return { isNew, data: removeDuplicateDeps(pkgJson), path: pkgJsonFile };
 
@@ -73,7 +72,6 @@ export const getPkgJson = async (ctx: InitContext): Promise<PkgJsonGenerated<Pkg
      // if the repo is empty, remove it.
      if (!pkgJson.repository)
          delete pkgJson.repository; */
-
 };
 
 type InitMode = 'write' | 'data';
@@ -84,11 +82,9 @@ interface InitOptions<M extends InitMode> {
 
 export type InitOpts<M extends InitMode> = Partial<InitOptions<M>>;
 
-
 export const init = async <M extends InitMode = 'write'>(
-    options: InitOpts<M> = {}
-): Promise<PkgJsonGenerated<M extends 'write' ? void : PkgJson>> => {
-
+    options: InitOpts<M> = {},
+): Promise<undefined | PkgJsonGenerated<M extends 'write' ? undefined : PkgJson>> => {
     try {
         const { mode = 'write' } = options;
 
@@ -98,34 +94,31 @@ export const init = async <M extends InitMode = 'write'>(
         if (mode === 'write') {
             const pkgJsonString = `${JSON.stringify(newConfig.data, null, 4)}\n`;
 
-            const { isConfirmed } = ctx.yes ? { isConfirmed: true } : await prompts({
-                type: 'confirm',
-                name: 'isConfirmed',
-                message: `About to write to ${newConfig.path}:\n\n${pkgJsonString}\n\nIs this OK?`,
-                initial: true
-            });
-
+            const { isConfirmed } = ctx.yes
+                ? { isConfirmed: true }
+                : await prompts({
+                      type: 'confirm',
+                      name: 'isConfirmed',
+                      message: `About to write to ${newConfig.path}:\n\n${pkgJsonString}\n\nIs this OK?`,
+                      initial: true,
+                  });
 
             if (!isConfirmed) {
                 console.log(red`Aborted 😅`);
             } else {
-                writePkgJson({ ...newConfig, data: pkgJsonString });
+                await writePkgJson({ ...newConfig, data: pkgJsonString });
             }
         } else {
             return newConfig as any;
         }
-
-    } catch (e) {
+    } catch (e: any) {
         console.error(red`Oups, something went wrong.`);
 
-        if (e.message)
-            console.error(e.message);
+        if (e.message) console.error(e.message);
 
-        if (e.stack)
-            console.error(e.stack);
+        if (e.stack) console.error(e.stack);
     }
 };
-
 
 export const writePkgJson = async ({ path, data, isNew }: PkgJsonGenerated<string>) => {
     await fs.writeFile(path, data, 'utf8');
@@ -133,26 +126,21 @@ export const writePkgJson = async ({ path, data, isNew }: PkgJsonGenerated<strin
     console.log();
     console.log(s.stripIndent.oneLine.stripIndent.green.$`
         😃 "package.json" ${bold`has been generated!`}
-        ${isNew ? '' : yellow` (Only the value prompted have been added or modified)`}`
-    );
+        ${isNew ? '' : yellow` (Only the value prompted have been added or modified)`}`);
 
     console.log(s.white.bold.magentaBG.$`\nLet's get work now 💻`);
 };
-
 
 export const removeDuplicateDeps = (pkgJson: PkgJson) => {
     const { optionalDependencies, dependencies } = pkgJson;
 
     // optionalDependencies don't need to be repeated in two places
     if (dependencies) {
-
         if (optionalDependencies) {
-            for (const name of Object.keys(optionalDependencies))
-                delete dependencies[ name ];
+            for (const name of Object.keys(optionalDependencies)) delete dependencies[name];
         }
 
-        if (Object.keys(dependencies).length === 0)
-            delete pkgJson.dependencies;
+        if (Object.keys(dependencies).length === 0) delete pkgJson.dependencies;
     }
 
     return pkgJson;

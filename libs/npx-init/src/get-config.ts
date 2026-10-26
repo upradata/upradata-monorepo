@@ -1,17 +1,25 @@
+import path from 'node:path';
+
 import prompts from 'prompts';
-import path from 'path';
+
 import { findUp, red, styles as s } from '@upradata/node-util';
+
 import { InitContext, PkgJson } from './types';
 
-type NpxInit = Record<string, { title: string; file: string; }>;
+type NpxInit = Record<string, { title: string; file: string }>;
 
 export const getUserPkgJson = async (ctx: InitContext): Promise<PkgJson> => {
-    const configFiles = [ 'js', 'json' ].flatMap(ext => [ `npx-init.${ext}`, `.npx-init.${ext}` ]);
+    const configFiles = ['js', 'json'].flatMap(ext => [`npx-init.${ext}`, `.npx-init.${ext}`]);
 
-    const npxConfigPath = false ||
-        await findUp(configFiles, { type: 'file', from: process.cwd() }) ||
-        await findUp('npx-init.json', { type: 'file', from: __dirname }) ||
-        await findUp(configFiles, { type: 'file', from: path.join(process.env.XDG_CONFIG_HOME || path.join(process.env.HOME, '.config'), 'npx-init') });
+    const npxConfigPath =
+        // oxlint-disable-next-line no-constant-binary-expression
+        false
+        || (await findUp(configFiles, { type: 'file', from: process.cwd() }))
+        || (await findUp('npx-init.json', { type: 'file', from: __dirname }))
+        || (await findUp(configFiles, {
+            type: 'file',
+            from: path.join(process.env.XDG_CONFIG_HOME || path.join(process.env.HOME!, '.config'), 'npx-init'),
+        }));
 
     if (!npxConfigPath) {
         console.error(red`\n⛔ Could not find a npx-init config file ⛔`);
@@ -22,26 +30,25 @@ export const getUserPkgJson = async (ctx: InitContext): Promise<PkgJson> => {
         return {};
     }
 
-
     const npxInit: NpxInit = (await import(npxConfigPath)).default;
 
     const { key } = await prompts({
         type: 'select',
         name: 'key',
         message: 'init type',
-        choices: Object.entries(npxInit).map(([ k, v ]) => ({ title: v.title, value: k })).sort((v1, v2) => v1.title.localeCompare(v2.title)),
-        initial: 0
+        choices: Object.entries(npxInit)
+            .map(([k, v]) => ({ title: v.title, value: k }))
+            .sort((v1, v2) => v1.title.localeCompare(v2.title)),
+        initial: 0,
     });
 
     // user can press Ctrl-C or something similar
-    if (!key)
-        return {};
+    if (!key) return {};
 
-    const filePath = path.resolve(process.cwd(), npxInit[ key ].file);
+    const filePath = path.resolve(process.cwd(), npxInit[key].file);
 
     return import(filePath).then(m => {
-        if (typeof m.default === 'function')
-            return m.default(ctx);
+        if (typeof m.default === 'function') return m.default(ctx);
 
         return m.default;
     });

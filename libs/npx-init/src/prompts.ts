@@ -1,33 +1,37 @@
+import { Readable, Writable } from 'node:stream';
+
 import originalPrompts from 'prompts';
-/* eslint-disable no-redeclare */
-import { Readable, Writable } from 'stream';
+// oxlint-disable-next-line no-duplicate-imports
 import type P from 'prompts';
+
 import { GetType, Value, ValueOf, TT$ } from './prompts.type';
 
 type PromptFunc2<T1 = any, T2 = any, R = any> = (a1: T1, a2: T2) => R;
 
-
 type Prop<O extends PromptObjectBase> = {
-    [ K in Value<O[ 'name' ]> ]: 'format' extends keyof O ? ReturnType<O[ 'format' ]> : GetType<Value<O[ 'type' ]>>;
+    [K in Value<O['name']>]: 'format' extends keyof O
+        ? ReturnType<Exclude<O['format'], undefined>>
+        : GetType<Value<O['type']>>;
 };
-
 
 export type Answer<Q extends PromptObjectBase> = Prop<Q>;
 
-
-type PromptObjectBase<N extends string = string, T extends P.PromptType = P.PromptType, F extends PromptFunc2 = PromptFunc2> = {
+type PromptObjectBase<
+    N extends string = string,
+    T extends P.PromptType = P.PromptType,
+    F extends PromptFunc2 = PromptFunc2,
+> = {
     name: TT$<N>;
     type: TT$<T>;
     format?: F;
 };
-
 
 export type Question<N extends string = string, T extends P.PromptType = P.PromptType> = {
     type: TT$<T>;
     name: TT$<N>;
     message?: TT$<string>;
     initial?: TT$<GetType<T>>;
-    suggest?: ((input: any, choices: P.Choice[]) => Promise<P.Choice[]>);
+    suggest?: (input: any, choices: P.Choice[]) => Promise<P.Choice[]>;
     style?: TT$<string>;
     // onState?: PrevCaller<Q & U, void>>;
     min?: TT$<number>;
@@ -54,9 +58,9 @@ type FF<Q extends Question, U> = { format: PrompFunc2<Q[ 'type' ], any, U>; };
 type FFS<Q extends Questions, U> = { format: PrompFunc2<Q[ 'type' ], any, U>; }; */
 
 export type Post<Q extends Question, U> = {
-    format?: (value: GetType<Value<ValueOf<Q>[ 'type' ]>> /* , answers: A */) => U;
-    validate?: (value: GetType<Value<ValueOf<Q>[ 'type' ]>>) => boolean | string;
-    initial?: ValueOf<Q>[ 'type' ]; // | PrevCaller<Q & U, ValueOf<Q>[ 'type' ]>;
+    format?: (value: GetType<Value<ValueOf<Q>['type']>> /* , answers: A */) => U;
+    validate?: (value: GetType<Value<ValueOf<Q>['type']>>) => boolean | string;
+    initial?: ValueOf<Q>['type']; // | PrevCaller<Q & U, ValueOf<Q>[ 'type' ]>;
     // | PrevCaller<Q & U, string>;
 
     /*  suggest?: ((input: any, choices: P.Choice[]) => Promise<P.Choice[]>);
@@ -78,12 +82,14 @@ export type Post<Q extends Question, U> = {
      mask?: string; // | PrevCaller<Q & U, string | P.Falsy>; */
 };
 
-
 export interface Prompts<Keys extends string = string> {
     <Q extends Question<Keys>>(question: Q, options?: P.Options): Promise<Answer<Q>>;
-    <Q extends Question<Keys>, P extends Post<Q, any>>(question: Q, post: P, options?: P.Options): Promise<Answer<Q & P>>;
+    <Q extends Question<Keys>, P extends Post<Q, any>>(
+        question: Q,
+        post: P,
+        options?: P.Options,
+    ): Promise<Answer<Q & P>>;
 }
-
 
 /* const f = async () => {
     const p = prompts<'k1' | 'k2'>();
@@ -118,11 +124,10 @@ const f2 = async () => {
     return r.k1.length + k1.length;
 }; */
 
-
-export const makePrompts = <Keys extends string>() => ((question, post, options) => {
-    return originalPrompts({ ...question, ...post } as any, options);
-}) as Prompts<Keys>;
-
+export const makePrompts = <Keys extends string>() =>
+    ((question, post, options) => {
+        return originalPrompts({ ...question, ...post } as any, options);
+    }) as Prompts<Keys>;
 
 const prompts = makePrompts<string>();
 export default prompts;
