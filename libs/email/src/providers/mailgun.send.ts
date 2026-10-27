@@ -2,7 +2,7 @@ import formData from 'form-data';
 import Mailgun from 'mailgun.js';
 import { MailgunMessageData } from 'mailgun.js/definitions';
 
-import { dasherize, ensureArray, entries, map } from '@upradata/util';
+import { dasherize, ensureArray, entries, errorToString, map } from '@upradata/util';
 
 import { checkEmailOptions } from '../check-email-options';
 import { EmailCodifiedError, EmailErrors } from '../email-error';
@@ -115,12 +115,7 @@ export const createMailgunSendService: MailSendServiceFactory<MailgunSendClientO
                     type: 'error' as const,
                     error: new EmailCodifiedError({
                         code: EmailErrors.MAILCHIMP,
-                        message:
-                            e instanceof Error
-                                ? e.message
-                                : typeof e === 'string'
-                                  ? e
-                                  : e?.toString?.() || `Error while sending mail with Mailgun Service`,
+                        message: errorToString(e, `Error while sending mail with Mailgun Service`),
                     }),
                     to: JSON.stringify(datas.to),
                     hasSendBeenRequested: true,

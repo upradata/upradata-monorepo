@@ -89,5 +89,7 @@ export const createSendMailService = async <K extends EmailProviders>(
     name: K,
     options: SendClientOptions[K],
 ): Promise<EmailServices<K>[K]> => {
-    return createSendMailServices({ [name]: options }).then(senders => senders[name as EmailProviders]);
+    return createSendMailServices({ [name]: options }).then(
+        senders => senders[name as EmailProviders] as EmailServices<K>[K],
+    );
 };

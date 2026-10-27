@@ -2,7 +2,7 @@ import mailchimp, { Contact } from '@mailchimp/mailchimp_marketing';
 import fs from 'fs-extra';
 
 import { fromCwd } from '@upradata/node-util';
-import { ensureArray, InferArrayType, TT } from '@upradata/util';
+import { ensureArray, errorToString, InferArrayType, TT } from '@upradata/util';
 
 import { checkEmailOptions } from '../check-email-options';
 import { EmailCodifiedError, EmailErrors } from '../email-error';
@@ -132,20 +132,24 @@ export const createMilchimpSendService: MailSendServiceFactory<
                     }) as CacheData,
             );
 
-            if (typeof body.audience.name === 'undefined') {
+            if (body.audience.name === undefined) {
                 throw new Error('Either audience name or ID must be provided');
+            }
+
+            if (body.campaignName === undefined) {
+                throw new Error('Either campaign name or ID must be provided');
             }
 
             const audienceId = await getDataFromCollection({
                 data: body.audience.id,
-                getCache: () => cacheData.lists[body.audience.name],
+                getCache: () => cacheData.lists[body.audience.name!],
                 getData: listData => listData.id,
                 setCache: data => {
-                    cacheData.lists[body.audience.name] = data;
+                    cacheData.lists[body.audience.name!] = data;
                 },
                 createListData: () =>
                     mailchimp.lists.createList({
-                        name: body.audience.name,
+                        name: body.audience.name!,
                         contact: body.contact,
                         permission_reminder: '*|LIST:DESCRIPTION|*',
                         email_type_option: true,
@@ -210,10 +214,10 @@ export const createMilchimpSendService: MailSendServiceFactory<
             });
 
             const campaignId = await getDataFromCollection({
-                getCache: () => cacheData.campaigns[body.campaignName],
+                getCache: () => cacheData.campaigns[body.campaignName!],
                 getData: listData => listData.id,
                 setCache: data => {
-                    cacheData.campaigns[body.campaignName] = data;
+                    cacheData.campaigns[body.campaignName!] = data;
                 },
                 createListData: () =>
                     mailchimp.campaigns.create({
@@ -265,12 +269,7 @@ export const createMilchimpSendService: MailSendServiceFactory<
                 type: 'error' as const,
                 error: new EmailCodifiedError({
                     code: EmailErrors.MAILCHIMP,
-                    message:
-                        e instanceof Error
-                            ? e.message
-                            : typeof e === 'string'
-                              ? e
-                              : e?.toString?.() || `Error while sending mail with Mailchimp Service`,
+                    message: errorToString(e, `Error while sending mail with Mailchimp Service`),
                 }),
                 to: JSON.stringify(body.to),
             };
@@ -297,12 +296,7 @@ export const createMilchimpSendService: MailSendServiceFactory<
                     type: 'error' as const,
                     error: new EmailCodifiedError({
                         code: EmailErrors.MAILCHIMP,
-                        message:
-                            e instanceof Error
-                                ? e.message
-                                : typeof e === 'string'
-                                  ? e
-                                  : e?.toString?.() || `Error while sending mail with Mailchimp Service`,
+                        message: errorToString(e, `Error while sending mail with Mailchimp Service`),
                     }),
                     to: JSON.stringify(body.to),
                     hasSendBeenRequested: body.isLastContact,

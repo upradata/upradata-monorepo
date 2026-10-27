@@ -1,6 +1,6 @@
 import { minify } from 'html-minifier-terser';
 
-import { ensureArray } from '@upradata/util';
+import { ensureArray, errorToString } from '@upradata/util';
 
 import { EmailCodifiedError, EmailErrors } from './email-error';
 import { SendReturn } from './providers';
@@ -161,12 +161,7 @@ export const sendEmail = async <P extends EmailProviders = 'mailgun', E extends 
                     type: 'error' as const,
                     error: new EmailCodifiedError({
                         code: EmailErrors.MAILCHIMP,
-                        message:
-                            e instanceof Error
-                                ? e.message
-                                : typeof e === 'string'
-                                  ? e
-                                  : e?.toString?.() || `Error while sending mail`,
+                        message: errorToString(e, `Error while sending mail`),
                     }),
                     to: JSON.stringify(to),
                     hasSendBeenRequested: false,
