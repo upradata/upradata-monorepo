@@ -56,13 +56,13 @@
         "@upradata/util": "workspace:*",
         "puppeteer": "^13.0.0"
     },
-    "peerDependencies": {
-        "@upradata/webpack": "^1.0.0",
-        "memfs": "^3.4.0"
-    },
     "devDependencies": {
         "@types/node": "^16.11.12",
         "@upradata/tsconfig": "workspace:*",
         "@upradata/vite-plus": "workspace:*"
+    },
+    "peerDependencies": {
+        "@upradata/webpack": "workspace:*",
+        "memfs": "^3.4.0"
     }
 }
