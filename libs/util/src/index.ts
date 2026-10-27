@@ -1,6 +1,6 @@
 export * from './assign';
 export * from './boolean-attribute';
-export * from './codified-error';
+export * from './error';
 export * from './execute-temporary-state';
 export * from './format-string';
 export * from './function';

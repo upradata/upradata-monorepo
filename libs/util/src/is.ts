@@ -34,6 +34,24 @@ export function isBoolean(value: any): value is boolean {
 }
 
 /**
+ * Determines if a reference is the constant `true`.
+ *
+ * @param value Reference to check.
+ */
+export function isTrue(value: any): value is boolean {
+    return isBoolean(value) && value === true;
+}
+
+/**
+ * Determines if a reference is the constant `false`.
+ *
+ * @param value Reference to check.
+ */
+export function isFalse(value: any): value is boolean {
+    return isBoolean(value) && value === false;
+}
+
+/**
  * Determines if a reference is a `Date`.
  *
  * @param value Reference to check.
