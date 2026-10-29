@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vite-plus/test';
-import { AppInjector, Component, DiInjector, INJECT, Inject, InjectProp, ProvidedIn, RootService } from '../src';
+
+import { AppInjector, Component, DiInjector, INJECT, Inject, InjectProp, ProvidedIn, RootService } from '../../src';
 
 describe('Injector Decorator', () => {
     it('should use the root parent if RootService decorator is used', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vite-plus/test';
 
-import { DiInjector, Inject, type ProviderToken } from '../src';
+import { DiInjector, Inject, type ProviderToken } from '../../src';
 
 describe('DiInjector', () => {
     it('should create a new instance of a single provider', () => {

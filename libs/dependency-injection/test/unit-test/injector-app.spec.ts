@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vite-plus/test';
-import { AppInjector, DiInjector } from '../src';
+
+import { AppInjector, DiInjector } from '../../src';
 
 describe('AppInjector', () => {
     it('should init', () => {
