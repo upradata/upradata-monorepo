@@ -1,5 +1,10 @@
 {
     "extends": "@upradata/tsconfig/dom.json",
     "include": ["src/**/*.ts", "**/types/**/*.d.ts"],
-    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    }
 }

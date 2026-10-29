@@ -4,6 +4,9 @@
     "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
     "compilerOptions": {
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     }
 }

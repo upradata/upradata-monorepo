@@ -3,7 +3,8 @@
     "compilerOptions": {
         "paths": {
             "@mailchimp/mailchimp_marketing": ["./src/@types/@mailchimp/mailchimp_marketing"],
-            "@mailchimp/mailchimp_marketing/*": ["./src/@types/@mailchimp/mailchimp_marketing/*"]
+            "@mailchimp/mailchimp_marketing/*": ["./src/@types/@mailchimp/mailchimp_marketing/*"],
+            "@/*": ["./src/*"]
         }
     },
     "include": ["src/**/*.ts", "src/**/*.d.ts"],

@@ -4,6 +4,7 @@
     "exclude": ["node_modules", "dist", "**/*.test.ts", "src/@types/**/*.d.ts"],
     "compilerOptions": {
         "paths": {
+            "@/*": ["./src/*"],
             "#is-cli": ["./src/utils/is-cli.mts"]
         }
     }
