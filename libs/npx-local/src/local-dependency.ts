@@ -1,4 +1,4 @@
-import { InstallMode } from './local-install.options';
+import type { InstallMode } from './local-install.options';
 import { DependencyName } from './types';
 
 export interface DependencyDetail {
