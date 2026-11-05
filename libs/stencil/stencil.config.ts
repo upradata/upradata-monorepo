@@ -2,6 +2,7 @@ import { Config } from '@stencil/core';
 
 export const config: Config = {
     namespace: 'upradata-stencil',
+    tsconfig: './tsconfig.json',
     outputTargets: [
         {
             type: 'dist',

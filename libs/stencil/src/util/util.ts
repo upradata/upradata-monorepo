@@ -1,11 +1,9 @@
+import type { ObjectOf } from '@upradata/util';
+
 export type BooleanAttribute = boolean | 'true' | 'false' | '';
 
 export const toBoolean = (v: BooleanAttribute) => {
-    return v === '' ? true :
-        typeof v === 'boolean' ? v :
-            v === 'true' ? true :
-                v === 'false' ? false :
-                    false;
+    return v === '' ? true : typeof v === 'boolean' ? v : v === 'true' ? true : v === 'false' ? false : false;
 };
 
 export const toString = (v: any) => {
@@ -16,23 +14,20 @@ export const toNumber = (v: number | string) => {
     return typeof v === 'number' ? v : parseFloat(v);
 };
 
-export const toObject = <T = unknown>(o: string | T): T => {
-    return o ? typeof o === 'string' ? JSON.parse(o) : o : o;
+export const toObject = <T extends ObjectOf<unknown> = ObjectOf<unknown>>(o: string | T): T => {
+    return o ? (typeof o === 'string' ? JSON.parse(o) : o) : ({} as T);
 };
-
-
 
 export const zoomFromMouseWheel = (event: WheelEvent) => {
     return event.deltaY > 0 ? 1 / 1.1 : 1.1;
 };
 
-
-export const toggleClassFactory = (classes: { true: string; false: string; }) => (el: HTMLElement, isTrue: boolean) => {
+export const toggleClassFactory = (classes: { true: string; false: string }) => (el: HTMLElement, isTrue: boolean) => {
     if (isTrue) {
-        el.classList.remove(classes[ 'false' ]);
-        el.classList.add(classes[ 'true' ]);
+        el.classList.remove(classes['false']);
+        el.classList.add(classes['true']);
     } else {
-        el.classList.remove(classes[ 'true' ]);
-        el.classList.add(classes[ 'false' ]);
+        el.classList.remove(classes['true']);
+        el.classList.add(classes['false']);
     }
 };
