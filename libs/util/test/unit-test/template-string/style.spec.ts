@@ -8,9 +8,7 @@ import { Colors, colorsTransforms, styles } from '../../template-string/colors.m
 describe('Test suite template string styles', () => {
     it('all basic styles should be initialized', () => {
         for (const k of keys(new Colors())) {
-            const style = Object.getOwnPropertyDescriptor(styles, k)?.value;
-            expect(style).toBeDefined();
-            expect(style).toBeInstanceOf(Style);
+            const style = Reflect.get(styles, k);
             if (!(style instanceof Style)) throw new TypeError(`Missing style for ${String(k)}`);
             expect(style.transforms.length).toEqual(2);
             expect(style.transforms[0]).toBeInstanceOf(Style);
