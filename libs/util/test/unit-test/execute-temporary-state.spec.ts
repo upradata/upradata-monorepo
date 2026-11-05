@@ -1,8 +1,7 @@
-import { ExecuteOnTempState, temp } from '../src/execute-temporary-state';
-import { Observable, of } from 'rxjs';
-import { PlainObj } from '../src/type';
+import { describe, expect, it } from 'vite-plus/test';
 
-
+import { ExecuteOnTempState, temp } from '../../src/execute-temporary-state';
+import { PlainObj } from '../../src/types';
 
 describe('Test Suite ExecuteOnTempState', () => {
     const o = { a: 1, b: 2, c: 3 };
@@ -11,10 +10,10 @@ describe('Test Suite ExecuteOnTempState', () => {
 
     const tmpState = { b: 22, c: 33 };
 
-    async function testExecTmp(execType: 'sync' | 'promise' | 'observable') {
+    async function testExecTmp(execType: 'sync' | 'promise') {
         const retValue = 'test';
 
-        const ret = new ExecuteOnTempState({ obj: o, tmpState }).execute(function (tmp) {
+        const ret = new ExecuteOnTempState({ obj: o, tmpState }).execute(function (this: PlainObj, tmp) {
             // check tmp values have been copied;
             expect(o).toEqual(tmp);
             expect(o.b).toEqual(tmpState.b);
@@ -24,18 +23,21 @@ describe('Test Suite ExecuteOnTempState', () => {
             expect(this).toBe(tmp);
 
             switch (execType) {
-                case 'sync': return retValue;
-                case 'promise': return Promise.resolve(retValue);
-                case 'observable': return of(retValue);
+                case 'sync':
+                    return retValue;
+                case 'promise':
+                    return Promise.resolve(retValue);
             }
         });
 
         switch (execType) {
-            case 'sync': expect(ret).toEqual('test'); break;
-            case 'promise': expect(await ret).toEqual('test'); break;
-            case 'observable': expect(await (ret as Observable<string>).toPromise()).toEqual('test'); break;
+            case 'sync':
+                expect(ret).toEqual('test');
+                break;
+            case 'promise':
+                expect(await ret).toEqual('test');
+                break;
         }
-
 
         // check o did not change. Reference and Values.
         expect(o).toBe(copyoRef);
@@ -50,20 +52,15 @@ describe('Test Suite ExecuteOnTempState', () => {
         return testExecTmp('promise');
     });
 
-    it('Test state.execute Observable', () => {
-        return testExecTmp('observable');
-    });
-
     it('Test constructor/state/from-to', () => {
-        const e1 = new ExecuteOnTempState({ obj: o, tmpState }) as any as { obj: PlainObj, tmpState: PlainObj; };
+        const e1 = new ExecuteOnTempState({ obj: o, tmpState }) as any as { obj: PlainObj; tmpState: PlainObj };
         const e2 = new ExecuteOnTempState().state({ obj: o, tmpState });
         const e3 = new ExecuteOnTempState().from(o).to(tmpState);
         const e4 = temp(o).to(tmpState);
 
-        for (const { obj, tmpState } of [ e2, e3, e4 ] as any[]) {
+        for (const { obj, tmpState } of [e2, e3, e4] as any[]) {
             expect(obj).toEqual(e1.obj);
             expect(tmpState).toEqual(e1.tmpState);
         }
     });
-
 });

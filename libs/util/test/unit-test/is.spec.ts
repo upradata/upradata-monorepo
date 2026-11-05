@@ -1,4 +1,6 @@
-import * as util from '../src';
+import { describe, expect, it } from 'vite-plus/test';
+
+import * as util from '../../src';
 
 describe('ts-util-is methods', () => {
     it('ensure value is an array', () => {

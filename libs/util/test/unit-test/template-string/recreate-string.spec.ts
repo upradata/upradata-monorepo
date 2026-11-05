@@ -1,9 +1,9 @@
-import { recreateString } from '../../src/template-string/recreate-string';
+import { describe, expect, it } from 'vite-plus/test';
+
+import { recreateString } from '../../../src/template-string/recreate-string';
 
 describe('Test Suite For Template String Functions', () => {
-
     it('should reconstruct template string', () => {
-
         expect(recreateString`thomas est beau`).toBe('thomas est beau');
         expect(recreateString`thomas ${1} est ${2} beau`).toBe('thomas 1 est 2 beau');
         expect(recreateString`${0} thomas ${1} est ${2} beau`).toBe('0 thomas 1 est 2 beau');

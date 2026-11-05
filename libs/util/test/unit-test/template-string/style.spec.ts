@@ -1,31 +1,33 @@
 import * as commonTags from 'common-tags';
-import { keys } from '../../src/object';
-import { CommonTagStyle, recreateString, Style } from '../../src/template-string';
-import { colors, Colors, colorsTransforms, styles } from './colors.mock';
+import { describe, expect, it } from 'vite-plus/test';
 
+import { keys } from '../../../src/object';
+import { CommonTagStyle, Style } from '../../../src/template-string';
+import { Colors, colorsTransforms, styles } from '../../template-string/colors.mock';
 
 describe('Test suite template string styles', () => {
-
     it('all basic styles should be initialized', () => {
         for (const k of keys(new Colors())) {
-            expect(styles[ k ]).toBeDefined();
-            expect(styles[ k ]).toBeInstanceOf(Style);
-            expect(styles[ k ].transforms.length).toEqual(2);
-            expect(styles[ k ].transforms[ 0 ]).toBeInstanceOf(Style);
-            expect(styles[ k ].transforms[ 1 ].toString()).toEqual(colorsTransforms[ k ].toString());
+            const style = Object.getOwnPropertyDescriptor(styles, k)?.value;
+            expect(style).toBeDefined();
+            expect(style).toBeInstanceOf(Style);
+            if (!(style instanceof Style)) throw new TypeError(`Missing style for ${String(k)}`);
+            expect(style.transforms.length).toEqual(2);
+            expect(style.transforms[0]).toBeInstanceOf(Style);
+            // oxlint-disable-next-line typescript/no-base-to-string
+            expect(String(style.transforms[1])).toEqual(colorsTransforms[k].toString());
         }
     });
 
     it('all common tags styles should be initialized', () => {
         for (const k of keys(new CommonTagStyle())) {
-            expect(styles[ k ]).toBeDefined();
-            expect(styles[ k ]).toBeInstanceOf(Style);
-            expect(styles[ k ].transforms.length).toEqual(2);
-            expect(styles[ k ].transforms[ 0 ]).toBeInstanceOf(Style);
-            expect(styles[ k ].transforms[ 1 ].toString()).toEqual(commonTags[ k ].toString());
+            expect(styles[k]).toBeDefined();
+            expect(styles[k]).toBeInstanceOf(Style);
+            expect(styles[k].transforms.length).toEqual(2);
+            expect(styles[k].transforms[0]).toBeInstanceOf(Style);
+            expect(styles[k].transforms[1].toString()).toEqual(commonTags[k].toString());
         }
     });
-
 
     /* it('should cumulate styles', () => {
         const s1 = styles.yellow;
@@ -140,7 +142,6 @@ describe('Test suite template string styles', () => {
         expect(colors.yellow`yellow`).toBe('<yellow>yellow</yellow>');
     }); */
 
-
     it('should be the common tag output', () => {
         expect(styles.oneLineTrim.$`a
                 b
@@ -148,8 +149,8 @@ describe('Test suite template string styles', () => {
                 b
         c`);
 
-        expect(styles.oneLineCommaListsOr.$`a ${[ 1, 2, 3, 4 ]}
-        b`).toBe(commonTags.oneLineCommaListsOr`a ${[ 1, 2, 3, 4 ]}
+        expect(styles.oneLineCommaListsOr.$`a ${[1, 2, 3, 4]}
+        b`).toBe(commonTags.oneLineCommaListsOr`a ${[1, 2, 3, 4]}
         b`);
     });
 });
