@@ -24,14 +24,19 @@
         "docs"
     ],
     "sideEffects": false,
-    "main": "./dist/index.js",
+    "main": "./dist/index.cjs",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.cjs"
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
         }
     },
     "publishConfig": {
@@ -56,7 +61,9 @@
         "webpack": "^5.112.2"
     },
     "devDependencies": {
-        "@types/babel__core": "^7.20.5"
+        "@types/babel__core": "^7.20.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
     },
     "peerDependencies": {
         "@babel/core": "^8.0.9",
