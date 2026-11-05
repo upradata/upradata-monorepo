@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vite-plus/test';
 
-import { Proxy, type ProxyType } from '../src';
-
-import { makeTarget, type Target } from './data';
+import { Proxy, type ProxyType } from '../../src';
+import { makeTarget, type Target } from '../data';
 
 const fail = (arg: string) => {
     throw new Error(arg);

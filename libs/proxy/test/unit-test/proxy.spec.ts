@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vite-plus/test';
 
-import { NodeLiteral, Proxy, ProxyObserver } from '../src';
-
-import { makeTarget, type Target } from './data';
+import { NodeLiteral, Proxy, ProxyObserver } from '../../src';
+import { makeTarget, type Target } from '../data';
 
 describe.each([
     // excessive stack during TS compilation (don't know why)
