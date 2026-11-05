@@ -54,6 +54,7 @@
     "dependencies": {
         "@upradata/node-util": "workspace:*",
         "@upradata/util": "workspace:*",
+        "@upradata/webpack": "workspace:*",
         "puppeteer": "^13.0.0"
     },
     "devDependencies": {

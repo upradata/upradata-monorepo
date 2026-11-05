@@ -2,7 +2,7 @@
 import path from 'node:path';
 import { promisify } from 'node:util';
 
-import puppeteer, { type HTTPResponse } from 'puppeteer';
+import * as puppeteer from 'puppeteer';
 
 import { lookupRoot, red } from '@upradata/node-util';
 import { assignRecursive, bind, ifThen } from '@upradata/util';
@@ -67,6 +67,7 @@ export class Browser {
 
         const page = await this.instance.newPage();
 
+        // oxlint-disable-next-line no-console -- Forward browser console output for debugging.
         page.on('console', consoleObj => console.log(consoleObj.text()));
 
         await page.setRequestInterception(true);
@@ -95,7 +96,11 @@ export class Browser {
     private augmentPage(page: puppeteer.Page) {
         const oldGoTo = page.goto.bind(page) as puppeteer.Page['goto'];
 
-        const goToRetry = (url: string, options?: GoToOptions, nbRetried: number = 1): Promise<HTTPResponse> => {
+        const goToRetry = (
+            url: string,
+            options?: GoToOptions,
+            nbRetried: number = 1,
+        ): Promise<puppeteer.HTTPResponse> => {
             const { retry = 1 } = options || {};
 
             return oldGoTo(url, options).catch((e: unknown) => {

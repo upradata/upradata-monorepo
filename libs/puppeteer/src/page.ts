@@ -1,4 +1,4 @@
-import type puppeteer from 'puppeteer';
+import type * as puppeteer from 'puppeteer';
 
 import type { TT$ } from '@upradata/util';
 

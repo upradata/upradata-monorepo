@@ -1,10 +1,10 @@
-import type Puppeteer from 'puppeteer';
+import type * as puppeteer from 'puppeteer';
 
 import { delayedPromise } from '@upradata/util';
 
 import type { Page } from './page';
 
-export async function createHtmlListIterator(this: Page, options: Puppeteer.CreateHtmlListIteratorOptions) {
+export async function createHtmlListIterator(this: Page, options: puppeteer.CreateHtmlListIteratorOptions) {
     const { list: getList, waitAjax, ajaxResponseUrl, waitNewItemsTimeout = 1000, polling = 16, page = this } = options;
 
     const waitAjaxResponse = async (currentNbItems: number) => {
@@ -57,10 +57,10 @@ export async function createHtmlListIterator(this: Page, options: Puppeteer.Crea
         }
     };
 
-    const getItems = async (start: number): Promise<{ items: Puppeteer.ElementHandle<Element>[]; count: number }> => {
+    const getItems = async (start: number): Promise<{ items: puppeteer.ElementHandle<Element>[]; count: number }> => {
         const items = await getList();
 
-        const done = (items?: Puppeteer.ElementHandle<Element>[]) => {
+        const done = (items?: puppeteer.ElementHandle<Element>[]) => {
             const list = items?.slice(start) || [];
 
             return {
@@ -90,7 +90,7 @@ export async function createHtmlListIterator(this: Page, options: Puppeteer.Crea
 
     const next = async function* (
         start: number = 0,
-    ): AsyncGenerator<{ item: Puppeteer.ElementHandle<Element>; i: number }> {
+    ): AsyncGenerator<{ item: puppeteer.ElementHandle<Element>; i: number }> {
         const { items, count } = await getItems(start);
 
         if (count === 0) return;
