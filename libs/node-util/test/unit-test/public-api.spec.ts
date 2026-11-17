@@ -9,7 +9,6 @@ import * as fsUtil from '../../src/fs';
 import * as json from '../../src/json';
 import * as logNice from '../../src/log-nice';
 import * as pathNormalize from '../../src/path-normalize';
-import * as programArgs from '../../src/program-args';
 import * as requireUtil from '../../src/require';
 import * as stats from '../../src/stats';
 import * as templateStyle from '../../src/template-style';
@@ -29,7 +28,6 @@ describe('node-util public API', () => {
             json,
             logNice,
             pathNormalize,
-            programArgs,
             requireUtil,
             stats,
             templateStyle,
@@ -37,7 +35,7 @@ describe('node-util public API', () => {
             tmpfile,
             tsUtil,
             useful,
-        ]).toHaveLength(16);
+        ]).toHaveLength(15);
         expect(nodeUtil).toHaveProperty('execAsync');
         expect(nodeUtil).toHaveProperty('forEachFiles');
         expect(nodeUtil).toHaveProperty('findUp');

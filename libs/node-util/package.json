@@ -69,11 +69,6 @@
             "import": "./dist/path-normalize.mjs",
             "require": "./dist/path-normalize.cjs"
         },
-        "./program-args": {
-            "types": "./dist/program-args/index.d.ts",
-            "import": "./dist/program-args/index.mjs",
-            "require": "./dist/program-args/index.cjs"
-        },
         "./require": {
             "types": "./dist/require.d.ts",
             "import": "./dist/require.mjs",
@@ -130,7 +125,6 @@
         "@typescript/typescript6": "catalog:",
         "@upradata/util": "workspace:*",
         "colors": "^1.4.0",
-        "commander": "^12.1.0",
         "csvtojson": "^2.0.10",
         "fs-extra": "^11.4.1",
         "glob": "^13.0.6",
