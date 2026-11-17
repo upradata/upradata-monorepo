@@ -1,0 +1,7 @@
+{
+    "extends": "@upradata/tsconfig/node.json",
+    "include": ["src/**/*.ts", "test/**/*.ts"],
+    "compilerOptions": {
+        "paths": { "@/*": ["./src/*"] }
+    }
+}
