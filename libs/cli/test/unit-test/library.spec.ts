@@ -167,6 +167,18 @@ describe('aliases', () => {
         ).toMatchObject({ obj: { k: 3 } });
     });
 
+    it('transforms a flag given without value before reaching the target', () => {
+        const aliases = [
+            { flags: '--kind <v>', mode: 'target', transform: (v: string) => (v === '' || v === 'true' ? 'prod' : v) },
+        ];
+        expect(run(aliases, ['--main'], { flags: '--main [bool]' })).toMatchObject({ main: true, kind: 'prod' });
+        expect(run(aliases, ['--main', 'dev'], { flags: '--main [bool]' })).toMatchObject({ kind: 'dev' });
+        expect(run([{ flags: '--other [v]', mode: 'target' }], ['--main'], { flags: '--main [bool]' })).toMatchObject({
+            main: true,
+            other: true,
+        });
+    });
+
     it('multi-way: every alias is linked, with per-target transforms', () => {
         const aliases = [
             { flags: '--a <v>', mode: 'two-way' },

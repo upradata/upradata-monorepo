@@ -104,10 +104,18 @@ const propagate = (ctx: Ctx, opt: OptionDef, raws: readonly string[], acc: Acc):
             return current;
         }
 
+        // a flag given without value is transformed as an empty string; an unchanged value falls back to `true`
+        const flagValue = (): Acc => {
+            const transformed = link.transform('');
+            return transformed === ''
+                ? withOpt(current, target, true)
+                : withOpt(current, target, applyValue(target, transformed, current.opts[target.attr]));
+        };
+
         return raws.length === 0
             ? target.takes === 'none'
                 ? setNone(target, current)
-                : withOpt(current, target, true)
+                : flagValue()
             : raws.reduce(
                   (a, raw) => withOpt(a, target, applyValue(target, link.transform(raw), a.opts[target.attr])),
                   current,
