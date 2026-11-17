@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
-import { createCli } from '@upradata/node-util';
+import { createCli } from '@upradata/cli';
 
 import { csvToJsonCommand } from './csv-to-json.command';
 import { jsonToCsvCommand } from './json-to-csv.command';
 
-const command = createCli();
+const cli = createCli({
+    name: 'json',
+    description: 'set of json commands',
+    subcommands: [jsonToCsvCommand, csvToJsonCommand],
+});
 
-command.description('set of json commands');
-
-command.addCommand(jsonToCsvCommand.name('json-csv'));
-command.addCommand(csvToJsonCommand.name('csv-json'));
-
-void command.parseAsync();
+void cli.run(process.argv.slice(2)).then(code => {
+    process.exitCode = code;
+});

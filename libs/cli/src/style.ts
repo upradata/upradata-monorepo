@@ -20,7 +20,7 @@ export const style = (enabled: boolean): Style => ({
     yellow: paint(33, 39)(enabled),
     blue: paint(34, 39)(enabled),
     magenta: paint(35, 39)(enabled),
-    cyan: paint(36, 39)(enabled)
+    cyan: paint(36, 39)(enabled),
 });
 
 export const supportsColor = (env: Readonly<Record<string, string | undefined>>, isTTY: boolean): boolean =>

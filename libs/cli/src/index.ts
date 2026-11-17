@@ -25,5 +25,5 @@ export type {
     OptionDef,
     OptionInit,
     Parser,
-    Values
+    Values,
 } from './schema';

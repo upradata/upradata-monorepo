@@ -25,7 +25,7 @@ export const splitOptionFlags = (flags: string): OptionFlags => {
             : {
                   name: valuePart.replace(/[<>[\].]/g, ''),
                   required: valuePart.startsWith('<'),
-                  variadic: valuePart.includes('...')
+                  variadic: valuePart.includes('...'),
               };
 
     return { shortFlag, longFlag, value };

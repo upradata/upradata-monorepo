@@ -91,6 +91,7 @@
         "typecheck": "vp check --no-fmt --no-lint"
     },
     "dependencies": {
+        "@upradata/cli": "workspace:*",
         "@upradata/node-util": "workspace:*",
         "fs-extra": "^11.4.1"
     },
