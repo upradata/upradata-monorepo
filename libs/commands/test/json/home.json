@@ -1,0 +1,2682 @@
+[
+    {
+        "rootId": "nav167383740",
+        "path": "0,2,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Pricing",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383740",
+        "path": "0,2,0,0,1,0,0",
+        "editorPath": "",
+        "text": "About us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383740",
+        "path": "0,2,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Contact us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383740",
+        "path": "0,3,0,1,0,0,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Home",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383740",
+        "path": "0,3,0,2,0,0,0,0",
+        "editorPath": "",
+        "text": "En",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383740",
+        "path": "0,3,0,2,0,1,0,0",
+        "editorPath": "",
+        "text": "Fr",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383741",
+        "path": "1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Pricing",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383741",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "About us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383741",
+        "path": "1,0,0,0,2,0",
+        "editorPath": "",
+        "text": "Contact us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383741",
+        "path": "1,0,0,0,3,0",
+        "editorPath": "",
+        "text": "Home",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383741",
+        "path": "1,0,0,2,0,0",
+        "editorPath": "",
+        "text": "En",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "nav167383741",
+        "path": "1,0,0,2,1,0",
+        "editorPath": "",
+        "text": "Fr",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Cutting-edge",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,0,0,0,0,1,0",
+        "editorPath": "",
+        "text": "website creation starting at only",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,0,0,0,0,2,0",
+        "editorPath": "",
+        "text": "49€",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,0,0,0,0,3,0,0",
+        "editorPath": "",
+        "text": "a month",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,1,0,0,0,0",
+        "editorPath": "",
+        "text": "We are passionate web developers giving people with no time the possibility to have a first-class website at affordable price. Not only big firms can be classy on the web.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,1,0,0,1,0,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,1,0,0,1,0,1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Pricing",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381035",
+        "path": "1,1,0,0,2,0",
+        "editorPath": "",
+        "text": "We would be glad to hear from you. Let's talk about your project with no cost :)",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381036",
+        "path": "1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Upra-Data website builder service. We build your site in just few days starting at only 49€/month",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381039",
+        "path": "2,0,2,0,0",
+        "editorPath": "",
+        "text": "Website equation",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,2,0,0",
+        "editorPath": "",
+        "text": "Simply put, a website is the composition of",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,2,0,1,0,0",
+        "editorPath": "",
+        "text": "four",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,2,0,2",
+        "editorPath": "",
+        "text": "fundamental",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,2,0,3,0,0",
+        "editorPath": "",
+        "text": "resources",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,2,0,4",
+        "editorPath": "",
+        "text": ":",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,5,0,0,0,0",
+        "editorPath": "",
+        "text": "Upra-Data",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,5,0,1,0,0",
+        "editorPath": "",
+        "text": "handles",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,5,0,2",
+        "editorPath": "",
+        "text": "all this",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,5,0,3,0,0",
+        "editorPath": "",
+        "text": "four aspects",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381040",
+        "path": "2,0,5,0,4",
+        "editorPath": "",
+        "text": "for you, letting you stay focused on what you do the best with no burden.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "mt-term-title",
+        "path": "0",
+        "editorPath": "",
+        "text": "Our services",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "We are a full stack digital agency which help innovative companies in realizing their ideas",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Company websites",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "We build first-class websites for companies giving a professional insight and image of your business.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,0,2,0,0,0",
+        "editorPath": "",
+        "text": "Product and services landing pages",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,0,2,0,1,0",
+        "editorPath": "",
+        "text": "We create simple yet powerful single-page showing off the product or service you are selling.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,0,4,0,0,0",
+        "editorPath": "",
+        "text": "Event marketing and promotion websites",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,0,4,0,1,0",
+        "editorPath": "",
+        "text": "We design good-looking facade for promotions and events to inform and attract new customers.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,2,0,0,0,0",
+        "editorPath": "",
+        "text": "Personal websites and online portfolios",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,2,0,0,1,0",
+        "editorPath": "",
+        "text": "We put in place informative and descriptive websites, CVs and online media portfolios.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,2,2,0,0,0",
+        "editorPath": "",
+        "text": "Blogs",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,2,2,0,1,0",
+        "editorPath": "",
+        "text": "We set up beautiful and customized blogs for people willing to share what they have in mind.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,2,4,0,0,0",
+        "editorPath": "",
+        "text": "Online shops",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381043",
+        "path": "1,1,2,4,0,1,0",
+        "editorPath": "",
+        "text": "We program e-shops to sell all your products online.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,0,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "What you'll get",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "Our goal is to deliver value to our clients through high quality services",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,0,0,0,1,0,0",
+        "editorPath": "",
+        "text": "High-quality design",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,0,0,0,1,1,0",
+        "editorPath": "",
+        "text": "Our web-designers and front-end developers work together to deliver cutting-edge modern designs in HTML 5 and javascript 2017.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,1,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Responsive",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,1,0,0,1,1,0",
+        "editorPath": "",
+        "text": "All our designs are mobile and tablet friendly. The layout adapts itself to any device sizes in order to reach the broadest audience possible.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,2,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Multimedia",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,2,0,0,1,1,0",
+        "editorPath": "",
+        "text": "We handle images and videos optimized for the web and for different resolution screens. Medias are loaded lazily and stored on CDN servers for a short and fast download.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,3,0,0,1,0,0",
+        "editorPath": "",
+        "text": "3rd-party integration",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,0,3,0,0,1,1,0",
+        "editorPath": "",
+        "text": "Seamlessly connect third party services such as SlideShare, Disqus, SoundCloud, TimePad, Yclients and others.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,0,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Social and communication",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,0,0,0,1,1,0",
+        "editorPath": "",
+        "text": "To gain user engagement and retention, we handle forms, emails, social networks, live chat and phone calls. Be sure a visitor gets the right information right away.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,1,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Security",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,1,0,0,1,1,0",
+        "editorPath": "",
+        "text": "We give a maximal importance to the security of your website. We handle for you SSL certificate to activate HTTPS protocol and we put in place as well a DDOS protection.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,2,0,0,1,0,0",
+        "editorPath": "",
+        "text": "SEO and statistics",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,2,0,0,1,1,0",
+        "editorPath": "",
+        "text": "Websites are optimized to be well indexed on Google search and are Facebook optimized. All the links are human-friendly and thorough statistics/analytics are available to understand accurately how your customers behave.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,3,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Support and maintenance",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381044",
+        "path": "1,1,1,3,0,0,1,1,0",
+        "editorPath": "",
+        "text": "No need to get headaches tweaking your website. We offer support and maintenance throughout the entire life of your website.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,0",
+        "editorPath": "",
+        "text": "We offer",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "free hosting",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,2",
+        "editorPath": "",
+        "text": "and",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,3,0",
+        "editorPath": "",
+        "text": "1-year free \\\".com\\\" custom domain",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,4",
+        "editorPath": "",
+        "text": ". We give the possibility to",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,5,0",
+        "editorPath": "",
+        "text": "export the code",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,6",
+        "editorPath": "",
+        "text": "to host it by yourself.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,8",
+        "editorPath": "",
+        "text": "Check our",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,9,0",
+        "editorPath": "",
+        "text": "price details",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381045",
+        "path": "1,0,0,0,10",
+        "editorPath": "",
+        "text": "or download our pdf pricing sheet for all features.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Why choose us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "We love what we do. We are a passionate and reliable team with a friendly and professional human approach in mind.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,0,0,0",
+        "editorPath": "",
+        "text": "14",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,0,2,0",
+        "editorPath": "",
+        "text": "Team members",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,1,0,0",
+        "editorPath": "",
+        "text": "6",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,1,2,0",
+        "editorPath": "",
+        "text": "Years in business",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,2,0,0",
+        "editorPath": "",
+        "text": "134",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,2,2,0",
+        "editorPath": "",
+        "text": "Happy clients",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,3,0,0",
+        "editorPath": "",
+        "text": "6",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,3,2,0",
+        "editorPath": "",
+        "text": "Spoken languages:",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381048",
+        "path": "1,1,0,3,2,2",
+        "editorPath": "",
+        "text": "English, French, Italian, Spanish, Slovak, German",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "How are we working?",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,1,0,0,2,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Communication and planning",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,1,0,0,2,0,0,0,1,0",
+        "editorPath": "",
+        "text": "We talk, we settle down a vision, we decide the branding theme with colors, typefont, icons, logos and create a roadmap.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,1,0,2,1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Iterative agile building",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,1,0,2,1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "We build the website keeping you in the loop of the process to let you know about the progress and get your feedback on development milestones.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,1,0,4,2,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Hand-off and publication",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381049",
+        "path": "1,1,0,4,2,0,0,0,1,0",
+        "editorPath": "",
+        "text": "After agreement, we publish the final release version of the website on the server. You are ready to go and tell the world you are online.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Meet our leaders",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "Talented people work every day to provide the best service and satisfy our clients",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Web Designer",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,0,0,1,1,0",
+        "editorPath": "",
+        "text": "Viktoria Valnicka",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,1,0,1,0,0",
+        "editorPath": "",
+        "text": "Project Manager",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,1,0,1,1,0",
+        "editorPath": "",
+        "text": "Vincent Bermond",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,2,0,1,0,0",
+        "editorPath": "",
+        "text": "Front-end",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,2,0,1,1,0",
+        "editorPath": "",
+        "text": "Chloé Romeau",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,3,0,1,0,0",
+        "editorPath": "",
+        "text": "Back-end",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381050",
+        "path": "1,1,3,0,1,1,0",
+        "editorPath": "",
+        "text": "Joe Linton",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381053",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Some of our creations",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381053",
+        "path": "1,0,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Click to zoom-in",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381053",
+        "path": "1,1,0,0,0,2,0,0,1,0",
+        "editorPath": "",
+        "text": "Metric Tool",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381053",
+        "path": "1,1,1,0,0,2,0,0,1,0",
+        "editorPath": "",
+        "text": "Design School",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381053",
+        "path": "1,1,2,0,0,2,0,0,1,0",
+        "editorPath": "",
+        "text": "Dentist Imagery",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381063",
+        "path": "1,0,0,0,0",
+        "editorPath": "",
+        "text": "Our plans",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381063",
+        "path": "1,0,0,1,0",
+        "editorPath": "",
+        "text": "We offer different level of subscription to fit any kind of need",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381064",
+        "path": "1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "All our plans include:",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,0,0,0",
+        "editorPath": "",
+        "text": "free",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,0,1",
+        "editorPath": "",
+        "text": "hosting",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,1,0,0",
+        "editorPath": "",
+        "text": "1 year",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,1,1,0",
+        "editorPath": "",
+        "text": "free",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,1,2",
+        "editorPath": "",
+        "text": "\\\".com\\\" custom domain",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,2,0,0",
+        "editorPath": "",
+        "text": "Export",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381065",
+        "path": "1,0,0,1,0,2,1",
+        "editorPath": "",
+        "text": "website to host it by yourself*",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381066",
+        "path": "0,0,1,0,0,0",
+        "editorPath": "",
+        "text": "Export cost",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381066",
+        "path": "0,0,1,0,1,0",
+        "editorPath": "",
+        "text": "*Export: 5 000€ first page + 1 000€ per additional page plus 1 000€ flat fee for the process. Each year the price drops by the amount you spend for your plan.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381066",
+        "path": "0,0,1,0,1,3",
+        "editorPath": "",
+        "text": "Example: you have a show medium plan payed annually and 3 pages.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381066",
+        "path": "0,0,1,0,1,5",
+        "editorPath": "",
+        "text": "After 2 years, export cost is:",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381066",
+        "path": "0,0,1,0,1,7",
+        "editorPath": "",
+        "text": "(5 000 + 1 000*2) - 2*(169*12) + 1000 = 4 944€",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381066",
+        "path": "0,0,1,0,1,10",
+        "editorPath": "",
+        "text": "And after 4 years only the process fee has to be paid.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381067",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Landing page",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381067",
+        "path": "1,0,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Show",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381067",
+        "path": "1,0,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Online shop",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381067",
+        "path": "1,0,0,1,1,0,0",
+        "editorPath": "",
+        "text": "Landing page",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381067",
+        "path": "1,0,0,1,1,1,0",
+        "editorPath": "",
+        "text": "Show",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381067",
+        "path": "1,0,0,1,1,2,0",
+        "editorPath": "",
+        "text": "Online shop",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381068",
+        "path": "1,0,0,0,0",
+        "editorPath": "",
+        "text": "25% off for annual plans. VAT not included.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Landing Page",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,1,0",
+        "editorPath": "",
+        "text": "Static landing page website. The perfect fit for people having a great idea who just need to show-off what they have in mind to the entire world.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,2,0",
+        "editorPath": "",
+        "text": "€49/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,3,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,3,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,0,0",
+        "editorPath": "",
+        "text": "First-class design",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,1,0",
+        "editorPath": "",
+        "text": "Device responsive layout",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,2,0",
+        "editorPath": "",
+        "text": "Beautiful font",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,3,0",
+        "editorPath": "",
+        "text": "Free hosting",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,4,0",
+        "editorPath": "",
+        "text": "\\\".com\\\" domain €1 first year",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,5,0",
+        "editorPath": "",
+        "text": "SEO Google optimization",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,6,0",
+        "editorPath": "",
+        "text": "Support up to 7 requests",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,7,0",
+        "editorPath": "",
+        "text": "Maintenance",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,8,0",
+        "editorPath": "",
+        "text": "1 revision per year*",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,4,0,9,0",
+        "editorPath": "",
+        "text": "Export website*",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381069",
+        "path": "2,0,0,0,5,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381070",
+        "path": "1,0,0,0,0",
+        "editorPath": "",
+        "text": "*Extra revision: €79 fee per page and",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381070",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "free",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381070",
+        "path": "1,0,0,0,2",
+        "editorPath": "",
+        "text": "for small changes",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Basic",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,0,0,0,1,0",
+        "editorPath": "",
+        "text": "€99/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,0,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,0,0,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,0,0,0,3,0",
+        "editorPath": "",
+        "text": "Single-page website with basic features to show-off all ideas you might have in minds",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,0,0,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,1,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Medium",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,1,0,0,1,0",
+        "editorPath": "",
+        "text": "€139/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,1,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,1,0,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,1,0,0,3,0",
+        "editorPath": "",
+        "text": "Multi-pages website with all the necessary features you need to create an outstanding experiences",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,1,0,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Advanced",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,1,0",
+        "editorPath": "",
+        "text": "€169/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,3,0",
+        "editorPath": "",
+        "text": "Multi-pages website with advanced features and services you need to create a professional and dynamic experiences",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,5,0,0",
+        "editorPath": "",
+        "text": "Most Popular",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,2,0,0,5,1,0",
+        "editorPath": "",
+        "text": "65% of our clients use this package",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,3,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Premium",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,3,0,0,1,0",
+        "editorPath": "",
+        "text": "€229/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,3,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,3,0,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,3,0,0,3,0",
+        "editorPath": "",
+        "text": "Top-notch corporate-quality website with all the features and services you need to fulfill all your wishess",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381071",
+        "path": "2,0,3,0,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "E-shop Basic",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "€199/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,3,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Basic Plan",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,3,0,1,0,0",
+        "editorPath": "",
+        "text": "10",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,3,0,1,1",
+        "editorPath": "",
+        "text": "products",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,3,0,2,0,0",
+        "editorPath": "",
+        "text": "Products variants",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,3,0,3,0,0",
+        "editorPath": "",
+        "text": "Payment systems",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,3,0,4,0,0",
+        "editorPath": "",
+        "text": "Receiving order from client",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,0,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,0,0",
+        "editorPath": "",
+        "text": "E-shop Medium",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,1,0",
+        "editorPath": "",
+        "text": "€269/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Medium Plan",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,1,0,0",
+        "editorPath": "",
+        "text": "25",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,1,1",
+        "editorPath": "",
+        "text": "products",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,2,0",
+        "editorPath": "",
+        "text": "Products variants",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,3,0",
+        "editorPath": "",
+        "text": "Payment systems",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,4,0",
+        "editorPath": "",
+        "text": "Receiving order from client",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,5,0,0",
+        "editorPath": "",
+        "text": "Importing / exporting product",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,6,0,0",
+        "editorPath": "",
+        "text": "Recurring Payment",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,3,0,7,0,0",
+        "editorPath": "",
+        "text": "Promotion",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,1,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,0,0",
+        "editorPath": "",
+        "text": "E-shop Advanced",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,1,0",
+        "editorPath": "",
+        "text": "€349/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Advanced Plan",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,1,0,0",
+        "editorPath": "",
+        "text": "100",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,1,1",
+        "editorPath": "",
+        "text": "products",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,2,0",
+        "editorPath": "",
+        "text": "Products variants",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,3,0",
+        "editorPath": "",
+        "text": "Payment systems",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,4,0",
+        "editorPath": "",
+        "text": "Receiving order from client",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,5,0",
+        "editorPath": "",
+        "text": "Importing / exporting products",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,6,0",
+        "editorPath": "",
+        "text": "Recurring Payment",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,7,0",
+        "editorPath": "",
+        "text": "Promotion",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,8,0,0",
+        "editorPath": "",
+        "text": "Online store management",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,9,0,0",
+        "editorPath": "",
+        "text": "Product catalog",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,3,0,10,0,0",
+        "editorPath": "",
+        "text": "Customer database",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,5,0,0",
+        "editorPath": "",
+        "text": "Most Popular",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,2,0,5,1,0",
+        "editorPath": "",
+        "text": "65% of our clients use this package",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,0,0",
+        "editorPath": "",
+        "text": "E-shop Premium",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,1,0",
+        "editorPath": "",
+        "text": "€699/mo",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,2,0,0",
+        "editorPath": "",
+        "text": "Annually",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,2,1,0",
+        "editorPath": "",
+        "text": "Monthly",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Show Premium Plan",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,1,0,0",
+        "editorPath": "",
+        "text": "unlimited",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,1,1",
+        "editorPath": "",
+        "text": "products",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,2,0",
+        "editorPath": "",
+        "text": "Products variants",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,3,0",
+        "editorPath": "",
+        "text": "Payment systems",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,4,0",
+        "editorPath": "",
+        "text": "Receiving order from client",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,5,0",
+        "editorPath": "",
+        "text": "Importing / exporting products",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,6,0",
+        "editorPath": "",
+        "text": "Recurring Payment",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,7,0",
+        "editorPath": "",
+        "text": "Promotion",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,8,0",
+        "editorPath": "",
+        "text": "Online store management",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,9,0",
+        "editorPath": "",
+        "text": "Product catalog",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,10,0",
+        "editorPath": "",
+        "text": "Customer database",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,3,0,11,0,0",
+        "editorPath": "",
+        "text": "Manage sales in embedded CRM",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381073",
+        "path": "1,0,3,0,4,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Contact Us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381075",
+        "path": "1,0,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Price details",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381080",
+        "path": "1,0,0,1,0,0",
+        "editorPath": "",
+        "text": "My team and I are passionate in web technologies and our passion reflects in what we are doing. Being a small team of 14 persons, we constantly team-work in a family spirit. We want to share our mindset with our clients         keeping a human-approach in our relation.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381080",
+        "path": "1,0,0,1,1,0",
+        "editorPath": "",
+        "text": "We are always thrilled to meet new people with new projects and help them to create a positive image of their concept on the web. To achieve our goals, we have a wide variety of expertise allowing us to release top-notch         products.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381080",
+        "path": "1,0,0,1,2,0",
+        "editorPath": "",
+        "text": "We absolutely want to give the chance to every person to look great, modern and stylish on the web at low-cost in just few weeks.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381080",
+        "path": "1,0,0,1,3,0,0",
+        "editorPath": "",
+        "text": "Upra-Data Digital",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381080",
+        "path": "1,0,0,1,3,1",
+        "editorPath": "",
+        "text": "Project Manager",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Our contacts",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "Feel free to write and call us. We really love to communicate with our clients.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,0,0,0,0,0",
+        "editorPath": "",
+        "text": "+33 6 66 46 05 75",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,0,0,0,0,2",
+        "editorPath": "",
+        "text": "contact@upradata.com",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,0,0,0,1,0",
+        "editorPath": "",
+        "text": "75, rue de Lourmel, Paris 75015",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,1,0,4,0",
+        "editorPath": "",
+        "text": "Thank you! Your message has been submitted.",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,1,0,5,5,0,0",
+        "editorPath": "",
+        "text": "Send",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,1,1,0",
+        "editorPath": "",
+        "text": "By clicking the button you agree to our",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,1,1,1,0",
+        "editorPath": "",
+        "text": "Privacy Policy",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167381081",
+        "path": "1,1,1,1,2",
+        "editorPath": "",
+        "text": ".",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,0,0,0,0,0",
+        "editorPath": "",
+        "text": "Home",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,0,0,1,0,0",
+        "editorPath": "",
+        "text": "Contact",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,0,0,2,0,0",
+        "editorPath": "",
+        "text": "Pricing",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,0,0,3,0,0",
+        "editorPath": "",
+        "text": "About us",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,0,0,4,0,0",
+        "editorPath": "",
+        "text": "Legal terms",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,0,0,5,0,0",
+        "editorPath": "",
+        "text": "Website policy",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,2,0,0,0",
+        "editorPath": "",
+        "text": "© All Rights Reserved Upra-Data LLC",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383822",
+        "path": "1,0,2,0,0,2",
+        "editorPath": "",
+        "text": "contact@upradata.com",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,0,0,0",
+        "editorPath": "",
+        "text": "Feel free to reach out",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,1,0,1,0",
+        "editorPath": "",
+        "text": "Telegram",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,1,1,1,0",
+        "editorPath": "",
+        "text": "WhatsApp",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,1,2,1,0",
+        "editorPath": "",
+        "text": "Viber",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,1,3,1,0",
+        "editorPath": "",
+        "text": "Messenger",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,1,4,1,0",
+        "editorPath": "",
+        "text": "Mail",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    },
+    {
+        "rootId": "rec167383824",
+        "path": "1,1,0,1,1,5,1,0",
+        "editorPath": "",
+        "text": "Phone",
+        "text-extra": "",
+        "updated": "false",
+        "static": "false",
+        "type": "normal"
+    }
+]

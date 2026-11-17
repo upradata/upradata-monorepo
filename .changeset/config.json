@@ -1,0 +1,16 @@
+{
+  "$schema": "https://docs.bump.sh/schema/config-schema.json",
+  "baseBranch": "main",
+  "changelog": {
+    "repo": true
+  },
+  "commit": true,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "privatePackages": {
+    "mode": "exit-zero"
+  },
+  "updateInternalDependencies": "minor",
+  "ignore": []
+}

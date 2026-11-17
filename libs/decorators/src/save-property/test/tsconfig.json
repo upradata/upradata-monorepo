@@ -1,0 +1,9 @@
+{
+    "extends": "@upradata/tsconfig/neutral.json",
+    "include": [ "./**/*.ts" ],
+    "exclude": [],
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    }
+}

@@ -1,0 +1,79 @@
+type PropertyType = string | symbol;
+
+interface SaveProp {
+    name: PropertyType;
+    optional: boolean;
+}
+
+class SaveProps {
+    private savedProps: Array<SaveProp> = [];
+
+    constructor() { }
+
+    public push(property: SaveProp) {
+        // for sure property is unique. Compiler doesn't allow to define twice the same property in a class
+        this.savedProps.push(property);
+    }
+
+    public getAll() {
+        return this.savedProps;
+    }
+}
+
+
+class SavePropsCollection {
+    private static _instance: SavePropsCollection;
+    private collection: { [className: string]: SaveProps } = {};
+
+    private constructor() {
+        // throw new Error('SavePropsCollection is a singleton. Use methode SavePropsCollection.instance');
+    }
+
+    public static instance() {
+        if (SavePropsCollection._instance === undefined)
+            SavePropsCollection._instance = new SavePropsCollection();
+
+        return SavePropsCollection._instance;
+    }
+
+    public push(className: string, property: SaveProp) {
+        if (this.collection[className] === undefined)
+            this.collection[className] = new SaveProps();
+
+        this.collection[className].push(property);
+    }
+
+    public get(className: string) {
+        if (this.collection[className] === undefined)
+            return [];
+
+        return this.collection[className].getAll();
+    }
+
+
+}
+
+
+interface Optional {
+    optional: boolean;
+}
+
+
+export interface Class {
+    new(...args: Array<any>): {};
+    name: string;
+}
+
+export class SavePropsDecorator {
+    static saveProp({ optional }: Optional = { optional: false }) {
+
+        return function decorator(target: any, propertyKey?: PropertyType): void {
+            SavePropsCollection.instance().push(target.constructor.name, { name: propertyKey, optional });
+        };
+    }
+
+    static getProps(classObject: Class | string) {
+        return SavePropsCollection.instance().get(typeof classObject === 'string' ? classObject : classObject.name);
+    }
+
+}

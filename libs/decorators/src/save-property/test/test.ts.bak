@@ -1,0 +1,34 @@
+import { SavePropsDecorator } from '../save-properties.decorator.OLD-VERSION.';
+import fixedWidthString from 'fixed-width-string';
+
+class Data {
+    @SavePropsDecorator.saveProp() data1: string;
+    @SavePropsDecorator.saveProp({ optional: true }) data2?: string;
+    @SavePropsDecorator.saveProp() data3: string;
+}
+
+
+class Test {
+    @SavePropsDecorator.saveProp() name: string;
+    @SavePropsDecorator.saveProp() unified: string;
+    @SavePropsDecorator.saveProp() image: string;
+    @SavePropsDecorator.saveProp() sheet_x: number;
+    @SavePropsDecorator.saveProp() sheet_y: number;
+    @SavePropsDecorator.saveProp() short_names: Array<string>;
+    @SavePropsDecorator.saveProp({ optional: true }) texts?: Array<string>; // I will merge text and texts
+    @SavePropsDecorator.saveProp() category: string;
+
+    @SavePropsDecorator.saveProp() skin_variations: Array<Data>;
+}
+
+const logProp = prop => {
+    console.log(fixedWidthString(`name --> ${prop.name}`, 50), `(optional:${prop.optional})`);
+};
+
+
+console.log('Data');
+SavePropsDecorator.getProps(Data).forEach(logProp);
+
+
+console.log('\n\nTest');
+SavePropsDecorator.getProps(Test).forEach(logProp);

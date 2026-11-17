@@ -1,0 +1,59 @@
+{
+    "name": "@upradata/proxy",
+    "version": "0.0.1",
+    "description": "Library",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        },
+        "./node": {
+            "types": "./dist/node/index.d.ts",
+            "import": "./dist/node/index.mjs",
+            "require": "./dist/node/index.cjs"
+        },
+        "./proxy": {
+            "types": "./dist/proxy.d.ts",
+            "import": "./dist/proxy.mjs",
+            "require": "./dist/proxy.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "dependencies": {
+        "@upradata/util": "workspace:*",
+        "rxjs": "^7.8.2"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}

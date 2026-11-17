@@ -1,0 +1,114 @@
+/* eslint-disable object-shorthand */
+import { Proxy, ProxyObserver } from './proxy';
+
+interface Normal {
+    a: number;
+    b: {
+        b1: number;
+        b2?: string;
+    };
+    c?: {
+        c1: number;
+    };
+}
+
+
+/* const proxy = ProxyObserver.create({ a: 1, b: 2 });
+
+proxy.changed$.subscribe(({ prop, value }) => {
+    console.log({ prop, value });
+});
+ */
+
+type Cycle = { a: number; b: { c: number; d: Cycle; }; };
+
+const cycleTarget: Cycle = { a: 1, b: { c: 2, d: undefined } };
+cycleTarget.b.d = cycleTarget;
+
+try {
+    const proxy = Proxy.create(cycleTarget);
+} catch (e) {
+    console.log(e);
+}
+
+/* expect(proxy.$$).toEqual(cycleTarget);
+expect(proxy.b.d).toBe(proxy);
+
+proxy.b.d.a = 7;
+expect(proxy.b.d.a.$).toBe(7);
+expect(proxy.b.d.a.$).toBe(proxy.a.$$);
+ */
+
+1 === 1;
+
+
+/* const proxy = Proxy.create({ a: 1, b: { b1: 2 } }, { trap: { set: { mutableType: true, emitError: false } } });
+
+proxy.b = 'a' as any; */
+// proxy.a = { a1: 2 } as any;
+
+
+/* const proxy = Proxy.create<{ a: number; b?: number; }>(
+    { a: 1 }, { trap: { set: { extendable: false, emitError: true } } }
+);
+
+proxy.b = 2; */
+
+/* const proxy = Proxy.create<Normal & { d?: { p: number; }; }>(
+    { a: 1, b: { b1: 2, b2: 'b2' }, c: { c1: 1 } }, { trap: { set: { extendable: true, emitError: true } } }
+); */
+
+// proxy.$({ d: 'caca' });
+// proxy.d = 'caca';
+/* const { b } = proxy;
+
+proxy.c.c1 = 11;
+b.$({ b1: 20 });
+proxy.d = { p: 1 }; */
+
+
+/* const proxy = Proxy.create<Normal>();
+
+proxy.$({ d: 'd' }, { forcedType: 'literal' });
+proxy.$({ b: { b1: 'b1', b2: 'b2' } }, { forcedType: 'literal' });
+
+1 === 1; */
+
+/* const proxy = Proxy.create<Normal>();
+
+proxy.$({
+    a: undefined,
+    b: undefined
+});
+
+proxy.a = 1;
+proxy.b = { b1: 2 };
+console.log(proxy.$$);
+proxy.b.$({ b2: 'haha' });
+ */
+
+/* const proxy = Proxy.create<Normal & { d?: { p: number; }; }>(
+    { a: 1, b: { b1: 2, b2: 'b2' }, c: { c1: 1 } },
+    {
+        propChanged: function (prop, value) {
+            console.log(this, prop, value);
+        }
+    }
+);
+
+Proxy.create<Normal>(undefined, {
+    propChanged: function (prop, value) {
+        console.log(this, prop, value);
+    }
+});
+ */
+// proxy.b.b1 = 22;
+
+/* const extra = {
+    extra1: 11,
+    extra2: { e1: 2, e3: { e4: 4 } }
+};
+
+const proxy = Proxy.create({ a: { b: 1 } }, { extra });
+ */
+proxy === proxy;

@@ -1,0 +1,41 @@
+{
+    "name": "upra-data-monorepo",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Upra-Data libraries and applications monorepo",
+    "scripts": {
+        "build": "turbo run build",
+        "changeset": "changeset",
+        "clean": "turbo run clean && rm -rf node_modules",
+        "dev": "turbo run dev --parallel",
+        "docs": "turbo run docs && tsx scripts/generate-docs-index.ts",
+        "docs:serve": "python3 -m http.server 8000 --directory docs",
+        "format": "turbo run format",
+        "format:check": "turbo run format:check",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "prepare": "vp config",
+        "publish": "turbo run build && changeset publish",
+        "test": "turbo run test",
+        "test:coverage": "turbo run test:coverage",
+        "typecheck": "turbo run typecheck",
+        "version": "changeset version"
+    },
+    "devDependencies": {
+        "@changesets/cli": "catalog:",
+        "@commitlint/cli": "catalog:",
+        "@commitlint/config-conventional": "catalog:",
+        "@typescript/typescript6": "catalog:",
+        "@vitest/coverage-v8": "catalog:",
+        "tsx": "catalog:",
+        "turbo": "catalog:",
+        "typescript": "catalog:",
+        "vite-plus": "catalog:",
+        "vitest": "catalog:"
+    },
+    "engines": {
+        "node": ">=22.18.0",
+        "pnpm": ">=12.0.0 <13.0.0"
+    },
+    "packageManager": "pnpm@12.15.0"
+}

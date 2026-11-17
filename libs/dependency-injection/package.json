@@ -1,0 +1,75 @@
+{
+    "name": "@upradata/dependency-injection",
+    "version": "0.0.1",
+    "description": "Library",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        },
+        "./decorators": {
+            "types": "./dist/decorators/index.d.ts",
+            "import": "./dist/decorators/index.mjs",
+            "require": "./dist/decorators/index.cjs"
+        },
+        "./di-injector": {
+            "types": "./dist/di-injector.d.ts",
+            "import": "./dist/di-injector.mjs",
+            "require": "./dist/di-injector.cjs"
+        },
+        "./injector": {
+            "types": "./dist/injector.d.ts",
+            "import": "./dist/injector.mjs",
+            "require": "./dist/injector.cjs"
+        },
+        "./injector.app": {
+            "types": "./dist/injector.app.d.ts",
+            "import": "./dist/injector.app.mjs",
+            "require": "./dist/injector.app.cjs"
+        },
+        "./provider": {
+            "types": "./dist/provider.d.ts",
+            "import": "./dist/provider.mjs",
+            "require": "./dist/provider.cjs"
+        },
+        "./token": {
+            "types": "./dist/token.d.ts",
+            "import": "./dist/token.mjs",
+            "require": "./dist/token.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "name": "@upradata/decorators",
+    "version": "0.0.1",
+    "description": "Library",
+    "keywords": [
+        "upradata"
+    ],
+    "license": "MIT",
+    "author": "Upra-Data Contributors",
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        },
+        "./angular": {
+            "types": "./dist/angular/index.d.ts",
+            "import": "./dist/angular/index.mjs",
+            "require": "./dist/angular/index.cjs"
+        },
+        "./inherit-builtin": {
+            "types": "./dist/inherit-builtin/index.d.ts",
+            "import": "./dist/inherit-builtin/index.mjs",
+            "require": "./dist/inherit-builtin/index.cjs"
+        },
+        "./require": {
+            "types": "./dist/require/index.d.ts",
+            "import": "./dist/require/index.mjs",
+            "require": "./dist/require/index.cjs"
+        },
+        "./save-property": {
+            "types": "./dist/save-property/index.d.ts",
+            "import": "./dist/save-property/index.mjs",
+            "require": "./dist/save-property/index.cjs"
+        },
+        "./mixin": {
+            "types": "./dist/mixin/index.d.ts",
+            "import": "./dist/mixin/index.mjs",
+            "require": "./dist/mixin/index.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "dependencies": {
+        "@angular/core": "^12.2.3",
+        "@upradata/util": "workspace:*",
+        "fixed-width-string": "^2.0.0",
+        "reflect-metadata": "^0.2.1"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}

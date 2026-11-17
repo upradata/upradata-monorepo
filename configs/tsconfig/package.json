@@ -1,0 +1,9 @@
+{
+    "name": "@upradata/tsconfig",
+    "version": "0.0.1",
+    "description": "Shared TypeScript configurations for Upra-Data",
+    "private": false,
+    "files": [
+        "*.json"
+    ]
+}

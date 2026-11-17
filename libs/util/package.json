@@ -1,0 +1,160 @@
+{
+    "name": "@upradata/util",
+    "version": "16.0.3",
+    "description": "Set of typescript util tools working in Web runtime",
+    "keywords": [
+        "upradata",
+        "util",
+        "utility"
+    ],
+    "license": "MIT",
+    "author": {
+        "name": "Thomas Milotti",
+        "email": "thomas.milotti@gmail.com",
+        "url": "https://github.com/milottit"
+    },
+    "repository": {
+        "url": "https://github.com/upradata/util"
+    },
+    "files": [
+        "dist",
+        "docs"
+    ],
+    "sideEffects": false,
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        },
+        "./assign": {
+            "types": "./dist/assign.d.ts",
+            "import": "./dist/assign.mjs",
+            "require": "./dist/assign.cjs"
+        },
+        "./boolean-attribute": {
+            "types": "./dist/boolean-attribute.d.ts",
+            "import": "./dist/boolean-attribute.mjs",
+            "require": "./dist/boolean-attribute.cjs"
+        },
+        "./codified-error": {
+            "types": "./dist/codified-error.d.ts",
+            "import": "./dist/codified-error.mjs",
+            "require": "./dist/codified-error.cjs"
+        },
+        "./execute-temporary-state": {
+            "types": "./dist/execute-temporary-state.d.ts",
+            "import": "./dist/execute-temporary-state.mjs",
+            "require": "./dist/execute-temporary-state.cjs"
+        },
+        "./format-string": {
+            "types": "./dist/format-string.d.ts",
+            "import": "./dist/format-string.mjs",
+            "require": "./dist/format-string.cjs"
+        },
+        "./function": {
+            "types": "./dist/function.d.ts",
+            "import": "./dist/function.mjs",
+            "require": "./dist/function.cjs"
+        },
+        "./guid": {
+            "types": "./dist/guid.d.ts",
+            "import": "./dist/guid.mjs",
+            "require": "./dist/guid.cjs"
+        },
+        "./ifthen": {
+            "types": "./dist/ifthen.d.ts",
+            "import": "./dist/ifthen.mjs",
+            "require": "./dist/ifthen.cjs"
+        },
+        "./is": {
+            "types": "./dist/is.d.ts",
+            "import": "./dist/is.mjs",
+            "require": "./dist/is.cjs"
+        },
+        "./mixin": {
+            "types": "./dist/mixin.d.ts",
+            "import": "./dist/mixin.mjs",
+            "require": "./dist/mixin.cjs"
+        },
+        "./object": {
+            "types": "./dist/object/index.d.ts",
+            "import": "./dist/object/index.mjs",
+            "require": "./dist/object/index.cjs"
+        },
+        "./promise": {
+            "types": "./dist/promise.d.ts",
+            "import": "./dist/promise.mjs",
+            "require": "./dist/promise.cjs"
+        },
+        "./promise-pool": {
+            "types": "./dist/promise-pool.d.ts",
+            "import": "./dist/promise-pool.mjs",
+            "require": "./dist/promise-pool.cjs"
+        },
+        "./random": {
+            "types": "./dist/random.d.ts",
+            "import": "./dist/random.mjs",
+            "require": "./dist/random.cjs"
+        },
+        "./regex": {
+            "types": "./dist/regex.d.ts",
+            "import": "./dist/regex.mjs",
+            "require": "./dist/regex.cjs"
+        },
+        "./string": {
+            "types": "./dist/string/index.d.ts",
+            "import": "./dist/string/index.mjs",
+            "require": "./dist/string/index.cjs"
+        },
+        "./template-string": {
+            "types": "./dist/template-string/index.d.ts",
+            "import": "./dist/template-string/index.mjs",
+            "require": "./dist/template-string/index.cjs"
+        },
+        "./template-string/export": {
+            "types": "./dist/template-string/export.d.ts",
+            "import": "./dist/template-string/export.mjs",
+            "require": "./dist/template-string/export.cjs"
+        },
+        "./types": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/types/index.mjs",
+            "require": "./dist/types/index.cjs"
+        },
+        "./useful": {
+            "types": "./dist/useful.d.ts",
+            "import": "./dist/useful.mjs",
+            "require": "./dist/useful.cjs"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "UPRADATA_PACK_MODE=production vp pack",
+        "dev": "vp pack --watch",
+        "docs": "typedoc src/index.ts --skipErrorChecking || true",
+        "format": "turbo run format",
+        "format:check": "vp fmt --write",
+        "lint": "vp check",
+        "lint:fix": "vp check --fix",
+        "test": "vp test run",
+        "test:coverage": "vp test run --coverage",
+        "typecheck": "vp check --no-fmt --no-lint"
+    },
+    "dependencies": {
+        "common-tags": "^1.8.2",
+        "emoji-regex": "^11.0.0",
+        "is-fullwidth-code-point": "^5.1.0"
+    },
+    "devDependencies": {
+        "@types/common-tags": "^1.8.4",
+        "@types/node": "^26.6.5",
+        "@upradata/tsconfig": "workspace:*",
+        "@upradata/vite-plus": "workspace:*"
+    }
+}
