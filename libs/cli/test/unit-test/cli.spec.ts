@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test';
+
 import { parsers } from '../../src';
 import { capture, fakePrompter } from '../helpers';
 
@@ -17,11 +18,11 @@ const base = {
             options: [
                 { flags: '-p, --port <n>', description: 'port', parser: parsers.int, defaultValue: 80 },
                 { flags: '--no-cache', description: 'disable cache' },
-                { flags: '-m, --mode <m>', description: 'mode', choices: ['dev', 'prod'] }
-            ]
+                { flags: '-m, --mode <m>', description: 'mode', choices: ['dev', 'prod'] },
+            ],
         },
-        { name: 'deploy', description: 'deploy', arguments: ['<env>'] }
-    ]
+        { name: 'deploy', description: 'deploy', arguments: ['<env>'] },
+    ],
 };
 
 describe('parse', () => {
@@ -101,10 +102,10 @@ describe('run', () => {
                     actions: [
                         () => {
                             throw new Error('boom');
-                        }
-                    ]
-                }
-            ]
+                        },
+                    ],
+                },
+            ],
         });
         expect(await c.cli.run(['ok', 'z'])).toBe(0);
         expect(seen).toEqual([['z']]);
@@ -135,12 +136,15 @@ describe('interactive', () => {
                     isDefault: true,
                     arguments: ['[target]'],
                     options: [{ flags: '-p, --port <n>', description: 'port', parser: parsers.int, defaultValue: 80 }],
-                    actions: [ctx => void seen.push([ctx.args, ctx.opts.port])]
-                }
-            ]
+                    actions: [ctx => void seen.push([ctx.args, ctx.opts.port])],
+                },
+            ],
         });
         const build = c.cli.root.subcommands[0];
-        Object.assign(prompter, fakePrompter({ select: [build], text: ['web', '9000'], multiselect: [[build?.options[0]]] }));
+        Object.assign(
+            prompter,
+            fakePrompter({ select: [build], text: ['web', '9000'], multiselect: [[build?.options[0]]] }),
+        );
         expect(await c.cli.run(['i'])).toBe(0);
         expect(seen).toEqual([[['web'], 9000]]);
     });
@@ -155,16 +159,20 @@ describe('interactive', () => {
             subcommands: [
                 {
                     name: 'build',
-                    options: [{ flags: '--no-cache' }, { flags: '-v, --verbose', parser: parsers.increaseNumber(), defaultValue: 0 }, { flags: '--port <n>', defaultValue: 1 }],
-                    actions: [ctx => void seen.push(ctx.opts)]
-                }
-            ]
+                    options: [
+                        { flags: '--no-cache' },
+                        { flags: '-v, --verbose', parser: parsers.increaseNumber(), defaultValue: 0 },
+                        { flags: '--port <n>', defaultValue: 1 },
+                    ],
+                    actions: [ctx => void seen.push(ctx.opts)],
+                },
+            ],
         });
         const build = c.cli.root.subcommands[0];
         Object.assign(prompter, {
             select: async () => build,
             multiselect: async (o: { initial: unknown[] }) => (picked.push(o.initial.length), []),
-            text: async () => ''
+            text: async () => '',
         });
         expect(await c.cli.run(['interactive'])).toBe(0);
         expect(picked).toEqual([1]);

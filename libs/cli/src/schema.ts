@@ -30,7 +30,10 @@ export type OptionInit = {
     dotted?: boolean;
 };
 
-export type AliasInit = Omit<OptionInit, 'aliases'> & { mode?: AliasMode; transform?: AliasTransform | AliasTransforms };
+export type AliasInit = Omit<OptionInit, 'aliases'> & {
+    mode?: AliasMode;
+    transform?: AliasTransform | AliasTransforms;
+};
 
 export type AliasLink = { attr: string; transform: AliasTransform };
 
@@ -122,8 +125,12 @@ const buildOption = (init: Omit<OptionInit, 'aliases'>): OptionDef => {
     const attr = camelcase(negate ? name.slice(3) : name, /[-.]/);
     const dotted = init.dotted ?? false;
 
-    const choices = Array.isArray(init.choices) ? (init.choices as readonly string[]) : (init.choices as { values: readonly string[] } | undefined)?.values;
-    const choiceParser = Array.isArray(init.choices) ? undefined : (init.choices as { parser?: Parser } | undefined)?.parser;
+    const choices = Array.isArray(init.choices)
+        ? (init.choices as readonly string[])
+        : (init.choices as { values: readonly string[] } | undefined)?.values;
+    const choiceParser = Array.isArray(init.choices)
+        ? undefined
+        : (init.choices as { parser?: Parser } | undefined)?.parser;
 
     return {
         flags: init.flags,
@@ -144,7 +151,7 @@ const buildOption = (init: Omit<OptionInit, 'aliases'>): OptionDef => {
         required: init.required ?? false,
         dotted,
         objectPath: !dotted && name.includes('.') ? name.split('.').map(part => camelcase(part)) : undefined,
-        valueName: value?.name
+        valueName: value?.name,
     };
 };
 
@@ -160,7 +167,7 @@ const aliasOption = (main: OptionDef, alias: AliasInit): OptionDef => {
         choices: inheritsValue ? main.choices : undefined,
         parser: inheritsValue ? main.parser : undefined,
         ...own,
-        defaultValue: mode === 'source' ? undefined : 'defaultValue' in own ? own.defaultValue : main.defaultValue
+        defaultValue: mode === 'source' ? undefined : 'defaultValue' in own ? own.defaultValue : main.defaultValue,
     });
 };
 
@@ -169,9 +176,25 @@ const transformFor = (transform: AliasInit['transform'], target: OptionDef): Ali
         ? transform
         : (transform?.[(target.long ?? target.short ?? '').replace(/^-+/, '')] ?? transform?.[target.attr] ?? identity);
 
-const addLink = (options: readonly OptionDef[], from: number, to: number, transform: AliasInit['transform']): readonly OptionDef[] =>
+const addLink = (
+    options: readonly OptionDef[],
+    from: number,
+    to: number,
+    transform: AliasInit['transform'],
+): readonly OptionDef[] =>
     options.map((opt, i) =>
-        i === from ? { ...opt, links: [...opt.links, { attr: (options[to] as OptionDef).attr, transform: transformFor(transform, options[to] as OptionDef) }] } : opt
+        i === from
+            ? {
+                  ...opt,
+                  links: [
+                      ...opt.links,
+                      {
+                          attr: (options[to] as OptionDef).attr,
+                          transform: transformFor(transform, options[to] as OptionDef),
+                      },
+                  ],
+              }
+            : opt,
     );
 
 const addAlias = (options: readonly OptionDef[], alias: AliasInit): readonly OptionDef[] => {
@@ -204,7 +227,7 @@ export const defineArgument = (init: ArgumentInit | string): ArgumentDef => {
             variadic: init.variadic ?? false,
             defaultValue: init.defaultValue,
             choices: init.choices,
-            parser: init.parser
+            parser: init.parser,
         };
     }
 
@@ -221,7 +244,7 @@ export const defineArgument = (init: ArgumentInit | string): ArgumentDef => {
         variadic: match[3] !== undefined,
         defaultValue: undefined,
         choices: undefined,
-        parser: undefined
+        parser: undefined,
     };
 };
 
@@ -234,7 +257,12 @@ export const defineCommand = (init: CommandInit): CommandDef => ({
     subcommands: (init.subcommands ?? []).map(defineCommand),
     isDefault: init.isDefault ?? false,
     hidden: init.hidden ?? false,
-    actions: init.actions === undefined ? [] : Array.isArray(init.actions) ? (init.actions as readonly Action[]) : [init.actions as Action]
+    actions:
+        init.actions === undefined
+            ? []
+            : Array.isArray(init.actions)
+              ? (init.actions as readonly Action[])
+              : [init.actions as Action],
 });
 
 export const commandNames = (command: CommandDef): readonly string[] => [command.name, ...command.aliases];

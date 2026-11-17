@@ -8,7 +8,11 @@ export const camelcase = (str: string, separator: RegExp = /[-.]/): string =>
         .map((part, i) => (i === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)))
         .join('');
 
-export const setIn = (obj: Record<string, unknown>, path: readonly string[], value: unknown): Record<string, unknown> => {
+export const setIn = (
+    obj: Record<string, unknown>,
+    path: readonly string[],
+    value: unknown,
+): Record<string, unknown> => {
     const [head, ...rest] = path;
 
     if (head === undefined) {
@@ -37,15 +41,11 @@ export const levenshtein = (a: string, b: string): number => {
             [...b].reduce<number[]>(
                 (row, cb, j) => [
                     ...row,
-                    Math.min(
-                        (prev[j + 1] ?? 0) + 1,
-                        (row[j] ?? 0) + 1,
-                        (prev[j] ?? 0) + (ca === cb ? 0 : 1)
-                    )
+                    Math.min((prev[j + 1] ?? 0) + 1, (row[j] ?? 0) + 1, (prev[j] ?? 0) + (ca === cb ? 0 : 1)),
                 ],
-                [i + 1]
+                [i + 1],
             ),
-        initial
+        initial,
     );
 
     return last[b.length] ?? 0;
@@ -54,7 +54,9 @@ export const levenshtein = (a: string, b: string): number => {
 export const similar = (word: string, candidates: readonly string[], maxDistance = 2): string[] =>
     candidates
         .map(candidate => ({ candidate, distance: levenshtein(word, candidate) }))
-        .filter(({ candidate, distance }) => distance <= maxDistance && distance < Math.max(word.length, candidate.length))
+        .filter(
+            ({ candidate, distance }) => distance <= maxDistance && distance < Math.max(word.length, candidate.length),
+        )
         .sort((a, b) => a.distance - b.distance)
         .map(({ candidate }) => candidate);
 

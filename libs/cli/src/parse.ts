@@ -1,7 +1,6 @@
 import { CliError, suggestionText } from './errors';
 import { boolean } from './parsers';
-import type { ArgumentDef, CommandDef, OptionDef, Values } from './schema';
-import { commandNames } from './schema';
+import { commandNames, type ArgumentDef, type CommandDef, type OptionDef, type Values } from './schema';
 import { parseScalar, setIn } from './util';
 
 export type ParseSettings = {
@@ -13,7 +12,14 @@ export type ParseSettings = {
 };
 
 export type ParseResult =
-    | { kind: 'run'; command: CommandDef; path: readonly CommandDef[]; opts: Values; args: readonly unknown[]; unknown: readonly string[] }
+    | {
+          kind: 'run';
+          command: CommandDef;
+          path: readonly CommandDef[];
+          opts: Values;
+          args: readonly unknown[];
+          unknown: readonly string[];
+      }
     | { kind: 'help'; path: readonly CommandDef[] }
     | { kind: 'version' }
     | { kind: 'error'; error: CliError };
@@ -26,12 +32,22 @@ type Ctx = {
     settings: ParseSettings;
 };
 
-type Scanned = { kind: 'done'; ctx: Ctx; acc: Acc } | { kind: 'help'; path: readonly CommandDef[] } | { kind: 'version' };
+type Scanned =
+    | { kind: 'done'; ctx: Ctx; acc: Acc }
+    | { kind: 'help'; path: readonly CommandDef[] }
+    | { kind: 'version' };
 
 const invalid = (message: string): CliError => new CliError(message, { code: 'cli.invalid' });
 
-const withSuggestion = (message: string, word: string, candidates: readonly string[], settings: ParseSettings): string =>
-    [message, settings.showSuggestionAfterError === false ? '' : suggestionText(word, candidates)].filter(Boolean).join(' ');
+const withSuggestion = (
+    message: string,
+    word: string,
+    candidates: readonly string[],
+    settings: ParseSettings,
+): string =>
+    [message, settings.showSuggestionAfterError === false ? '' : suggestionText(word, candidates)]
+        .filter(Boolean)
+        .join(' ');
 
 const isNegativeNumber = (token: string): boolean => /^-\d+(\.\d+)?$/.test(token);
 
@@ -42,12 +58,14 @@ const currentCommand = (ctx: Ctx): CommandDef => ctx.path[ctx.path.length - 1] a
 const makeCtx = (parent: Ctx | undefined, command: CommandDef, settings: ParseSettings): Ctx => ({
     path: [...(parent?.path ?? []), command],
     options: [...command.options, ...(parent?.options ?? [])],
-    settings
+    settings,
 });
 
 export const applyValue = (opt: OptionDef, raw: string, previous: unknown): unknown => {
     if (opt.choices !== undefined && !opt.choices.includes(raw)) {
-        throw invalid(`option '${opt.flags}' argument '${raw}' is invalid. Allowed choices are ${opt.choices.join(', ')}.`);
+        throw invalid(
+            `option '${opt.flags}' argument '${raw}' is invalid. Allowed choices are ${opt.choices.join(', ')}.`,
+        );
     }
 
     if (opt.parser === undefined) {
@@ -57,11 +75,16 @@ export const applyValue = (opt: OptionDef, raw: string, previous: unknown): unkn
     try {
         return opt.parser(raw, previous);
     } catch (e) {
-        throw invalid(`option '${opt.flags}' argument '${raw}' is invalid. ${e instanceof Error ? e.message : String(e)}`.trimEnd());
+        throw invalid(
+            `option '${opt.flags}' argument '${raw}' is invalid. ${e instanceof Error ? e.message : String(e)}`.trimEnd(),
+        );
     }
 };
 
-const withOpt = (acc: Acc, opt: OptionDef, value: unknown): Acc => ({ ...acc, opts: { ...acc.opts, [opt.attr]: value } });
+const withOpt = (acc: Acc, opt: OptionDef, value: unknown): Acc => ({
+    ...acc,
+    opts: { ...acc.opts, [opt.attr]: value },
+});
 
 const splitVariadic = (tokens: readonly string[]): [readonly string[], readonly string[]] => {
     const index = tokens.findIndex(isFlagLike);
@@ -85,12 +108,21 @@ const propagate = (ctx: Ctx, opt: OptionDef, raws: readonly string[], acc: Acc):
             ? target.takes === 'none'
                 ? setNone(target, current)
                 : withOpt(current, target, true)
-            : raws.reduce((a, raw) => withOpt(a, target, applyValue(target, link.transform(raw), a.opts[target.attr])), current);
+            : raws.reduce(
+                  (a, raw) => withOpt(a, target, applyValue(target, link.transform(raw), a.opts[target.attr])),
+                  current,
+              );
     }, acc);
 
 const applyNone = (ctx: Ctx, opt: OptionDef, acc: Acc): Acc => propagate(ctx, opt, [], setNone(opt, acc));
 
-const consume = (ctx: Ctx, opt: OptionDef, inline: string | undefined, rest: readonly string[], acc: Acc): { acc: Acc; rest: readonly string[] } => {
+const consume = (
+    ctx: Ctx,
+    opt: OptionDef,
+    inline: string | undefined,
+    rest: readonly string[],
+    acc: Acc,
+): { acc: Acc; rest: readonly string[] } => {
     if (opt.takes === 'none') {
         if (inline !== undefined) {
             throw invalid(`option '${opt.flags}' does not take a value`);
@@ -118,7 +150,11 @@ const consume = (ctx: Ctx, opt: OptionDef, inline: string | undefined, rest: rea
         return { acc: propagate(ctx, opt, [], withOpt(acc, opt, true)), rest: remaining };
     }
 
-    const own = withOpt(acc, opt, raws.reduce<unknown>((previous, raw) => applyValue(opt, raw, previous), acc.opts[opt.attr]));
+    const own = withOpt(
+        acc,
+        opt,
+        raws.reduce<unknown>((previous, raw) => applyValue(opt, raw, previous), acc.opts[opt.attr]),
+    );
     return { acc: propagate(ctx, opt, raws, own), rest: remaining };
 };
 
@@ -131,7 +167,7 @@ const findDotted = (ctx: Ctx, name: string): OptionDef | undefined =>
 
 const longCandidates = (ctx: Ctx): readonly string[] => [
     ...ctx.options.filter(o => !o.hidden && o.long !== undefined).map(o => o.long as string),
-    '--help'
+    '--help',
 ];
 
 const unknownOption = (ctx: Ctx, token: string, name: string, rest: readonly string[], acc: Acc): Scanned => {
@@ -150,7 +186,14 @@ const unknownOption = (ctx: Ctx, token: string, name: string, rest: readonly str
     throw invalid(withSuggestion(`unknown option '${name}'`, name, longCandidates(ctx), ctx.settings));
 };
 
-const scanDotted = (ctx: Ctx, opt: OptionDef, name: string, inline: string | undefined, rest: readonly string[], acc: Acc): Scanned => {
+const scanDotted = (
+    ctx: Ctx,
+    opt: OptionDef,
+    name: string,
+    inline: string | undefined,
+    rest: readonly string[],
+    acc: Acc,
+): Scanned => {
     const keys = name.slice((opt.long as string).length + 1).split('.');
     const raw = inline ?? rest[0];
 
@@ -183,7 +226,9 @@ const scanLong = (ctx: Ctx, token: string, rest: readonly string[], acc: Acc): S
     }
 
     const dotted = findDotted(ctx, name);
-    return dotted !== undefined ? scanDotted(ctx, dotted, name, inline, rest, acc) : unknownOption(ctx, token, name, rest, acc);
+    return dotted !== undefined
+        ? scanDotted(ctx, dotted, name, inline, rest, acc)
+        : unknownOption(ctx, token, name, rest, acc);
 };
 
 const scanShort = (ctx: Ctx, chars: string, rest: readonly string[], acc: Acc): Scanned => {
@@ -248,7 +293,9 @@ const finish = (ctx: Ctx, acc: Acc): Scanned => {
 
     if (isRouter && acc.positionals.length === 0) {
         const fallback = command.subcommands.find(s => s.isDefault);
-        return fallback === undefined ? { kind: 'help', path: ctx.path } : scan(makeCtx(ctx, fallback, ctx.settings), [], acc);
+        return fallback === undefined
+            ? { kind: 'help', path: ctx.path }
+            : scan(makeCtx(ctx, fallback, ctx.settings), [], acc);
     }
 
     return { kind: 'done', ctx, acc };
@@ -287,7 +334,11 @@ const fromEnv = (opt: OptionDef, raw: string): unknown =>
 const hasPositiveSibling = (options: readonly OptionDef[], opt: OptionDef): boolean =>
     opt.negate && opt.defaultValue === true && options.some(o => !o.negate && o.attr === opt.attr);
 
-export const resolveOptions = (options: readonly OptionDef[], cli: Values, env: Readonly<Record<string, string | undefined>>): Values => {
+export const resolveOptions = (
+    options: readonly OptionDef[],
+    cli: Values,
+    env: Readonly<Record<string, string | undefined>>,
+): Values => {
     const ordered = [...options.filter(o => !o.negate), ...options.filter(o => o.negate)];
 
     const base = ordered.reduce<Values>((values, opt) => {
@@ -306,27 +357,34 @@ export const resolveOptions = (options: readonly OptionDef[], cli: Values, env: 
     }, cli);
 
     return options.reduce<Values>(
-        (values, opt) => (opt.objectPath === undefined || values[opt.attr] === undefined ? values : setIn(values, opt.objectPath, values[opt.attr])),
-        base
+        (values, opt) =>
+            opt.objectPath === undefined || values[opt.attr] === undefined
+                ? values
+                : setIn(values, opt.objectPath, values[opt.attr]),
+        base,
     );
 };
 
 const parseArgument = (def: ArgumentDef, raw: string): unknown => {
     if (def.choices !== undefined && !def.choices.includes(raw)) {
-        throw invalid(`command-argument value '${raw}' is invalid for argument '${def.name}'. Allowed choices are ${def.choices.join(', ')}.`);
+        throw invalid(
+            `command-argument value '${raw}' is invalid for argument '${def.name}'. Allowed choices are ${def.choices.join(', ')}.`,
+        );
     }
 
     try {
         return def.parser ? def.parser(raw, undefined) : raw;
     } catch (e) {
-        throw invalid(`command-argument value '${raw}' is invalid for argument '${def.name}'. ${e instanceof Error ? e.message : String(e)}`.trimEnd());
+        throw invalid(
+            `command-argument value '${raw}' is invalid for argument '${def.name}'. ${e instanceof Error ? e.message : String(e)}`.trimEnd(),
+        );
     }
 };
 
 export const assignArguments = (
     command: CommandDef,
     positionals: readonly string[],
-    settings: ParseSettings
+    settings: ParseSettings,
 ): { args: readonly unknown[]; excess: readonly string[] } => {
     const defs = command.arguments;
 
@@ -349,7 +407,7 @@ export const assignArguments = (
 
     if (excess.length > 0 && settings.allowExcessArguments !== true) {
         throw invalid(
-            `too many arguments for '${command.name}'. Expected ${defs.length} argument${defs.length === 1 ? '' : 's'} but got ${positionals.length}.`
+            `too many arguments for '${command.name}'. Expected ${defs.length} argument${defs.length === 1 ? '' : 's'} but got ${positionals.length}.`,
         );
     }
 
@@ -378,6 +436,9 @@ export const parseArgv = (root: CommandDef, argv: readonly string[], settings: P
 
         return { kind: 'run', command, path: ctx.path, opts, args, unknown: [...acc.unknown, ...excess] };
     } catch (e) {
-        return { kind: 'error', error: e instanceof CliError ? e : new CliError(e instanceof Error ? e.message : String(e)) };
+        return {
+            kind: 'error',
+            error: e instanceof CliError ? e : new CliError(e instanceof Error ? e.message : String(e)),
+        };
     }
 };

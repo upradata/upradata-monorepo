@@ -1,13 +1,21 @@
 import { CliCancelled, CliError } from './errors';
-import type { ArgumentDef, CommandDef, OptionDef } from './schema';
-import { commandNames } from './schema';
+import { commandNames, type ArgumentDef, type CommandDef, type OptionDef } from './schema';
 
 export type Choice<T> = { value: T; label: string; hint?: string | undefined };
 
 export type Prompter = {
     select: <T>(opts: { message: string; options: readonly Choice<T>[]; initial?: T | undefined }) => Promise<T>;
-    multiselect: <T>(opts: { message: string; options: readonly Choice<T>[]; initial: readonly T[] }) => Promise<readonly T[]>;
-    text: (opts: { message: string; initial?: string | undefined; placeholder?: string | undefined; required?: boolean }) => Promise<string>;
+    multiselect: <T>(opts: {
+        message: string;
+        options: readonly Choice<T>[];
+        initial: readonly T[];
+    }) => Promise<readonly T[]>;
+    text: (opts: {
+        message: string;
+        initial?: string | undefined;
+        placeholder?: string | undefined;
+        required?: boolean;
+    }) => Promise<string>;
     confirm: (opts: { message: string; initial?: boolean }) => Promise<boolean>;
     intro?: (title: string) => void;
     outro?: (message: string) => void;
@@ -31,7 +39,7 @@ const loadClack = async (): Promise<ClackModule> => {
         return (await import(/* @vite-ignore */ name)) as ClackModule;
     } catch {
         throw new CliError(`interactive mode requires the optional peer dependency '${name}'. Install it to use it.`, {
-            code: 'cli.missingPeer'
+            code: 'cli.missingPeer',
         });
     }
 };
@@ -47,22 +55,30 @@ export const clackPrompter = async (): Promise<Prompter> => {
     };
 
     return {
-        select: opts => guard(clack.select({ message: opts.message, options: opts.options, initialValue: opts.initial })),
+        select: opts =>
+            guard(clack.select({ message: opts.message, options: opts.options, initialValue: opts.initial })),
         multiselect: opts =>
-            guard(clack.multiselect({ message: opts.message, options: opts.options, initialValues: opts.initial, required: false })),
+            guard(
+                clack.multiselect({
+                    message: opts.message,
+                    options: opts.options,
+                    initialValues: opts.initial,
+                    required: false,
+                }),
+            ),
         text: opts =>
             guard<string>(
                 clack.text({
                     message: opts.message,
                     initialValue: opts.initial,
                     placeholder: opts.placeholder,
-                    validate: (v: string | undefined) => (opts.required && !v ? 'a value is required' : undefined)
-                })
+                    validate: (v: string | undefined) => (opts.required && !v ? 'a value is required' : undefined),
+                }),
             ),
         confirm: opts => guard(clack.confirm({ message: opts.message, initialValue: opts.initial })),
         intro: clack.intro,
         outro: clack.outro,
-        note: clack.note
+        note: clack.note,
     };
 };
 
@@ -74,7 +90,7 @@ const describe = (c: CommandDef): string => c.description;
 export const pickCommand = async (
     prompter: Prompter,
     path: readonly CommandDef[],
-    exclude: ReadonlySet<CommandDef>
+    exclude: ReadonlySet<CommandDef>,
 ): Promise<readonly CommandDef[]> => {
     const command = path[path.length - 1] as CommandDef;
     const candidates = command.subcommands.filter(c => !c.hidden && !exclude.has(c));
@@ -88,15 +104,17 @@ export const pickCommand = async (
         ...candidates.map(c => ({
             value: c as Pick,
             label: commandNames(c).join(' | '),
-            hint: [describe(c), c.isDefault ? '(default)' : ''].filter(Boolean).join(' ')
+            hint: [describe(c), c.isDefault ? '(default)' : ''].filter(Boolean).join(' '),
         })),
-        ...(hasOwnAction ? [{ value: SELF as Pick, label: `(run '${command.name}' itself)`, hint: describe(command) }] : [])
+        ...(hasOwnAction
+            ? [{ value: SELF as Pick, label: `(run '${command.name}' itself)`, hint: describe(command) }]
+            : []),
     ];
 
     const picked = await prompter.select<Pick>({
         message: path.length === 1 ? 'Select a command' : `Select a subcommand of '${command.name}'`,
         options,
-        initial: candidates.find(c => c.isDefault) ?? candidates[0]
+        initial: candidates.find(c => c.isDefault) ?? candidates[0],
     });
 
     return picked === SELF ? path : pickCommand(prompter, [...path, picked], exclude);
@@ -114,13 +132,13 @@ const optionTokens = async (prompter: Prompter, opt: OptionDef): Promise<readonl
         ? await prompter.select<string>({
               message: `${flag} ${opt.description}`.trim(),
               options: opt.choices.map(value => ({ value, label: value })),
-              initial: initial !== undefined && opt.choices.includes(initial) ? initial : undefined
+              initial: initial !== undefined && opt.choices.includes(initial) ? initial : undefined,
           })
         : await prompter.text({
               message: `${flag} ${opt.description}`.trim(),
               initial,
               placeholder: opt.valueName,
-              required: opt.takes === 'required'
+              required: opt.takes === 'required',
           });
 
     return answer === '' ? (opt.takes === 'optional' ? [flag] : []) : [flag, answer];
@@ -134,9 +152,13 @@ const argumentTokens = async (prompter: Prompter, arg: ArgumentDef): Promise<rea
         ? await prompter.select<string>({
               message,
               options: arg.choices.map(value => ({ value, label: value })),
-              initial: initial !== undefined && arg.choices.includes(initial) ? initial : undefined
+              initial: initial !== undefined && arg.choices.includes(initial) ? initial : undefined,
           })
-        : await prompter.text({ message: arg.variadic ? `${message} (space separated)` : message, initial, required: arg.required });
+        : await prompter.text({
+              message: arg.variadic ? `${message} (space separated)` : message,
+              initial,
+              required: arg.required,
+          });
 
     return answer === '' ? [] : arg.variadic ? answer.split(/\s+/).filter(Boolean) : [answer];
 };
@@ -152,7 +174,7 @@ export const interactiveSelect = async (
     prompter: Prompter,
     root: CommandDef,
     exclude: ReadonlySet<CommandDef>,
-    binName: string
+    binName: string,
 ): Promise<InteractiveSelection> => {
     prompter.intro?.(`${root.name} - interactive mode`);
 
@@ -161,27 +183,33 @@ export const interactiveSelect = async (
 
     const args = await command.arguments.reduce<Promise<readonly string[]>>(
         async (acc, arg) => [...(await acc), ...(await argumentTokens(prompter, arg))],
-        Promise.resolve([])
+        Promise.resolve([]),
     );
 
-    const available = path.flatMap(c => c.options).filter(o => !o.hidden && (o.long !== undefined || o.short !== undefined));
-    const chosen = available.length === 0
-        ? []
-        : await prompter.multiselect<OptionDef>({
-              message: 'Select options (space to toggle)',
-              options: available.map(o => ({
-                  value: o,
-                  label: o.flags,
-                  hint: [o.description, o.defaultValue !== undefined ? `default: ${JSON.stringify(o.defaultValue)}` : '']
-                      .filter(Boolean)
-                      .join(' ')
-              })),
-              initial: available.filter(isPreselected)
-          });
+    const available = path
+        .flatMap(c => c.options)
+        .filter(o => !o.hidden && (o.long !== undefined || o.short !== undefined));
+    const chosen =
+        available.length === 0
+            ? []
+            : await prompter.multiselect<OptionDef>({
+                  message: 'Select options (space to toggle)',
+                  options: available.map(o => ({
+                      value: o,
+                      label: o.flags,
+                      hint: [
+                          o.description,
+                          o.defaultValue !== undefined ? `default: ${JSON.stringify(o.defaultValue)}` : '',
+                      ]
+                          .filter(Boolean)
+                          .join(' '),
+                  })),
+                  initial: available.filter(isPreselected),
+              });
 
     const opts = await chosen.reduce<Promise<readonly string[]>>(
         async (acc, opt) => [...(await acc), ...(await optionTokens(prompter, opt))],
-        Promise.resolve([])
+        Promise.resolve([]),
     );
 
     const tokens = [...path.slice(1).map(c => c.name), ...opts, ...args];

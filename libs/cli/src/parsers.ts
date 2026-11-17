@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module';
+
 import type { Parser } from './schema';
 import { isPlainObject, mergeDeep, parseScalar, setIn } from './util';
 
@@ -43,7 +44,10 @@ export const reduce =
     (value, previous) =>
         fn(previous, value);
 
-export const increaseNumber = (step = 1): Parser<number> => (_, previous) => (previous ?? 0) + step;
+export const increaseNumber =
+    (step = 1): Parser<number> =>
+    (_, previous) =>
+        (previous ?? 0) + step;
 
 export const decreaseNumber = (step = 1): Parser<number> => increaseNumber(-step);
 
@@ -66,7 +70,11 @@ export const object =
     (key?: string): Parser<Record<string, unknown>> =>
     (value, previous) => {
         const parsed = parseScalar(value);
-        return key === undefined ? (isPlainObject(parsed) ? parsed : { value: parsed }) : setIn(previous ?? {}, key.split('.'), parsed);
+        return key === undefined
+            ? isPlainObject(parsed)
+                ? parsed
+                : { value: parsed }
+            : setIn(previous ?? {}, key.split('.'), parsed);
     };
 
 export const cumulateObject: Parser<Record<string, unknown>> = (value, previous) => {
@@ -115,7 +123,7 @@ export const transforms = {
     toObject:
         (prop: string) =>
         (value: string): string =>
-            JSON.stringify(object(prop)(value, undefined))
+            JSON.stringify(object(prop)(value, undefined)),
 };
 
 export { require_ as require };

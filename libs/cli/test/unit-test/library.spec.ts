@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test';
+
 import { CliError, parsers } from '../../src';
 import { camelcase, levenshtein, mergeDeep, parseScalar, setIn, similar, stripAnsi, wrap } from '../../src/util';
 import { capture } from '../helpers';
@@ -65,9 +66,9 @@ describe('options', () => {
                 { flags: '--cfg <v>', dotted: true },
                 { flags: '--old-name <v>', aliases: [{ flags: '--new-name <v>', mode: 'target' }] },
                 { flags: '--req <v>', required: true },
-                { flags: '--flag [v]' }
+                { flags: '--flag [v]' },
             ],
-            actions: [() => undefined]
+            actions: [() => undefined],
         });
 
     it('precedence: cli > env > default', () => {
@@ -105,7 +106,7 @@ describe('help', () => {
             description: 'demo',
             version: '1.0.0',
             options: [{ flags: '-p, --port <n>', description: 'the port', defaultValue: 80, envVar: 'PORT' }],
-            subcommands: [{ name: 'build', description: 'build it', aliases: ['b'], arguments: ['<src>', '[dest]'] }]
+            subcommands: [{ name: 'build', description: 'build it', aliases: ['b'], arguments: ['<src>', '[dest]'] }],
         });
         const text = c.cli.help();
         expect(text).toContain('Usage: app');
@@ -128,7 +129,11 @@ describe('help', () => {
 
 describe('aliases', () => {
     const run = (aliases: object[], argv: string[], extra: object = {}) => {
-        const r = capture({ name: 'app', options: [{ flags: '--main <v>', aliases, ...extra }] as never, actions: [() => undefined] }).cli.parse(argv);
+        const r = capture({
+            name: 'app',
+            options: [{ flags: '--main <v>', aliases, ...extra }] as never,
+            actions: [() => undefined],
+        }).cli.parse(argv);
         return r.kind === 'run' ? r.opts : r;
     };
 
@@ -147,13 +152,29 @@ describe('aliases', () => {
     it('applies raw string transforms and the receiving parser', () => {
         const aliases = [{ flags: '--n <v>', mode: 'target', transform: (v: string) => String(Number(v) * 2) }];
         expect(run(aliases, ['--main', '2'], { parser: parsers.int })).toMatchObject({ main: 2, n: '4' });
-        expect(run([{ flags: '--obj <v>', mode: 'target', parser: parsers.object(), transform: parsers.transforms.toObject('k') }], ['--main', '3'])).toMatchObject({ obj: { k: 3 } });
+        expect(
+            run(
+                [
+                    {
+                        flags: '--obj <v>',
+                        mode: 'target',
+                        parser: parsers.object(),
+                        transform: parsers.transforms.toObject('k'),
+                    },
+                ],
+                ['--main', '3'],
+            ),
+        ).toMatchObject({ obj: { k: 3 } });
     });
 
     it('multi-way: every alias is linked, with per-target transforms', () => {
         const aliases = [
             { flags: '--a <v>', mode: 'two-way' },
-            { flags: '--b <v>', mode: 'multi-way', transform: { a: (v: string) => `${v}-a`, main: (v: string) => `${v}-m` } }
+            {
+                flags: '--b <v>',
+                mode: 'multi-way',
+                transform: { a: (v: string) => `${v}-a`, main: (v: string) => `${v}-m` },
+            },
         ];
         expect(run(aliases, ['--b', 'x'])).toMatchObject({ main: 'x-m', a: 'x-a', b: 'x' });
     });
@@ -169,23 +190,33 @@ describe('dotted option names and negation', () => {
         const { cli } = capture({
             name: 'app',
             options: [{ flags: '--opt.entry.a <v>' }, { flags: '--opt.entry.b <v>' }],
-            actions: [() => undefined]
+            actions: [() => undefined],
         });
         const r = cli.parse(['--opt.entry.a', '1', '--opt.entry.b', '2']);
         expect(r.kind === 'run' && r.opts.opt).toEqual({ entry: { a: '1', b: '2' } });
     });
 
     it('--no-x defaults to true unless --x is also defined', () => {
-        const only = capture({ name: 'app', options: [{ flags: '--no-cache' }], actions: [() => undefined] }).cli.parse([]);
+        const only = capture({ name: 'app', options: [{ flags: '--no-cache' }], actions: [() => undefined] }).cli.parse(
+            [],
+        );
         expect(only.kind === 'run' && only.opts.cache).toBe(true);
-        const both = capture({ name: 'app', options: [{ flags: '--cache' }, { flags: '--no-cache' }], actions: [() => undefined] }).cli.parse([]);
+        const both = capture({
+            name: 'app',
+            options: [{ flags: '--cache' }, { flags: '--no-cache' }],
+            actions: [() => undefined],
+        }).cli.parse([]);
         expect(both.kind === 'run' && both.opts.cache).toBeUndefined();
     });
 });
 
 describe('version', () => {
     it('reads the version from a package.json', async () => {
-        const c = capture({ name: 'app', packageJson: new URL('../../package.json', import.meta.url).pathname, version: '0.0.0' });
+        const c = capture({
+            name: 'app',
+            packageJson: new URL('../../package.json', import.meta.url).pathname,
+            version: '0.0.0',
+        });
         await c.cli.run(['--version']);
         expect(c.stdout().trim()).toBe('1.0.0');
     });
