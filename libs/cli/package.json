@@ -1,10 +1,10 @@
 {
     "name": "@upradata/cli",
     "version": "1.0.0",
-    "description": "Commander.js-based CLI utilities for Upra-Data",
+    "description": "Dependency-free CLI framework with coloured help and an interactive mode",
     "keywords": [
         "cli",
-        "commander",
+        "interactive",
         "upradata"
     ],
     "license": "MIT",
@@ -49,14 +49,18 @@
         "test:coverage": "vp test run --coverage",
         "typecheck": "vp check --no-fmt --no-lint"
     },
-    "dependencies": {
-        "@upradata/node-util": "workspace:*",
-        "@upradata/util": "workspace:*",
-        "commander": "^12.1.0"
-    },
     "devDependencies": {
+        "@clack/prompts": "^0.11.0",
         "@types/node": "^26.6.5",
         "@upradata/tsconfig": "workspace:*",
         "@upradata/vite-plus": "workspace:*"
+    },
+    "peerDependencies": {
+        "@clack/prompts": "^0.11.0"
+    },
+    "peerDependenciesMeta": {
+        "@clack/prompts": {
+            "optional": true
+        }
     }
 }
