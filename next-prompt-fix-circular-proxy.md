@@ -1,0 +1,1 @@
+You have to help me find a solution to a typescript problem. in the libs/proxy package, I have a chosen circular dependencies between modules proxy and node. But when I instantiate this for instance "new NodeObject(value, options, initState);", I get Type instantiation is excessively deep and possibly infinite.
